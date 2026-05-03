@@ -10,7 +10,7 @@ let
           let
             c = (x + 1) / 10;
           in
-          builtins.toString (x + 1 - (c * 10));
+          toString (x + 1 - (c * 10));
       in
       [
         "$mod, ${ws}, workspace, ${toString (x + 1)}"
@@ -18,12 +18,6 @@ let
       ]
     ) 10
   );
-  toggle =
-    program:
-    let
-      prog = builtins.substring 0 14 program;
-    in
-    "pkill ${prog} || uwsm app -- ${program}";
 
   runOnce = program: "pgrep ${program} || uwsm app -- ${program}";
 in
@@ -69,9 +63,9 @@ in
         # select area to perform OCR on
         "$mod, O, exec, uwsm app -- wl-ocr"
         # Emoji picker
-        "$mod, E, exec, vicinae vicinae://extensions/vicinae/core/search-emojis"
+        "$mod, E, exec, vicinae vicinae://launch/core/search-emojis"
         # Clipboard manager
-        "$mod, V, exec, vicinae vicinae://extensions/vicinae/clipboard/history"
+        "$mod, V, exec, vicinae vicinae://launch/clipboard/history"
         # File manager
         "$mod, N, exec, nautilus"
 
