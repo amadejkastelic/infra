@@ -271,11 +271,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1778199440,
-        "narHash": "sha256-neEu92AczcHfO4tENmyFnzQXvk5b/Tp+VM7hsevCYOk=",
+        "lastModified": 1778285890,
+        "narHash": "sha256-VadFMNuLO/nj6CNsqU5EKQjXZXXGTxUBqiWj0EhMqf0=",
         "owner": "sadjow",
         "repo": "claude-code-nix",
-        "rev": "bacfe205bb986634fe4c60d2aaf3e3ce2fe40c11",
+        "rev": "e8bd79cc402ba39213d9c8fbf1165d6f780123bc",
         "type": "github"
       },
       "original": {
@@ -2180,11 +2180,11 @@
         "nixpkgs-nixcord": "nixpkgs-nixcord"
       },
       "locked": {
-        "lastModified": 1778230071,
-        "narHash": "sha256-+tmPbQswSaembJe4vFAyKmcJ7CvF+dK/bhoZYUNmpXg=",
+        "lastModified": 1778288643,
+        "narHash": "sha256-nP/pZlZDR+C2ocrfgMMEJ51qW8K2d6CK4nDa2sXS9Q0=",
         "owner": "FlameFlag",
         "repo": "nixcord",
-        "rev": "37c3b08a8de36529af7152fbaa94c94a52e0cfea",
+        "rev": "1cd025b8db2abf4848f6249545108d5bdfc80ed0",
         "type": "github"
       },
       "original": {
@@ -3360,11 +3360,11 @@
         "systems": "systems_12"
       },
       "locked": {
-        "lastModified": 1778251725,
-        "narHash": "sha256-i0zXSj+e5GXvovJB/OEXxlI3dksOKmnMDneDZc+1/oc=",
+        "lastModified": 1778277317,
+        "narHash": "sha256-fNCJH4tH+UB6rpzyWXyywIiJCDpXmbcHKT72xrNYWLk=",
         "owner": "vicinaehq",
         "repo": "vicinae",
-        "rev": "f4a464612fc3a76778e845f83f8dd6ec6814d6ca",
+        "rev": "4807815e690d2150adb2f45c0041ef8e4e18f4e4",
         "type": "github"
       },
       "original": {
