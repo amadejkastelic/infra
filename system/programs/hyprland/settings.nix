@@ -65,7 +65,6 @@ in
 
       shadow = {
         enabled = true;
-        ignore_window = true;
         offset = "0 2";
         range = 20;
         render_power = 3;
@@ -107,8 +106,6 @@ in
     };
 
     dwindle = {
-      # keep floating dimentions while tiling
-      pseudotile = true;
       preserve_split = true;
     };
 
@@ -131,7 +128,6 @@ in
 
     render = {
       direct_scanout = true;
-      cm_fs_passthrough = false;
     };
 
     cursor = {
