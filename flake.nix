@@ -92,7 +92,7 @@
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
     hyprland = {
-      url = "github:hyprwm/Hyprland?ref=v0.54.3";
+      url = "github:hyprwm/Hyprland?ref=v0.55.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -119,8 +119,9 @@
       inputs.nixpkgs.follows = "hyprland/nixpkgs";
     };
 
+    # https://github.com/hyprwm/hyprland-plugins/pull/654
     hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins?ref=6acc0738f298f5efe40a99db2c12449112d65633";
+      url = "github:amadejkastelic/hyprland-plugins?ref=csgo-fix";
       inputs.hyprland.follows = "hyprland";
     };
 
@@ -132,7 +133,7 @@
     };
 
     hypr-dynamic-cursors = {
-      url = "github:VirtCode/hypr-dynamic-cursors?ref=57e14edd0ae265b01828e466e287e96eb1e84dd3";
+      url = "github:VirtCode/hypr-dynamic-cursors";
       inputs.hyprland.follows = "hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -148,7 +149,7 @@
     };
 
     hyprvibr = {
-      url = "github:amadejkastelic/hyprvibr";
+      url = "github:amadejkastelic/hyprvibr?ref=chase-hypr";
       inputs.hyprland.follows = "hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
