@@ -119,12 +119,6 @@
       inputs.nixpkgs.follows = "hyprland/nixpkgs";
     };
 
-    # https://github.com/hyprwm/hyprland-plugins/pull/654
-    hyprland-plugins = {
-      url = "github:amadejkastelic/hyprland-plugins?ref=csgo-fix";
-      inputs.hyprland.follows = "hyprland";
-    };
-
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
       inputs.hyprlang.follows = "hyprland/hyprlang";

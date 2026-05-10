@@ -159,12 +159,6 @@ in
       hyprvibr {
         hyprvibr-app = cs2, 3.3, 2560, 1440, 120
       }
-      csgo-vulkan-fix {
-        res_w = 1920
-        res_h = 1440
-        class = cs2
-        fix_mouse = true
-      }
       dynamic-cursors {
         enabled = true
         mode = none

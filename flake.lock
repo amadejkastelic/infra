@@ -1296,37 +1296,6 @@
         "type": "github"
       }
     },
-    "hyprland-plugins": {
-      "inputs": {
-        "hyprland": [
-          "hyprland"
-        ],
-        "nixpkgs": [
-          "hyprland-plugins",
-          "hyprland",
-          "nixpkgs"
-        ],
-        "systems": [
-          "hyprland-plugins",
-          "hyprland",
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1778401709,
-        "narHash": "sha256-B5svyDEkHtBs96bKKJiy8LXWoC81j4B7o1HEeh3bvt0=",
-        "owner": "amadejkastelic",
-        "repo": "hyprland-plugins",
-        "rev": "9aba9b02f3468cdc08058115c28ebd3b2a372b6f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "amadejkastelic",
-        "ref": "csgo-fix",
-        "repo": "hyprland-plugins",
-        "type": "github"
-      }
-    },
     "hyprland-protocols": {
       "inputs": {
         "nixpkgs": [
@@ -2795,7 +2764,6 @@
         "hypridle": "hypridle",
         "hyprland": "hyprland",
         "hyprland-contrib": "hyprland-contrib",
-        "hyprland-plugins": "hyprland-plugins",
         "hyprlock": "hyprlock",
         "hyprlux": "hyprlux",
         "hyprpaper": "hyprpaper",
