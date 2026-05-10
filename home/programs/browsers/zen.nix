@@ -245,6 +245,17 @@ in
             icon = "https://upload.wikimedia.org/wikipedia/commons/b/b5/Perplexity_AI_Turquoise_on_White.png";
             definedAliases = [ "@pe" ];
           };
+
+          cardmarket = {
+            name = "Cardmarket";
+            urls = [
+              {
+                template = "https://www.cardmarket.com/en/YuGiOh/Products/Search?category=-1&searchString={searchTerms}&category=-1&searchMode=v2";
+              }
+            ];
+            icon = "https://www.vhv.rs/dpng/d/559-5596540_https-www-cardmarket-com-en-magicutm-campaign-card.png";
+            definedAliases = [ "@cm" ];
+          };
         };
       };
     };
