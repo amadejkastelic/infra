@@ -256,6 +256,16 @@ in
             icon = "https://www.vhv.rs/dpng/d/559-5596540_https-www-cardmarket-com-en-magicutm-campaign-card.png";
             definedAliases = [ "@cm" ];
           };
+
+          nixpkgs-update-logs = {
+            name = "ryantm";
+            urls = [
+              {
+                template = "https://r.ryantm.com/log/{searchTerms}/";
+              }
+            ];
+            definedAliases = [ "@nl" ];
+          };
         };
       };
     };
