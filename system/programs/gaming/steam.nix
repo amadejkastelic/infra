@@ -43,6 +43,7 @@ in
             cs2 = {
               id = 730;
               launchOptions = {
+                env.SDL_VIDEO_DRIVER = "wayland";
                 args = [
                   "-window"
                   "-nojoy"
