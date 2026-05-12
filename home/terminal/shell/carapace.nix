@@ -1,6 +1,9 @@
+{ config, ... }:
 {
   programs.carapace = {
     enable = true;
-    enableNushellIntegration = true;
+
+    enableNushellIntegration = config.programs.nushell.enable;
+    enableZshIntegration = config.programs.zsh.enable;
   };
 }

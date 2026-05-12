@@ -4,7 +4,8 @@
 
   programs.starship = {
     enable = true;
-    enableNushellIntegration = true;
+    enableNushellIntegration = config.programs.nushell.enable;
+    enableZshIntegration = config.programs.zsh.enable;
 
     settings = {
       character = {

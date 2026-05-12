@@ -11,7 +11,6 @@ let
     postBuild = ''
       wrapProgram $out/bin/zeditor \
         --unset WAYLAND_DISPLAY \
-        --set SHELL ${lib.getExe pkgs.zsh} \
         --set GPUI_X11_SCALE_FACTOR 1.5
     '';
   };

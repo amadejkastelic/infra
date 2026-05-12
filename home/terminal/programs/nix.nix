@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   self,
   ...
 }:
@@ -16,8 +17,8 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
-    enableZshIntegration = true;
-    enableNushellIntegration = true;
+    enableZshIntegration = config.programs.zsh.enable;
+    enableNushellIntegration = config.programs.nushell.enable;
     silent = true;
   };
 }

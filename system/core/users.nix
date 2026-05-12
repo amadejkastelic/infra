@@ -5,7 +5,7 @@ in
 {
   users.users.amadejk = {
     isNormalUser = true;
-    shell = pkgs.nushell;
+    shell = pkgs.zsh;
     extraGroups = [
       "adbusers"
       "audio"
