@@ -829,11 +829,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776796298,
-        "narHash": "sha256-PcRvlWayisPSjd0UcRQbhG8Oqw78AcPE6x872cPRHN8=",
+        "lastModified": 1778507602,
+        "narHash": "sha256-kTwur1wV+01SdqskVMSo6JMEpg71ps3HpbFY2GsflKs=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "3cfd774b0a530725a077e17354fbdb87ea1c4aad",
+        "rev": "61ab0e80d9c7ab14c256b5b453d8b3fb0189ba0a",
         "type": "github"
       },
       "original": {
@@ -1041,11 +1041,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778954430,
-        "narHash": "sha256-oaNyOr05lblaQdtbkbN1wO0b2KLIL2O1LkmwDgdQp4I=",
+        "lastModified": 1779027260,
+        "narHash": "sha256-ZbgWWFQmSyM3HQ31nAZk2hJ7OSeNr9uRFHL8jCifY9M=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "26aaab785b0bab4af60a2c42b22760fa906ef22a",
+        "rev": "bcb774cfc3268120cd61808629f9aa7dad3750a2",
         "type": "github"
       },
       "original": {
@@ -2046,11 +2046,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778730790,
-        "narHash": "sha256-g8+lQJL7OjgD1T+k6GzFC6LfHWc2gS0FFiO+MEIjZ9U=",
+        "lastModified": 1778990399,
+        "narHash": "sha256-/q9m9LbEPn/gQ3dSXwOyu3cWlB7IHKqbi3qp6crbAWQ=",
         "owner": "fufexan",
         "repo": "nix-gaming",
-        "rev": "2c555b88e541fb9da71d3c01f97d31ef1805d639",
+        "rev": "cbcadcd9dfa2336965ade3945cf168dd37f2704b",
         "type": "github"
       },
       "original": {
@@ -2087,11 +2087,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778393439,
-        "narHash": "sha256-mOtQxUjtKaPHLeoLOY/YEDctmud1X9KwJr4kE1MJ3Wc=",
+        "lastModified": 1778999127,
+        "narHash": "sha256-V5GquqJvAqwFTcpN6hxKSQAtwuJFRUEHmyNKbeaTQDg=",
         "owner": "Mic92",
         "repo": "nix-index-database",
-        "rev": "01466c414c7357ae2ce32be4a272a7c69e94ab5f",
+        "rev": "f680e0d3c1dbefe298c423691662e238496890f2",
         "type": "github"
       },
       "original": {
@@ -2126,11 +2126,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1778902753,
-        "narHash": "sha256-4tgJmu6sc6F6y+igJfh+kG0t2U1T2cDwfhz5hC0W2Tg=",
+        "lastModified": 1778990260,
+        "narHash": "sha256-IE5biNRhbQdrziKZbbS47ELDyv38mI4hdFf9zMq6meU=",
         "owner": "nix-community",
         "repo": "nix-vscode-extensions",
-        "rev": "5df06838c483ad33aa5fb1448b9ba9de665930a1",
+        "rev": "357e5e238302b5908f033b828c5f1d8b3d73b4e0",
         "type": "github"
       },
       "original": {
@@ -2517,11 +2517,11 @@
         "noctalia-qs": "noctalia-qs"
       },
       "locked": {
-        "lastModified": 1778972351,
-        "narHash": "sha256-GGzDdZMSRDRAQWLE7Gc4xBpBf2T+tezi8NjmiMSnJJM=",
+        "lastModified": 1778985886,
+        "narHash": "sha256-eI7Vv6sWHxUnkOH3f7TBUzMhJIeVTi4A9tUk3+DfR08=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "27c715dcf28be276d17d334e9d1137b2d10a0174",
+        "rev": "aecc6c4db35bf4bee10ab63a4acee784ff21992a",
         "type": "github"
       },
       "original": {
@@ -2540,11 +2540,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1778377995,
-        "narHash": "sha256-uUzHDHqQF1rdVNiTa05L0mML3/d7fpbAShjCRWxbrBQ=",
+        "lastModified": 1778983195,
+        "narHash": "sha256-hE3EFK5GoSdbO5WHZ8bZDUVYkofbDLQN/KK25z7IOOI=",
         "owner": "noctalia-dev",
         "repo": "noctalia-qs",
-        "rev": "d8327a723eed6dd9aebe8e0b162126f390e827df",
+        "rev": "4116b41cdc89e186be7cb8b24a9b6022af95d742",
         "type": "github"
       },
       "original": {
@@ -3395,11 +3395,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778541172,
-        "narHash": "sha256-+JYE5m+ao49TVHJMQeQpPjYcq6YFPLEZQ3sryuENMwc=",
+        "lastModified": 1779027623,
+        "narHash": "sha256-F4V0yLbNR81kMLQO4XB7j0vb1KYpUeuizISZrR5voco=",
         "owner": "peteonrails",
         "repo": "voxtype",
-        "rev": "ddc93de3d387a55982813ead3777a129285deaef",
+        "rev": "6429117b08f8b0791c4769dbb13536d2715175f4",
         "type": "github"
       },
       "original": {
