@@ -92,7 +92,7 @@
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
     hyprland = {
-      url = "github:hyprwm/Hyprland?ref=v0.55.0";
+      url = "github:hyprwm/Hyprland?ref=v0.55.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
