@@ -378,7 +378,7 @@ in
         {
           DeviceAllow = [
             "char-drm rw"
-            "char-nvidia-frontend rw"
+            "char-nvidia rw"
             "char-nvidia-uvm rw"
           ];
           PrivateDevices = false;
