@@ -127,6 +127,7 @@
         xattr = "sa";
         "com.sun:auto-snapshot" = "false";
       };
+      mountOptions = [ "nofail" ];
       mountpoint = "/storage";
 
       postCreateHook = ''
@@ -138,6 +139,7 @@
         media = {
           type = "zfs_fs";
           mountpoint = "/storage/media";
+          mountOptions = [ "nofail" ];
           options = {
             compression = "lz4";
             recordsize = "1M";
@@ -146,6 +148,7 @@
         data = {
           type = "zfs_fs";
           mountpoint = "/storage/data";
+          mountOptions = [ "nofail" ];
           options = {
             compression = "zstd";
           };
@@ -153,6 +156,7 @@
         backups = {
           type = "zfs_fs";
           mountpoint = "/storage/backups";
+          mountOptions = [ "nofail" ];
           options = {
             compression = "zstd";
           };
