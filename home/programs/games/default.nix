@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ./bloodborne.nix
     ./mangohud.nix
     ./osu.nix
   ];
