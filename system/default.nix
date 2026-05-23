@@ -52,7 +52,7 @@ let
     ./services/blocky.nix
     ./services/dashboard.nix
     ./services/databases
-    ./services/firefox-syncserver.nix
+    # ./services/firefox-syncserver.nix
     ./services/grabby.nix
     ./services/immich.nix
     ./services/jellyfin.nix
