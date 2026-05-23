@@ -5,10 +5,7 @@
 }:
 {
   nixpkgs = {
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [ "gradle-7.6.6" ];
-    };
+    config.allowUnfree = true;
 
     overlays = [
       (final: prev: {
@@ -19,6 +16,16 @@
       inputs.nix-vscode-extensions.overlays.default
       inputs.firefox-addons.overlays.default
       inputs.cachyos-kernel.overlays.pinned
+      # https://github.com/NixOS/nixpkgs/pull/522705
+      (final: prev: {
+        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+          (python-final: python-prev: {
+            jedi-language-server = python-prev.jedi-language-server.overridePythonAttrs (oldAttrs: {
+              pythonRelaxDeps = [ "jedi" ];
+            });
+          })
+        ];
+      })
     ];
   };
 }
