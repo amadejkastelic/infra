@@ -87,6 +87,7 @@
   environment.systemPackages = with pkgs; [
     tailscale
     tailscale-gui
+    raycast
   ];
 
   nixpkgs = {
