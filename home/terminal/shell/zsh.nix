@@ -6,12 +6,16 @@
   ...
 }:
 let
-  nanofetch = inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
+  fetch =
+    if pkgs.stdenv.isDarwin then
+      pkgs.fastfetch
+    else
+      inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
 in
 {
   home.packages = [
     pkgs.fzf
-    nanofetch
+    fetch
   ];
 
   programs.zsh = {
@@ -92,7 +96,7 @@ in
       # Set up fzf key bindings and fuzzy completion
       source <(${lib.getExe pkgs.fzf} --zsh)
 
-      ${lib.getExe nanofetch}
+      ${lib.getExe fetch}
     '';
   };
 }

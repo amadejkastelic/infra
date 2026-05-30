@@ -40,11 +40,19 @@
       };
     };
 
-    extraConfig = ''
-      if ($nu.is-interactive and ($env | get -o TERM) != null) {
-        ${lib.getExe inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch}
-      }
-    '';
+    extraConfig =
+      let
+        fetch =
+          if pkgs.stdenv.isDarwin then
+            pkgs.fastfetch
+          else
+            inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
+      in
+      ''
+        if ($nu.is-interactive and ($env | get -o TERM) != null) {
+          ${lib.getExe fetch}
+        }
+      '';
 
     extraEnv = ''
       ${lib.getExe pkgs.bash-env-json} ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh
