@@ -20,9 +20,9 @@
     [
       gnumake
       hoppscotch
-      pinentry-gnome3
     ]
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+      pinentry-gnome3
       mission-center
       wineWow64Packages.wayland
       ledger-live-desktop
