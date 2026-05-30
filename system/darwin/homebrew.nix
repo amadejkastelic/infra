@@ -13,6 +13,8 @@
     };
 
     casks = [
+      # nixpkgs version crashes on launch
+      "tailscale-app"
       "karabiner-elements"
     ];
   };

@@ -12,8 +12,6 @@
     inputs.stylix.darwinModules.stylix
     ../theme/shared.nix
     ./preferences.nix
-    ./yabai.nix
-    ./skhd.nix
     ./homebrew.nix
   ];
 
@@ -91,8 +89,6 @@
     };
 
   environment.systemPackages = with pkgs; [
-    tailscale
-    tailscale-gui
     raycast
   ];
 

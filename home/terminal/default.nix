@@ -24,10 +24,6 @@ in
     DIRENV_LOG_FORMAT = "";
 
     NIX_AUTO_RUN = "1";
-
-    CODEBERG_TOKEN = "$(cat ${config.sops.secrets.codeberg-token.path})";
-    GITHUB_TOKEN = "$(cat ${config.sops.secrets.github-token.path})";
-    Z_AI_API_KEY = "$(cat ${config.sops.secrets.z-ai-api-token.path})";
   }
   // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
     WINEPREFIX = "${data}/wine";

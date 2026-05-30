@@ -57,6 +57,10 @@ in
     };
 
     initContent = ''
+      export CODEBERG_TOKEN="$(cat ${config.sops.secrets.codeberg-token.path} 2>/dev/null)"
+      export GITHUB_TOKEN="$(cat ${config.sops.secrets.github-token.path} 2>/dev/null)"
+      export Z_AI_API_KEY="$(cat ${config.sops.secrets.z-ai-api-token.path} 2>/dev/null)"
+
       autoload -U history-search-end
       zle -N history-beginning-search-backward-end history-search-end
       zle -N history-beginning-search-forward-end history-search-end
