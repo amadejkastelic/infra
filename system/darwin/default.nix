@@ -85,6 +85,8 @@
       };
     };
 
+  environment.systemPackages = [ pkgs.tailscale ];
+
   nixpkgs = {
     config.allowUnfree = true;
     overlays = [

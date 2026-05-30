@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.mpv = {
     enable = true;
     defaultProfiles = [ "gpu-hq" ];
-    scripts = [ pkgs.mpvScripts.mpris ];
+    scripts = lib.optionals (!pkgs.stdenv.isDarwin) [ pkgs.mpvScripts.mpris ];
   };
 }
