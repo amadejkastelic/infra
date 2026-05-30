@@ -21,6 +21,7 @@
       AppleShowAllExtensions = true;
       AppleKeyboardUIMode = 3;
       AppleInterfaceStyle = "Dark";
+      AppleInterfaceStyleSwitchesAutomatically = false;
       NSAutomaticWindowAnimationsEnabled = false;
       NSDocumentSaveNewDocumentsToCloud = false;
       "com.apple.keyboard.fnState" = true;

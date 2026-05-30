@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   stylix = {
     enable = true;
 
     autoEnable = true;
 
-    icons = {
+    icons = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
       package = pkgs.papirus-icon-theme;
       dark = "Papirus-Dark";
