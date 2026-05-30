@@ -36,7 +36,7 @@
 
     WindowManager = {
       EnableStandardClickToShowDesktop = false;
-      StandardHideDesktopWidgets = true;
+      StandardHideWidgets = true;
     };
   };
 
