@@ -6,14 +6,14 @@
 }:
 buildNpmPackage rec {
   pname = "z-ai-vision-mcp-server";
-  version = "0.1.2";
+  version = "0.1.4";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/@z_ai/mcp-server/-/mcp-server-${version}.tgz";
-    sha256 = "sha256-etfPQbfzihM84MM25xE7uFxz5jUhRRFMwn6jOEhL4QY=";
+    sha256 = "sha256-CeWIqGjxwrTa3hDxGu6NIy+eQ+XHvO7gh2Nazt83J1w=";
   };
 
-  npmDepsHash = "sha256-2LfWf0nKQTYqvV1GDqamsqONj6XUCuARHOmoW3Dq/Ew=";
+  npmDepsHash = "sha256-8gRm6R3hso6JpNEBFjoWkXUCOx4i/Z5u6HJiJdPzYR0=";
 
   dontNpmBuild = true;
 
