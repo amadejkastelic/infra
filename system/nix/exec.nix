@@ -4,6 +4,6 @@
 
   programs.nix-exec = {
     enable = true;
-    sandbox.timeout = "5m";
+    settings.sandbox.timeout = "5m";
   };
 }

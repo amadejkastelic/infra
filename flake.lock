@@ -2226,11 +2226,11 @@
         "pre-commit-hooks": "pre-commit-hooks_5"
       },
       "locked": {
-        "lastModified": 1780134866,
-        "narHash": "sha256-WAo+KnIcGVsWFNkolWopqFtqj8xfvgl6m/5L9Rznpjs=",
+        "lastModified": 1780136909,
+        "narHash": "sha256-ABoeX+R6uDHIxJD0LxXNJQFGjFwepLAG7Uc3jET8GCU=",
         "owner": "amadejkastelic",
         "repo": "nix-exec",
-        "rev": "88d7ac1a13d50d1e28c3c46fe130ed3655e38c8f",
+        "rev": "005095b4f4478e8d1252045a6b0424bc2dac035f",
         "type": "github"
       },
       "original": {
