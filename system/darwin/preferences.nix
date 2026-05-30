@@ -27,6 +27,7 @@
       NSDocumentSaveNewDocumentsToCloud = false;
       "com.apple.keyboard.fnState" = true;
       "com.apple.mouse.tapBehavior" = 1;
+      "com.apple.swipescrolldirection" = false;
       InitialKeyRepeat = 15;
       KeyRepeat = 2;
     };
@@ -47,13 +48,8 @@
     remapCapsLockToControl = true;
   };
 
-  launchd.daemons."load-keyboard-layout" = {
-    command = ''
-      cp -f ${./keyboard/Slovensko.keylayout} /Library/Keyboard\ Layouts/
-      cp -f ${./keyboard/Slovensko.icns} /Library/Keyboard\ Layouts/
-    '';
-    serviceConfig = {
-      RunAtLoad = true;
-    };
-  };
+  system.activationScripts.keyboardLayout.text = ''
+    cp -f ${./keyboard/Slovensko.keylayout} /Library/Keyboard\ Layouts/
+    cp -f ${./keyboard/Slovensko.icns} /Library/Keyboard\ Layouts/
+  '';
 }
