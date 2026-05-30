@@ -10,7 +10,7 @@
     clearDefaultKeybinds = false;
 
     settings = {
-      window-decoration = false;
+      window-decoration = pkgs.stdenv.isDarwin;
       gtk-titlebar = false;
       cursor-style = "bar";
     };

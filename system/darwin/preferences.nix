@@ -1,4 +1,3 @@
-{ self, ... }:
 {
   system.defaults = {
     dock = {
