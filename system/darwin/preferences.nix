@@ -49,6 +49,7 @@
   };
 
   system.activationScripts.keyboardLayout.text = ''
+    rm -f /Library/Keyboard\ Layouts/*Slovensko*
     cp -f ${./keyboard/Slovensko.keylayout} "/Library/Keyboard Layouts/Slovensko.keylayout"
     cp -f ${./keyboard/Slovensko.icns} "/Library/Keyboard Layouts/Slovensko.icns"
   '';
