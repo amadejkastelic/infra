@@ -30,7 +30,7 @@ in
         env.GITHUB_PERSONAL_ACCESS_TOKEN = "{env:GITHUB_TOKEN}";
       };
       nix-exec = {
-        command = lib.getExe osConfig.programs.nix-exec.package;
+        command = lib.getExe inputs.nix-exec.packages.${pkgs.stdenv.hostPlatform.system}.default;
       };
       nixos = {
         command = lib.getExe pkgs.mcp-nixos;
