@@ -30,7 +30,6 @@
       AppleKeyboardUIMode = 3;
       AppleInterfaceStyle = "Dark";
       AppleInterfaceStyleSwitchesAutomatically = false;
-      AppleIconAppearanceTheme = "ClearDark";
       NSAutomaticWindowAnimationsEnabled = false;
       NSDocumentSaveNewDocumentsToCloud = false;
       "com.apple.keyboard.fnState" = true;
