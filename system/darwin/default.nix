@@ -18,6 +18,22 @@
     ./homebrew.nix
   ];
 
+  stylix.fonts = {
+    serif = {
+      package = pkgs.emptyDirectory;
+      name = "SFProText";
+    };
+    sansSerif = config.stylix.fonts.serif;
+    monospace = {
+      package = pkgs.nerd-fonts.jetbrains-mono;
+      name = "JetBrainsMono Nerd Font";
+    };
+    emoji = {
+      package = pkgs.noto-fonts-color-emoji;
+      name = "Noto Color Emoji";
+    };
+  };
+
   system.primaryUser = "amadejk";
 
   system.stateVersion = 6;
