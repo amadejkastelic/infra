@@ -1,6 +1,6 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
-  imports = lib.optionals (!pkgs.stdenv.isDarwin) [ ./zathura.nix ];
+  imports = [ ./zathura.nix ];
 
   home.packages = with pkgs; [
     onlyoffice-desktopeditors

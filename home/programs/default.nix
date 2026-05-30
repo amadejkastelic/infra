@@ -12,11 +12,7 @@
     ./nix.nix
     ./gtk.nix
     ./qt.nix
-    ./office
     ./social
-  ]
-  ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-    ./vicinae
   ];
 
   home.packages =

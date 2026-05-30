@@ -8,6 +8,8 @@
     # programs
     ../../programs
     ../../programs/games
+    ../../programs/office
+    ../../programs/vicinae
     ../../programs/wayland
 
     # services
