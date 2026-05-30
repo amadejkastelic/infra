@@ -4,10 +4,8 @@
 
   home.packages =
     with pkgs;
-    [
+    lib.optionals (!pkgs.stdenv.isDarwin) [
       gimp
-    ]
-    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
       pavucontrol
       pulsemixer
       loupe
