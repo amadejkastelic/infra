@@ -12,7 +12,7 @@ in
     enable = true;
     autoEnable = true;
 
-    image = ../theme/wallpaper.jpeg;
+    image = ./wallpaper.jpeg;
     polarity = "dark";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 

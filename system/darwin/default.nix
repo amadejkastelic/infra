@@ -10,13 +10,15 @@
   imports = [
     inputs.hm.darwinModules.default
     inputs.stylix.darwinModules.stylix
-    ./stylix.nix
+    ../theme/shared.nix
     ./preferences.nix
     ./yabai.nix
     ./skhd.nix
     ./sketchybar.nix
     ./homebrew.nix
   ];
+
+  system.primaryUser = "amadejk";
 
   system.stateVersion = 6;
 
