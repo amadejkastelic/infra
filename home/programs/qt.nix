@@ -1,3 +1,4 @@
+{ pkgs, lib, ... }:
 {
-  qt.enable = true;
+  qt.enable = lib.mkIf (!pkgs.stdenv.isDarwin) true;
 }
