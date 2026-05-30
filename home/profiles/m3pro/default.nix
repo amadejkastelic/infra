@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   imports = [
     ../../editors/neovim
@@ -7,7 +6,6 @@
 
     ../../programs
     ../../programs/browsers/zen.nix
-    ../../programs/browsers/chromium.nix
 
     ../../services/gpg
 
