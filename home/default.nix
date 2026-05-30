@@ -24,6 +24,7 @@
   };
 
   targets.darwin = lib.mkIf pkgs.stdenv.isDarwin {
+    linkApps.enable = false;
     copyApps.enable = true;
   };
 
