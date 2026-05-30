@@ -11,7 +11,9 @@
     enableNushellIntegration = config.programs.nushell.enable;
     enableSshSupport = true;
     enableScDaemon = true;
-    pinentry.package = lib.mkDefault pkgs.pinentry-gnome3;
+    pinentry.package = lib.mkDefault (
+      if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-gnome3
+    );
   };
 
   services.ssh-agent.enable = false;
