@@ -2,6 +2,7 @@
   config,
   inputs,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -20,6 +21,10 @@
       "doc"
       "devdoc"
     ];
+  };
+
+  targets.darwin = lib.mkIf pkgs.stdenv.isDarwin {
+    copyApps.enable = true;
   };
 
   sops = {
