@@ -1,10 +1,8 @@
 { pkgs, ... }:
 {
-  imports = [
-    ./zathura.nix
-  ];
+  imports = [ ./zathura.nix ];
 
-  home.packages = [
-    pkgs.onlyoffice-desktopeditors
+  home.packages = with pkgs; [
+    onlyoffice-desktopeditors
   ];
 }

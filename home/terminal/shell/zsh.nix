@@ -6,12 +6,16 @@
   ...
 }:
 let
-  nanofetch = inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
+  fetch =
+    if pkgs.stdenv.isDarwin then
+      pkgs.fastfetch
+    else
+      inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
 in
 {
   home.packages = [
     pkgs.fzf
-    nanofetch
+    fetch
   ];
 
   programs.zsh = {
@@ -53,6 +57,10 @@ in
     };
 
     initContent = ''
+      export CODEBERG_TOKEN="$(cat ${config.sops.secrets.codeberg-token.path} 2>/dev/null)"
+      export GITHUB_TOKEN="$(cat ${config.sops.secrets.github-token.path} 2>/dev/null)"
+      export Z_AI_API_KEY="$(cat ${config.sops.secrets.z-ai-api-token.path} 2>/dev/null)"
+
       autoload -U history-search-end
       zle -N history-beginning-search-backward-end history-search-end
       zle -N history-beginning-search-forward-end history-search-end
@@ -92,7 +100,7 @@ in
       # Set up fzf key bindings and fuzzy completion
       source <(${lib.getExe pkgs.fzf} --zsh)
 
-      ${lib.getExe nanofetch}
+      ${lib.getExe fetch}
     '';
   };
 }

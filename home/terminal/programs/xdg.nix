@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -60,7 +61,6 @@ let
       "unknown"
     ]);
 
-  # XDG MIME types
   associations = builtins.mapAttrs (_: v: (map (e: "${e}.desktop") v)) (
     {
       "application/pdf" = [ "org.pwmt.zathura-pdf-mupdf" ];
@@ -85,7 +85,7 @@ in
     enable = true;
     cacheHome = config.home.homeDirectory + "/.local/cache";
 
-    mimeApps = {
+    mimeApps = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
       defaultApplications = associations;
     };
@@ -101,7 +101,6 @@ in
   };
 
   home.packages = [
-    # used by `gio open` and xdp-gtk
     (pkgs.writeShellScriptBin "xdg-terminal-exec" ''
       wezterm start "$@"
     '')

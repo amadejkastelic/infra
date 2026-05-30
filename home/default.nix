@@ -1,6 +1,8 @@
 {
   config,
   inputs,
+  pkgs,
+  lib,
   ...
 }:
 {
@@ -13,7 +15,7 @@
 
   home = {
     username = "amadejk";
-    homeDirectory = "/home/amadejk";
+    homeDirectory = if pkgs.stdenv.isDarwin then "/Users/amadejk" else "/home/amadejk";
     stateVersion = "23.11";
     extraOutputsToInstall = [
       "doc"
@@ -21,18 +23,23 @@
     ];
   };
 
+  targets.darwin = lib.mkIf pkgs.stdenv.isDarwin {
+    linkApps.enable = false;
+    copyApps.enable = true;
+  };
+
   sops = {
-    age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+    age.sshKeyPaths = [
+      "${config.home.homeDirectory}/.ssh/id_ed25519"
+    ];
     defaultSopsFile = ./secrets.yaml;
   };
 
-  # disable manuals as nmd fails to build often
   manual = {
     html.enable = false;
     json.enable = false;
     manpages.enable = false;
   };
 
-  # let HM manage itself when in standalone mode
   programs.home-manager.enable = true;
 }
