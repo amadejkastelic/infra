@@ -38,10 +38,6 @@
       KeyRepeat = 2;
     };
 
-    spaces = {
-      spans-displays = false;
-    };
-
     WindowManager = {
       EnableStandardClickToShowDesktop = false;
       StandardHideDesktopIcons = true;

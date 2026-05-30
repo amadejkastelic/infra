@@ -3,7 +3,8 @@
   imports = [ inputs.catppuccin.homeModules.catppuccin ];
 
   catppuccin = {
-    enable = false;
+    enable = true;
+    autoEnable = false;
     accent = "mauve";
     flavor = "mocha";
   };

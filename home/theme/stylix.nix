@@ -31,9 +31,4 @@
     };
   };
 
-  home.activation.setWallpaper = lib.mkIf pkgs.stdenv.isDarwin (
-    config.lib.dag.entryAfter [ "writeBoundary" ] ''
-      $DRY_RUN_CMD /usr/bin/osascript -e 'tell application "System Events" to tell every desktop to set picture to "${config.stylix.image}"'
-    ''
-  );
 }
