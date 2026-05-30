@@ -6,7 +6,6 @@
 }:
 {
   imports = [
-    ./browsers/chromium.nix
     ./browsers/zen.nix
     ./media
     ./nix.nix

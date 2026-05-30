@@ -85,7 +85,10 @@
       };
     };
 
-  environment.systemPackages = [ pkgs.tailscale ];
+  environment.systemPackages = with pkgs; [
+    tailscale
+    tailscale-gui
+  ];
 
   nixpkgs = {
     config.allowUnfree = true;
