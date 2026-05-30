@@ -14,7 +14,6 @@
     ./preferences.nix
     ./yabai.nix
     ./skhd.nix
-    ./sketchybar.nix
     ./homebrew.nix
   ];
 

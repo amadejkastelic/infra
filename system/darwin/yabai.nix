@@ -27,8 +27,6 @@
       window_border_blur = "off";
       active_window_border_color = "0xffcba6f7";
       normal_window_border_color = "0xff45475a";
-
-      external_bar = "all:32:0";
     };
 
     extraConfig = ''
