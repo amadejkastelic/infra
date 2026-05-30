@@ -10,7 +10,6 @@
 
     global = {
       brewfile = true;
-      lockfiles = true;
     };
 
     casks = [
