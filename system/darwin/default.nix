@@ -35,6 +35,12 @@
 
   system.primaryUser = "amadejk";
 
+  security.pam.services.sudo_local = {
+    enable = true;
+    reattach = true;
+    touchIdAuth = true;
+  };
+
   system.stateVersion = 6;
 
   time.timeZone = "Europe/Ljubljana";
