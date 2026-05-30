@@ -31,12 +31,12 @@
 
     spaces = {
       spans-displays = false;
-      auto-switch = true;
     };
 
     WindowManager = {
       EnableStandardClickToShowDesktop = false;
-      StandardHideWidgets = true;
+      StandardHideDesktopIcons = true;
+      StageManagerHideWidgets = true;
     };
   };
 
