@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  s = config.stylix.base16Scheme;
+  s = config.lib.stylix.colors;
   c = builtins.mapAttrs (_: v: "0xff${v}") s;
 
   spaceScript = pkgs.writeShellScript "space.sh" ''
