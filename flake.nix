@@ -46,7 +46,7 @@
     };
 
   inputs = {
-    systems.url = "github:nix-systems/default-linux";
+    systems.url = "github:nix-systems/default";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -80,6 +80,11 @@
 
     hm = {
       url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    darwin = {
+      url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

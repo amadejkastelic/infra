@@ -1,18 +1,17 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [ ./mpv.nix ];
 
-  home.packages = with pkgs; [
-    # audio control
-    pavucontrol
-    pulsemixer
-
-    # images
-    loupe
-    gimp
-
-    # music
-    cider-2
-    audacious
-  ];
+  home.packages =
+    with pkgs;
+    [
+      gimp
+    ]
+    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+      pavucontrol
+      pulsemixer
+      loupe
+      audacious
+      cider-2
+    ];
 }

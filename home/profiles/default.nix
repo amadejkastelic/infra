@@ -4,7 +4,6 @@
   ...
 }:
 let
-  # get these into the module system
   extraSpecialArgs = { inherit inputs self; };
 
   homeImports = {
@@ -12,21 +11,30 @@ let
       ../.
       ./ryzen
     ];
+
+    "amadejk@m3pro" = [
+      ../.
+      ./m3pro
+    ];
   };
 
   inherit (inputs.hm.lib) homeManagerConfiguration;
-
-  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
 in
 {
-  # we need to pass this to NixOS' HM module
   _module.args = { inherit homeImports; };
 
   flake = {
     homeConfigurations = {
       "amadejk_ryzen" = homeManagerConfiguration {
         modules = homeImports."amadejk@ryzen";
-        inherit pkgs extraSpecialArgs;
+        pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+        inherit extraSpecialArgs;
+      };
+
+      "amadejk_m3pro" = homeManagerConfiguration {
+        modules = homeImports."amadejk@m3pro";
+        pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
+        inherit extraSpecialArgs;
       };
     };
   };

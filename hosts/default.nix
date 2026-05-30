@@ -7,11 +7,9 @@
 {
   flake.nixosConfigurations =
     let
-      # shorten paths
       inherit (inputs.nixpkgs.lib) nixosSystem;
       mod = "${self}/system";
 
-      # get the basic config to build on top of
       inherit (import "${self}/system" { inherit self; })
         desktop
         laptop
@@ -19,7 +17,6 @@
         nas
         ;
 
-      # get these into the module system
       specialArgs = { inherit inputs self; };
     in
     {
@@ -87,4 +84,13 @@
         ];
       };
     };
+
+  flake.darwinConfigurations.m3pro = inputs.darwin.lib.darwinSystem {
+    system = "aarch64-darwin";
+    specialArgs = { inherit inputs self; };
+    modules = [
+      { _module.args = { inherit homeImports; }; }
+      ./m3pro
+    ];
+  };
 }

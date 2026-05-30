@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   services.gpg-agent = {
     enable = true;
@@ -6,10 +11,9 @@
     enableNushellIntegration = config.programs.nushell.enable;
     enableSshSupport = true;
     enableScDaemon = true;
-    pinentry.package = pkgs.pinentry-gnome3;
+    pinentry.package = lib.mkDefault pkgs.pinentry-gnome3;
   };
 
-  # Using gpg instead
   services.ssh-agent.enable = false;
 
   programs.gpg.enable = true;
