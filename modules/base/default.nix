@@ -3,6 +3,8 @@ let
   cache = builtins.fromJSON (builtins.readFile ./cache.json);
 in
 {
+  flake-file.inputs.determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+
   den.aspects.base = {
     os =
       { pkgs, ... }:
@@ -55,8 +57,6 @@ in
           backupFileExtension = "bak";
         };
 
-        # NixOS hosts manage Nix (Lix) themselves. The darwin host uses the
-        # Determinate distribution, which self-manages the daemon (see below).
         nix =
           let
             flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
@@ -64,7 +64,6 @@ in
           {
             package = pkgs.lixPackageSets.latest.lix;
 
-            # pin the registry to avoid re-evaling nixpkgs every time
             registry = lib.mapAttrs (_: v: { flake = v; }) flakeInputs;
             nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
 
@@ -132,15 +131,18 @@ in
     darwin =
       { pkgs, ... }:
       {
+        imports = [ inputs.determinate.darwinModules.default ];
+
+        determinateNix = {
+          enable = true;
+          customSettings = {
+            extra-substituters = cache.substituters;
+            extra-trusted-public-keys = cache.trusted-public-keys;
+          };
+        };
+
         system.stateVersion = 6;
 
-        # Determinate Nix self-manages the daemon (determinate-nixd); nix-darwin
-        # must not manage Nix or write nix.conf. Daemon settings, gc, trusted-users
-        # and extra substituters are configured via Determinate (/etc/nix/nix.custom.conf).
-        nix.enable = false;
-
-        # register the Nix-store zsh as a valid login shell so chsh/login stays
-        # stable across rebuilds
         programs.zsh.enable = true;
         environment.shells = [ pkgs.zsh ];
 
