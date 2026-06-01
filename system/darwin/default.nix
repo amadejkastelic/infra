@@ -10,6 +10,7 @@
   imports = [
     inputs.hm.darwinModules.default
     inputs.stylix.darwinModules.stylix
+    inputs.determinate.darwinModules.default
     ../theme/shared.nix
     ./preferences.nix
     ./homebrew.nix
@@ -54,39 +55,30 @@
     backupFileExtension = "bak";
   };
 
-  nix =
-    let
-      flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
-    in
-    {
-      package = pkgs.lixPackageSets.latest.lix;
+  determinateNix = {
+    enable = true;
 
-      registry = lib.mapAttrs (_: v: { flake = v; }) flakeInputs;
-      nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
+    registry =
+      let
+        flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
+      in
+      lib.mapAttrs (_: v: { flake = v; }) flakeInputs;
 
-      settings = {
-        auto-optimise-store = true;
-        builders-use-substitutes = true;
-        experimental-features = [
-          "nix-command"
-          "flakes"
-        ];
-        flake-registry = "/etc/nix/registry.json";
-        keep-derivations = true;
-        keep-outputs = true;
-        accept-flake-config = false;
-        trusted-users = [
-          "root"
-          "admin"
-        ];
-      };
-
-      gc = {
-        automatic = true;
-        interval = [ { Weekday = 1; } ];
-        options = "--delete-older-than 7d";
-      };
+    customSettings = {
+      auto-optimise-store = true;
+      builders-use-substitutes = true;
+      flake-registry = "/etc/nix/registry.json";
+      keep-derivations = true;
+      keep-outputs = true;
+      accept-flake-config = false;
+      trusted-users = [
+        "root"
+        "admin"
+      ];
     };
+
+    determinateNixd.garbageCollector.strategy = "automatic";
+  };
 
   environment.systemPackages = with pkgs; [
     raycast
