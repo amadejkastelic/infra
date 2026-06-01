@@ -1,10 +1,3 @@
-# `jellyfin` aspect (Linux/NixOS): the custom Jellyfin option-module (nginx reverse
-# proxy + declarative API configuration: setup wizard, users, libraries, plugins)
-# plus the host enabling/settings.
-#
-# The option-module lives in ./_jellyfin/ (module.nix imports nginx.nix and uses
-# api-configurator.nix / util.nix as sibling assets). Combines
-# modules/services/jellyfin/* + system/services/jellyfin.nix.
 {
   den.aspects.jellyfin.nixos =
     {

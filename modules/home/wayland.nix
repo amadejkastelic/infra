@@ -1,7 +1,3 @@
-# The `wayland` aspect (home-manager, Linux desktop). Converted from
-# home/programs/wayland/{default,hyprlock,hyprlux,noctalia}.nix,
-# home/services/wayland/{hypridle,hyprpaper,hyprsunset}.nix and
-# home/services/system/cliphist.nix.
 { inputs, ... }:
 {
   den.aspects.wayland.homeManager =
@@ -26,7 +22,6 @@
         STATE_FILE="$STATE_DIR/floating-windows.json"
         MONITOR_FILE="$STATE_DIR/monitors.json"
 
-        # Get all floating windows and monitor names
         ${hyprctl} clients -j | ${jq} -r '[.[] | select(.floating == true and .mapped == true) | {
           pid: .pid,
           monitor_id: .monitor,
@@ -35,7 +30,6 @@
           fullscreen: .fullscreen
         }]' > "$STATE_FILE"
 
-        # Save monitor names for later
         ${hyprctl} monitors -j | ${jq} -r '[.[] | select(.id >= 0) | {id: .id, name: .name}]' > "$MONITOR_FILE"
 
         echo "Saved floating window positions to $STATE_FILE"
@@ -60,11 +54,9 @@
 
         echo "Waiting for displays to reconnect..."
 
-        # Get monitor names from saved state
         MONITOR_NAMES=$(${jq} -r '[.[].name | select(.)] | join(" ")' "$MONITOR_FILE")
         echo "Waiting for monitors: $MONITOR_NAMES"
 
-        # Wait for all saved monitor names to be available
         if [ -n "$MONITOR_NAMES" ]; then
           for MONITOR_NAME in $MONITOR_NAMES; do
             echo "Waiting for monitor $MONITOR_NAME..."
@@ -79,13 +71,11 @@
           done
         fi
 
-        # Additional wait for display to stabilize
         echo "Waiting for displays to stabilize..."
         sleep 2
 
         echo "Restoring window positions from $STATE_FILE"
 
-        # Read the saved state and restore each window
         ${jq} -c '.[]' "$STATE_FILE" | while read -r window; do
           pid=$(${jq} -r '.pid' <<< "$window")
           x=$(${jq} -r '.at[0]' <<< "$window")
@@ -94,17 +84,14 @@
 
           echo "Restoring window with pid $pid to position $x,$y"
 
-          # Move window to original position using pid selector
           ${hyprctl} dispatch movewindowpixel "exact $x $y,pid:$pid"
 
-          # Restore fullscreen state if needed
           if [ "$fullscreen" = "1" ]; then
             echo "Restoring fullscreen for window with pid $pid"
             ${hyprctl} dispatch togglefullscreen "pid:$pid"
           fi
         done
 
-        # Restart Quickshell
         echo "Restarting Quickshell"
         systemctl --user restart quickshell.service
 
@@ -118,11 +105,9 @@
       ];
 
       home.packages = [
-        # screenshot
         pkgs.grim
         pkgs.slurp
 
-        # utils
         pkgs.local.wl-ocr
         pkgs.wl-clipboard
         pkgs.wlr-randr
@@ -133,7 +118,6 @@
         restoreWindows
       ];
 
-      # make stuff work on wayland
       home.sessionVariables = {
         QT_QPA_PLATFORM = "wayland";
         SDL_VIDEODRIVER = "wayland";
@@ -142,13 +126,11 @@
 
       systemd.user.targets.tray.Unit.Requires = lib.mkForce [ "graphical-session.target" ];
 
-      # cliphist
       services.cliphist = {
         enable = true;
         systemdTargets = "hyprland-session.target";
       };
 
-      # hyprlock
       catppuccin.hyprlock.enable = true;
 
       programs.hyprlock = {
@@ -181,7 +163,6 @@
         };
       };
 
-      # hyprlux
       programs.hyprlux = {
         enable = true;
 
@@ -211,7 +192,6 @@
         ];
       };
 
-      # hypridle
       services.hypridle = {
         enable = true;
 
@@ -244,7 +224,6 @@
         };
       };
 
-      # hyprpaper
       services.hyprpaper = {
         enable = true;
         package = inputs.hyprpaper.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -262,7 +241,6 @@
         splash = false
       '';
 
-      # hyprsunset
       services.hyprsunset = {
         enable = true;
 
@@ -284,7 +262,6 @@
         };
       };
 
-      # noctalia
       programs.noctalia-shell = {
         enable = true;
 

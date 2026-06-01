@@ -1,5 +1,3 @@
-# The `thunderbird` aspect (home-manager).
-# Converted from home/programs/social/thunderbird.nix.
 {
   den.aspects.thunderbird.homeManager = {
     programs.thunderbird = {

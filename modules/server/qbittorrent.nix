@@ -1,6 +1,3 @@
-# `qbittorrent` aspect (Linux/NixOS): the custom `services.qbittorrent.nginx`
-# reverse-proxy option-module (and `media` group) plus the host enabling/settings.
-# Combines modules/services/qbittorrent.nix + system/services/arr/qbittorrent.nix.
 {
   den.aspects.qbittorrent.nixos =
     {
@@ -53,7 +50,6 @@
           };
         })
 
-        # Host config (from system/services/arr/qbittorrent.nix).
         {
           services.qbittorrent = {
             enable = true;

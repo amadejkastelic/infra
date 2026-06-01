@@ -1,6 +1,3 @@
-# `dashboard` aspect (Linux/NixOS): the custom `services.homepage-dashboard.nginx`
-# reverse-proxy option-module plus the host enabling/settings.
-# Combines modules/services/dashboard.nix + system/services/dashboard.nix.
 {
   den.aspects.dashboard.nixos =
     {
@@ -51,7 +48,6 @@
           };
         })
 
-        # Host config (from system/services/dashboard.nix).
         {
           services.homepage-dashboard = {
             enable = true;

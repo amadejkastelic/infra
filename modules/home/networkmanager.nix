@@ -1,6 +1,3 @@
-# The `networkmanager` aspect (home-manager, Linux desktop).
-# Converted from home/services/networkmanager/default.nix. Provides the
-# NetworkManager and Blueman tray applets.
 {
   den.aspects.networkmanager.homeManager =
     {

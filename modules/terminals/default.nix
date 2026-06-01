@@ -1,5 +1,3 @@
-# The `terminals` aspect (home-manager). kitty + ghostty terminal emulators.
-# Converted from home/terminal/emulators/{kitty,ghostty}.nix.
 {
   den.aspects.terminals.homeManager =
     { pkgs, ... }:

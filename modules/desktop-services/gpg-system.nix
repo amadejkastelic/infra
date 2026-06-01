@@ -1,5 +1,3 @@
-# `gpg-system` aspect (Linux/NixOS): smartcard daemon, YubiKey udev + PAM u2f.
-# Replaces system/services/gpg.nix.
 {
   den.aspects.gpg-system.nixos =
     { pkgs, ... }:

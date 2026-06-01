@@ -1,6 +1,3 @@
-# `pipewire` aspect (Linux/NixOS): low-latency PipeWire + musnix + per-device
-# WirePlumber tuning.
-# Replaces system/services/pipewire.nix.
 { inputs, ... }:
 {
   den.aspects.pipewire.nixos =

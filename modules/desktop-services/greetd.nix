@@ -1,6 +1,3 @@
-# `greetd` aspect (Linux/NixOS): greetd display manager launching a Hyprland UWSM
-# session, plus GNOME keyring unlock via PAM.
-# Replaces system/services/greetd.nix.
 {
   den.aspects.greetd.nixos =
     {
@@ -9,7 +6,6 @@
       ...
     }:
     {
-      # greetd display manager
       services.greetd =
         let
           session = {
@@ -26,7 +22,6 @@
           };
         };
 
-      # unlock GPG keyring on login
       security.pam.services = {
         greetd.enableGnomeKeyring = true;
         greetd-password.enableGnomeKeyring = true;

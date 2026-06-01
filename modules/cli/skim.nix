@@ -1,4 +1,3 @@
-# The `skim` aspect (home-manager). Converted from home/terminal/programs/skim.nix.
 {
   den.aspects.skim.homeManager = {
     programs.skim = {

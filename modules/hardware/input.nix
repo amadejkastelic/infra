@@ -1,6 +1,3 @@
-# `input` aspect (Linux/NixOS): controller / wheel / keyboard input devices,
-# udev rules and tools (oversteer, via).
-# Replaces system/hardware/input.nix.
 {
   den.aspects.input.nixos =
     { pkgs, ... }:

@@ -1,5 +1,3 @@
-# `ollama` aspect (Linux/NixOS): ollama (ROCm) + nextjs-ollama-llm-ui frontend.
-# Replaces system/services/ollama.nix.
 {
   den.aspects.ollama.nixos =
     {

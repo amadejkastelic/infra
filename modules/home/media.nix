@@ -1,5 +1,3 @@
-# The `media` aspect (home-manager, Linux desktop).
-# Converted from home/programs/media/{default,mpv,noisetorch}.nix.
 {
   den.aspects.media.homeManager =
     {

@@ -1,17 +1,14 @@
-# ryzen — x86_64 desktop (hyprland, gaming, virtualisation).
 { inputs, den, ... }:
 {
   den.hosts.x86_64-linux.ryzen.users.amadejk = { };
 
   den.aspects.ryzen = {
     provides.to-users.includes = with den.aspects; [
-      # core
       base
       secrets
       network
       amadejk
       nfs-mount
-      # shared home-manager
       shell
       nushell
       starship
@@ -34,7 +31,6 @@
       neovim
       vscode
       zed
-      # linux desktop home-manager
       gtk
       qt
       browsers
@@ -51,7 +47,6 @@
       easyeffects
       desktop-services
       games
-      # linux desktop system
       boot
       lanzaboote
       hyprland
@@ -77,7 +72,6 @@
       location
       gnome-services
       server-services
-      # gaming + virtualisation
       gaming
       virtualisation
     ];

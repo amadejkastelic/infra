@@ -1,5 +1,3 @@
-# The `vicinae` aspect (home-manager, Linux desktop).
-# Converted from home/programs/vicinae/default.nix.
 { inputs, ... }:
 {
   den.aspects.vicinae.homeManager =
@@ -52,7 +50,6 @@
         };
 
         extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
-          # bluetooth
           nix
           wifi-commander
         ];

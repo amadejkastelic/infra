@@ -1,5 +1,3 @@
-# The `games` aspect (home-manager, Linux desktop).
-# Converted from home/programs/games/{default,bloodborne,mangohud,osu}.nix.
 { inputs, ... }:
 {
   den.aspects.games.homeManager =
@@ -32,7 +30,6 @@
           steam-run
           oversteer
           shadps4
-          # cemu
           eden
           ryubing
           dolphin-emu

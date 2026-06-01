@@ -1,17 +1,14 @@
-# aspire — x86_64 laptop (hyprland + power management).
 { inputs, den, ... }:
 {
   den.hosts.x86_64-linux.aspire.users.amadejk = { };
 
   den.aspects.aspire = {
     provides.to-users.includes = with den.aspects; [
-      # core
       base
       secrets
       network
       amadejk
       nfs-mount
-      # shared home-manager
       shell
       nushell
       starship
@@ -34,7 +31,6 @@
       neovim
       vscode
       zed
-      # linux desktop home-manager
       gtk
       qt
       browsers
@@ -51,7 +47,6 @@
       easyeffects
       desktop-services
       games
-      # linux desktop system
       boot
       lanzaboote
       hyprland
@@ -76,7 +71,6 @@
       location
       gnome-services
       server-services
-      # laptop
       power
       cpu-aspire
     ];

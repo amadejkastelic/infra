@@ -1,4 +1,3 @@
-# The `opencode` aspect (home-manager). Converted from home/terminal/agents/opencode.nix.
 {
   den.aspects.opencode.homeManager =
     { pkgs, config, ... }:

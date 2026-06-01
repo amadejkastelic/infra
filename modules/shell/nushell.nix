@@ -1,4 +1,3 @@
-# The `nushell` aspect (home-manager). Converted from home/terminal/shell/nushell.nix.
 { inputs, ... }:
 {
   den.aspects.nushell.homeManager =

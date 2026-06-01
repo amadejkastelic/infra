@@ -1,5 +1,3 @@
-# `tailscale-funnel` aspect (Linux/NixOS): the custom `services.tailscale.funnel`
-# option-module. Reusable; no host in this conversion enables it.
 {
   den.aspects.tailscale-funnel.nixos =
     {

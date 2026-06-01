@@ -1,6 +1,3 @@
-# `gnome-services` aspect (Linux/NixOS): GNOME services (keyring, gvfs, tumbler)
-# usable outside the GNOME desktop.
-# Replaces system/services/gnome-services.nix.
 {
   den.aspects.gnome-services.nixos =
     { pkgs, ... }:

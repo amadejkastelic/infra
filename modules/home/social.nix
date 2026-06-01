@@ -1,5 +1,3 @@
-# The `social` aspect (home-manager).
-# Converted from home/programs/social/{default,discord}.nix.
 { inputs, ... }:
 {
   den.aspects.social.homeManager =
@@ -22,7 +20,6 @@
 
         vesktop = {
           enable = true;
-          # Disable in case of errors
           useSystemVencord = true;
           autoscroll.enable = true;
         };

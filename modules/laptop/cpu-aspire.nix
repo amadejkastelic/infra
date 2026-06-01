@@ -1,5 +1,3 @@
-# `cpu-aspire` aspect (Linux/NixOS): aspire-specific CPU tweaks — powersave
-# governor, frequency cap (noise) and undervolt. Replaces hosts/aspire/cpu.nix.
 {
   den.aspects.cpu-aspire.nixos =
     { lib, ... }:

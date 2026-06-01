@@ -1,5 +1,3 @@
-# `bluetooth` aspect (Linux/NixOS): BlueZ (experimental) + blueman.
-# Replaces system/hardware/bluetooth.nix.
 {
   den.aspects.bluetooth.nixos =
     { pkgs, ... }:
@@ -10,7 +8,6 @@
         package = pkgs.bluez-experimental;
         settings = {
           General = {
-            # Battery info for Bluetooth devices
             Experimental = true;
           };
         };

@@ -1,4 +1,3 @@
-# The `git` aspect (home-manager). Converted from home/terminal/programs/git.nix.
 {
   den.aspects.git.homeManager =
     { config, pkgs, ... }:

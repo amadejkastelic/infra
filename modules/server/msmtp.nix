@@ -1,5 +1,3 @@
-# `msmtp` aspect (Linux/NixOS): system mail transfer via msmtp (Gmail relay).
-# Replaces system/programs/msmtp.nix.
 {
   den.aspects.msmtp.nixos =
     { config, ... }:

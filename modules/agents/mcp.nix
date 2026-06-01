@@ -1,5 +1,3 @@
-# The `mcp` aspect (home-manager). MCP server definitions.
-# Converted from home/terminal/agents/mcp.nix.
 { inputs, ... }:
 {
   den.aspects.mcp.homeManager =

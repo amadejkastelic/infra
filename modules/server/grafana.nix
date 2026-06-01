@@ -1,6 +1,3 @@
-# `grafana` aspect (Linux/NixOS): the custom `services.grafana.nginx`
-# reverse-proxy option-module (sub-path serving + nginx vhost).
-# Replaces modules/services/grafana.nix. Host enabling lives in the `metrics` aspect.
 {
   den.aspects.grafana.nixos =
     {

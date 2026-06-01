@@ -1,10 +1,3 @@
-# `jellyseerr` aspect (Linux/NixOS): the custom `services.seerr` option-module
-# (nginx reverse proxy + declarative Jellyfin/Radarr/Sonarr setup) plus the host
-# enabling/settings.
-#
-# The option-module lives in ./_jellyseerr/ (module.nix imports nginx.nix, setup.nix,
-# radarr.nix, sonarr.nix as sibling assets). Combines modules/services/jellyseerr/*
-# + system/services/arr/jellyseerr.nix.
 {
   den.aspects.jellyseerr.nixos =
     { config, ... }:

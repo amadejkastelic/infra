@@ -1,7 +1,3 @@
-# `immich` aspect (Linux/NixOS): the custom `services.immich.{tailscale,nginx.redirect}`
-# option-module (Immich has no urlBase, so it is exposed via tailscale serve and an
-# nginx redirect) plus the host enabling/settings.
-# Combines modules/services/immich.nix + system/services/immich.nix.
 {
   den.aspects.immich.nixos =
     {
@@ -77,7 +73,6 @@
           };
         }
 
-        # Host config (from system/services/immich.nix).
         {
           services.immich = {
             enable = true;
@@ -106,7 +101,6 @@
             };
           };
 
-          # Hardware acceleration
           users.users."${config.services.immich.user}".extraGroups = [
             "video"
             "render"

@@ -1,5 +1,3 @@
-# The `desktop-services` aspect (home-manager, Linux desktop).
-# Converted from home/services/system/{polkit-agent,power-monitor,udiskie}.nix.
 {
   den.aspects.desktop-services.homeManager =
     {
@@ -17,14 +15,11 @@
         AC_PROFILE="performance"
         BAT_PROFILE="power-saver"
 
-        # wait a while if needed
         [[ -z $STARTUP_WAIT ]] || sleep "$STARTUP_WAIT"
 
-        # start the monitor loop
         prev=0
 
         while true; do
-        	# read the current state
         	if [[ $(cat "$BAT_STATUS") == "Discharging" ]]; then
           	profile=$BAT_PROFILE
             for i in $(hyprctl instances -j | jaq ".[].instance" -r); do
@@ -37,7 +32,6 @@
             done
         	fi
 
-        	# set the new profile
         	if [[ $prev != "$profile" ]]; then
         		echo setting power profile to $profile
         		powerprofilesctl set $profile
@@ -45,7 +39,6 @@
 
         	prev=$profile
 
-        	# wait for the next power change event
         	inotifywait -qq "$BAT_STATUS" "$BAT_CAP"
         done
       '';
@@ -59,7 +52,6 @@
       ];
     in
     {
-      # polkit-agent
       systemd.user.services.polkit-gnome-authentication-agent-1 = {
         Unit.Description = "polkit-gnome-authentication-agent-1";
 
@@ -96,7 +88,6 @@
         Install.WantedBy = [ "default.target" ];
       };
 
-      # udiskie
       services.udiskie.enable = true;
       systemd.user.services.udiskie.Unit.After = lib.mkForce "graphical-session.target";
     };

@@ -1,4 +1,3 @@
-# Desktop boot aspects. Replaces system/core/boot.nix + system/core/lanzaboote.nix.
 { inputs, ... }:
 {
   den.aspects.boot.nixos =
@@ -47,7 +46,6 @@
       environment.systemPackages = [ config.boot.kernelPackages.cpupower ];
     };
 
-  # Secure Boot via lanzaboote (overrides systemd-boot install).
   den.aspects.lanzaboote.nixos =
     {
       pkgs,

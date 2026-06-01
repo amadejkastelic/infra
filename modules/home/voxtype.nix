@@ -1,5 +1,3 @@
-# The `voxtype` aspect (home-manager, Linux desktop).
-# Converted from home/services/wayland/voxtype.nix.
 { inputs, ... }:
 {
   den.aspects.voxtype.homeManager =

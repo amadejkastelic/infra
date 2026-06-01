@@ -1,6 +1,3 @@
-# `network` aspect (Linux/NixOS): NetworkManager + OpenSSH + resolved + avahi +
-# NFS client + tailscale. Included by every NixOS host (not m3pro).
-# Replaces system/network/{default,avahi,nfs,tailscale}.nix.
 {
   den.aspects.network.nixos =
     {
@@ -43,7 +40,6 @@
 
       services.resolved.enable = true;
 
-      # network discovery, mDNS
       services.avahi = {
         enable = true;
         nssmdns4 = true;
@@ -70,7 +66,6 @@
         checkReversePath = "loose";
       };
 
-      # Don't wait for network startup
       systemd.services.NetworkManager-wait-online.serviceConfig.ExecStart = [
         ""
         "${pkgs.networkmanager}/bin/nm-online -q"

@@ -1,4 +1,3 @@
-# Systems flake-parts evaluates perSystem for.
 {
   systems = [
     "x86_64-linux"

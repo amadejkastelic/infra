@@ -1,4 +1,3 @@
-# The `starship` aspect (home-manager). Converted from home/terminal/shell/starship.nix.
 {
   den.aspects.starship.homeManager =
     { config, ... }:

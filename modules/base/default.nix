@@ -1,23 +1,15 @@
-# The `base` aspect: configuration shared by every host (nixos + darwin) and the
-# always-on home-manager bits. Replaces system/core, system/nix/*, the nixpkgs
-# overlays, and the platform-agnostic parts of home/default.nix.
 { inputs, lib, ... }:
 let
   cache = builtins.fromJSON (builtins.readFile ./cache.json);
 in
 {
   den.aspects.base = {
-    # Applied to whichever OS class the host is (nixos OR darwin).
     os =
-      {
-        config,
-        pkgs,
-        ...
-      }:
+      { pkgs, ... }:
       {
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
-          inputs.self.overlays.default # pkgs.local.* (custom packages)
+          inputs.self.overlays.default
           (final: prev: {
             lib = prev.lib // {
               colors = import ../../lib/colors prev.lib;
@@ -30,9 +22,41 @@ in
         environment.systemPackages = [ pkgs.git ];
 
         time.timeZone = lib.mkDefault "Europe/Ljubljana";
+      };
 
-        # Nix settings common to nixos + darwin. Per-class gc and trusted-users
-        # live in the nixos/darwin blocks below (they diverge between platforms).
+    nixos =
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
+      {
+        imports = [ inputs.nix-exec.nixosModules.default ];
+
+        nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
+
+        documentation.dev.enable = true;
+
+        i18n = {
+          defaultLocale = "en_US.UTF-8";
+          supportedLocales = [ "en_US.UTF-8/UTF-8" ];
+        };
+
+        system.stateVersion = lib.mkDefault "23.11";
+
+        zramSwap.enable = false;
+
+        # den's HM battery imports the actual home-manager NixOS module; we only
+        # set its options here.
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "bak";
+        };
+
+        # NixOS hosts manage Nix (Lix) themselves. The darwin host uses the
+        # Determinate distribution, which self-manages the daemon (see below).
         nix =
           let
             flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
@@ -56,46 +80,18 @@ in
               keep-derivations = true;
               keep-outputs = true;
               accept-flake-config = false;
+              trusted-users = [
+                "root"
+                "@wheel"
+              ];
+            };
+
+            gc = {
+              automatic = true;
+              dates = "weekly";
+              options = "--delete-older-than 7d";
             };
           };
-      };
-
-    # Linux / NixOS-only base.
-    nixos =
-      { lib, ... }:
-      {
-        imports = [ inputs.nix-exec.nixosModules.default ];
-
-        nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
-
-        documentation.dev.enable = true;
-
-        i18n = {
-          defaultLocale = "en_US.UTF-8";
-          supportedLocales = [ "en_US.UTF-8/UTF-8" ];
-        };
-
-        system.stateVersion = lib.mkDefault "23.11";
-
-        zramSwap.enable = false;
-
-        # home-manager-as-NixOS-module settings. den's HM battery imports the
-        # actual home-manager NixOS module; we only set its options here.
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          backupFileExtension = "bak";
-        };
-
-        nix.settings.trusted-users = [
-          "root"
-          "@wheel"
-        ];
-        nix.gc = {
-          automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 7d";
-        };
 
         programs.nix-exec = {
           enable = true;
@@ -133,29 +129,28 @@ in
         };
       };
 
-    # macOS / nix-darwin-only base.
-    darwin = {
-      system.stateVersion = 6;
+    darwin =
+      { pkgs, ... }:
+      {
+        system.stateVersion = 6;
 
-      nix.settings.trusted-users = [
-        "root"
-        "admin"
-      ];
-      nix.gc = {
-        automatic = true;
-        interval = [ { Weekday = 1; } ];
-        options = "--delete-older-than 7d";
+        # Determinate Nix self-manages the daemon (determinate-nixd); nix-darwin
+        # must not manage Nix or write nix.conf. Daemon settings, gc, trusted-users
+        # and extra substituters are configured via Determinate (/etc/nix/nix.custom.conf).
+        nix.enable = false;
+
+        # register the Nix-store zsh as a valid login shell so chsh/login stays
+        # stable across rebuilds
+        programs.zsh.enable = true;
+        environment.shells = [ pkgs.zsh ];
+
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "bak";
+        };
       };
 
-      home-manager = {
-        useGlobalPkgs = true;
-        useUserPackages = true;
-        backupFileExtension = "bak";
-      };
-    };
-
-    # Always-on home-manager (platform-agnostic). Forwarded into
-    # home-manager.users.amadejk on every host by den's HM battery.
     homeManager =
       { pkgs, lib, ... }:
       {

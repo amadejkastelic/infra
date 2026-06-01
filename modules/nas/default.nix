@@ -1,6 +1,3 @@
-# `nas` aspect (Linux/NixOS): the NAS server — NFS server exports, smartd disk
-# monitoring (mail via msmtp), and ZFS (trim, scrub, zed mail notifications).
-# Replaces system/services/nas/{default,nfs,smartd,zfs}.nix and hosts/oblak/nfs.nix.
 {
   den.aspects.nas.nixos =
     {
@@ -17,7 +14,6 @@
       ];
     in
     {
-      # NFS server
       services.nfs.server = {
         enable = true;
 
@@ -36,7 +32,6 @@
 
       services.rpcbind.enable = true;
 
-      # smartd disk health monitoring
       services.smartd = {
         enable = true;
         autodetect = true;
@@ -51,7 +46,6 @@
         };
       };
 
-      # ZFS
       services.zfs = {
         trim.enable = true;
 

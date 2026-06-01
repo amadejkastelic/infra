@@ -1,10 +1,7 @@
-# `opengl` aspect (Linux/NixOS): graphics drivers / hardware video acceleration.
-# Replaces system/hardware/opengl.nix.
 {
   den.aspects.opengl.nixos =
     { pkgs, ... }:
     {
-      # graphics drivers / HW accel
       hardware.graphics = {
         enable = true;
         enable32Bit = true;

@@ -1,5 +1,3 @@
-# `ledger` aspect (Linux/NixOS): udev rules for Ledger hardware wallets.
-# Replaces system/hardware/ledger.nix.
 {
   den.aspects.ledger.nixos = {
     services.udev.extraRules = ''

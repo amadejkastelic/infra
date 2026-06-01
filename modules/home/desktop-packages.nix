@@ -1,7 +1,3 @@
-# The `desktop-packages` aspect (home-manager). Converted from the package list
-# in home/programs/default.nix. The first group is platform-agnostic; the second
-# group is the Linux-only desktop extras (previously gated behind
-# `lib.optionals (!pkgs.stdenv.isDarwin)`).
 { inputs, ... }:
 {
   den.aspects.desktop-packages.homeManager =

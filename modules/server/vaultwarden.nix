@@ -1,6 +1,3 @@
-# `vaultwarden` aspect (Linux/NixOS): the custom `services.vaultwarden.nginx`
-# reverse-proxy option-module plus the host enabling/settings.
-# Combines modules/services/vaultwarden.nix + system/services/vaultwarden.nix.
 {
   den.aspects.vaultwarden.nixos =
     {
@@ -49,7 +46,6 @@
           };
         })
 
-        # Host config (from system/services/vaultwarden.nix).
         {
           services.vaultwarden = {
             enable = true;

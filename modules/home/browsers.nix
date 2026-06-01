@@ -1,5 +1,3 @@
-# The `browsers` aspect (home-manager, Linux desktop).
-# Converted from home/programs/browsers/{chromium,zen}.nix.
 { inputs, ... }:
 {
   den.aspects.browsers.homeManager =

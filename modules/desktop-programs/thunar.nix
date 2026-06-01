@@ -1,5 +1,3 @@
-# `thunar` aspect (Linux/NixOS): Thunar file manager + plugins + xfconf/gvfs/tumbler.
-# Replaces system/programs/thunar.nix.
 {
   den.aspects.thunar.nixos =
     { pkgs, ... }:

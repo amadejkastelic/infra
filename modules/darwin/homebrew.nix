@@ -1,5 +1,3 @@
-# The `homebrew` aspect: nix-darwin homebrew management.
-# Replaces system/darwin/homebrew.nix.
 {
   den.aspects.homebrew = {
     darwin = {

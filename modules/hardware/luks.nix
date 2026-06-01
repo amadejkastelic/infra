@@ -1,4 +1,3 @@
-# `luks` aspect (Linux/NixOS): LUKS fido2 unlock support.
 {
   den.aspects.luks.nixos =
     {

@@ -1,5 +1,3 @@
-# `xdg` aspect (Linux/NixOS): XDG desktop portal config (gtk + hyprland).
-# Replaces system/programs/xdg.nix.
 {
   den.aspects.xdg.nixos =
     { pkgs, ... }:

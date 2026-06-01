@@ -1,12 +1,3 @@
-# `arr` aspect (Linux/NixOS): the full *arr media-automation stack — the custom
-# option-modules for bazarr / prowlarr / radarr / sonarr / sonarr-anime /
-# sonarr-kdrama (nginx reverse proxies + declarative API configuration) plus the
-# host enabling/settings for each.
-#
-# Combines modules/services/arr/* (option-modules, imported as sibling assets in
-# ./_arr/) with system/services/arr/{bazarr,prowlarr,radarr,sonarr,sonarr-anime,
-# sonarr-kdrama}.nix (consumers). flaresolverr, qbittorrent and jellyseerr are
-# their own aspects.
 {
   den.aspects.arr.nixos =
     {
@@ -28,7 +19,6 @@
         ./_arr/sonarr-kdrama.nix
       ];
 
-      # ---- bazarr (system/services/arr/bazarr.nix) ----
       services.bazarr = {
         enable = true;
         nginx.enable = true;
@@ -90,7 +80,6 @@
         };
       };
 
-      # ---- prowlarr (system/services/arr/prowlarr.nix) ----
       services.prowlarr = {
         enable = true;
 
@@ -187,7 +176,6 @@
         };
       };
 
-      # ---- radarr (system/services/arr/radarr.nix) ----
       services.radarr = {
         enable = true;
         nginx.enable = true;
@@ -222,7 +210,6 @@
         };
       };
 
-      # ---- sonarr (system/services/arr/sonarr.nix) ----
       services.sonarr = {
         enable = true;
 
@@ -258,7 +245,6 @@
         };
       };
 
-      # ---- sonarr-anime (system/services/arr/sonarr-anime.nix) ----
       services.sonarr-anime = {
         enable = true;
         nginx.enable = true;
@@ -293,7 +279,6 @@
         };
       };
 
-      # ---- sonarr-kdrama (system/services/arr/sonarr-kdrama.nix) ----
       services.sonarr-kdrama = {
         enable = true;
         nginx.enable = true;
@@ -328,7 +313,6 @@
         };
       };
 
-      # ---- secrets + tmpfiles (merged from the per-service consumers) ----
       sops.secrets = {
         "bazarr/api_key" = {
           owner = "bazarr";

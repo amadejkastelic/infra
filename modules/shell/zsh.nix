@@ -1,6 +1,3 @@
-# The `zsh` aspect. home-manager user config (converted from
-# home/terminal/shell/zsh.nix) plus the NixOS system zsh program
-# (converted from system/programs/zsh.nix).
 { inputs, ... }:
 {
   den.aspects.zsh = {
@@ -98,12 +95,10 @@
             zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
             zstyle ':completion:*' verbose true
 
-            # use cache for completions
             zstyle ':completion:*' use-cache on
             zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
             _comp_options+=(globdots)
 
-            # Set up fzf key bindings and fuzzy completion
             source <(${lib.getExe pkgs.fzf} --zsh)
 
             ${lib.getExe fetch}
@@ -111,9 +106,7 @@
         };
       };
 
-    # System-level zsh (converted from system/programs/zsh.nix).
     nixos = {
-      # enable zsh autocompletion for system packages (systemd, etc)
       environment.pathsToLink = [ "/share/zsh" ];
 
       programs = {

@@ -1,4 +1,3 @@
-# The `gtk` aspect (home-manager, Linux desktop). Converted from home/programs/gtk.nix.
 {
   den.aspects.gtk.homeManager =
     {

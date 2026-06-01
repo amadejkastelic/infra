@@ -1,5 +1,3 @@
-# `databases` aspect (Linux/NixOS): MariaDB + PostgreSQL with scheduled backups.
-# Combines system/services/databases/{mysql,postgresql}.nix.
 {
   den.aspects.databases.nixos =
     {
@@ -8,7 +6,6 @@
       ...
     }:
     {
-      # --- MySQL / MariaDB (system/services/databases/mysql.nix) ---
       services.mysql = {
         enable = true;
         package = pkgs.mariadb;
@@ -26,7 +23,6 @@
         location = "${config.nas.backupDir}/mysql";
       };
 
-      # --- PostgreSQL (system/services/databases/postgresql.nix) ---
       services.postgresql.enable = true;
 
       services.postgresqlBackup = {

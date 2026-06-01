@@ -1,5 +1,3 @@
-# `ugreen-leds` aspect (Linux/NixOS): UGreen NAS LED controller driven by ZFS
-# pool health (oblak). Replaces hosts/oblak/ugreen-leds.nix.
 {
   den.aspects.ugreen-leds.nixos =
     {

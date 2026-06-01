@@ -1,5 +1,3 @@
-# The `easyeffects` aspect (home-manager, Linux desktop).
-# Converted from home/services/media/easyeffects.nix.
 {
   den.aspects.easyeffects.homeManager = {
     services.easyeffects = {

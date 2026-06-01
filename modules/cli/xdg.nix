@@ -1,5 +1,3 @@
-# The `xdg` aspect (home-manager). XDG base dirs, mime associations, user dirs.
-# Converted from home/terminal/programs/xdg.nix.
 {
   den.aspects.xdg.homeManager =
     {

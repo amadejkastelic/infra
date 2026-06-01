@@ -1,4 +1,3 @@
-# The `neovim` editor aspect (home-manager). Converted from home/editors/neovim.
 {
   den.aspects.neovim.homeManager = {
     programs.neovim = {

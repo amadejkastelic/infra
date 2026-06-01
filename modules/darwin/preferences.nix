@@ -1,7 +1,3 @@
-# The `macos-preferences` aspect: macOS system defaults, keyboard remapping,
-# the custom Slovensko keyboard layout, and the Raycast launcher.
-# Replaces system/darwin/preferences.nix plus the raycast systemPackages entry
-# from system/darwin/default.nix.
 {
   den.aspects.macos-preferences = {
     darwin =

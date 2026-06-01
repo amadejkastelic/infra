@@ -1,4 +1,3 @@
-# The `claude` aspect (home-manager). Converted from home/terminal/agents/claude.nix.
 { inputs, ... }:
 {
   den.aspects.claude.homeManager =

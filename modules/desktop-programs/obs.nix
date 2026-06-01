@@ -1,5 +1,3 @@
-# `obs` aspect (Linux/NixOS): OBS Studio with virtual camera and plugins.
-# Replaces system/programs/obs.nix.
 {
   den.aspects.obs.nixos =
     { pkgs, ... }:

@@ -1,14 +1,9 @@
-# `metrics` aspect (Linux/NixOS): Prometheus (+ node/systemd exporters) and
-# Grafana (provisioning + datasources). Enables the grafana reverse proxy from
-# the `grafana` aspect.
-# Combines system/services/metrics/{prometheus,grafana/default,grafana/datasources}.nix.
 {
   den.aspects.metrics.nixos =
     let
       port = 9090;
     in
     {
-      # --- Grafana (system/services/metrics/grafana/default.nix) ---
       services.grafana = {
         enable = true;
         nginx.enable = true;
@@ -27,13 +22,11 @@
         };
       };
 
-      # --- Grafana datasources (system/services/metrics/grafana/datasources.nix) ---
       services.grafana.provision.datasources.settings = {
         apiVersion = 1;
         prune = true;
       };
 
-      # --- Prometheus (system/services/metrics/prometheus.nix) ---
       services.prometheus = {
         enable = true;
         enableReload = true;

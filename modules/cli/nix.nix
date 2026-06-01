@@ -1,5 +1,3 @@
-# The `nix-tools` aspect (home-manager). Nix tooling + direnv.
-# Converted from home/terminal/programs/nix.nix.
 {
   den.aspects.nix-tools.homeManager =
     { pkgs, config, ... }:

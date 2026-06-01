@@ -1,4 +1,3 @@
-# The `bat` aspect (home-manager). Converted from home/terminal/programs/bat.nix.
 {
   den.aspects.bat.homeManager = {
     programs.bat = {

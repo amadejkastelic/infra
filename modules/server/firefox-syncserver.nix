@@ -1,7 +1,3 @@
-# `firefox-syncserver` aspect (Linux/NixOS): the custom
-# `services.firefox-syncserver.nginx` reverse-proxy option-module plus the host
-# enabling/settings.
-# Combines modules/services/firefox-syncserver.nix + system/services/firefox-syncserver.nix.
 {
   den.aspects.firefox-syncserver.nixos =
     {
@@ -50,7 +46,6 @@
           };
         })
 
-        # Host config (from system/services/firefox-syncserver.nix).
         {
           services.firefox-syncserver = {
             enable = true;

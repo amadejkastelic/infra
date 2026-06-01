@@ -1,9 +1,6 @@
-# The `theme` aspect: stylix theming (nixos + darwin) and home-manager
-# stylix/catppuccin config. Replaces system/theme/* and home/theme/*.
 { inputs, ... }:
 {
   den.aspects.theme = {
-    # NixOS stylix: stylix module + shared theme + nixos-specific fonts/cursor.
     nixos =
       {
         pkgs,
@@ -17,7 +14,6 @@
         imports = [ inputs.stylix.nixosModules.stylix ];
 
         stylix = {
-          # shared theme (system/theme/shared.nix)
           enable = true;
           autoEnable = true;
 
@@ -61,7 +57,6 @@
         };
       };
 
-    # Darwin stylix: stylix module + shared theme + darwin-specific fonts.
     darwin =
       {
         pkgs,
@@ -72,7 +67,6 @@
         imports = [ inputs.stylix.darwinModules.stylix ];
 
         stylix = {
-          # shared theme (system/theme/shared.nix)
           enable = true;
           autoEnable = true;
 
@@ -85,7 +79,6 @@
             terminal = 0.93;
           };
 
-          # darwin fonts (folded from system/darwin/default.nix)
           fonts = {
             serif = {
               package = pkgs.emptyDirectory;
@@ -111,7 +104,6 @@
         };
       };
 
-    # home-manager stylix + catppuccin (home/theme/*).
     homeManager =
       {
         pkgs,

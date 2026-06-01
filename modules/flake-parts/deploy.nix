@@ -1,5 +1,5 @@
-# deploy-rs nodes derived from the den-produced nixosConfigurations. The darwin
-# host (m3pro) is intentionally excluded and deployed locally via darwin-rebuild.
+# The darwin host (m3pro) is intentionally excluded and deployed locally via
+# darwin-rebuild.
 { inputs, ... }:
 {
   flake-file.inputs.deploy-rs = {

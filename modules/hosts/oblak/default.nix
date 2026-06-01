@@ -1,4 +1,3 @@
-# oblak — x86_64 NAS (ZFS, NFS server, ugreen LED control).
 { inputs, den, ... }:
 {
   # NAS: OS user only, no home-manager.

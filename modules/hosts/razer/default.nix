@@ -1,4 +1,3 @@
-# razer — x86_64 home server (arr stack, jellyfin, immich, nginx, vaultwarden).
 { inputs, den, ... }:
 {
   # server: OS user only, no home-manager (classes = []).
@@ -6,15 +5,12 @@
 
   den.aspects.razer = {
     provides.to-users.includes = with den.aspects; [
-      # core
       base
       secrets
       network
       amadejk
       nfs-mount
-      # container / virtualisation
       docker
-      # services
       msmtp
       arr
       jellyseerr
@@ -53,7 +49,6 @@
         networking.hostName = "razer";
         nixpkgs.hostPlatform = "x86_64-linux";
 
-        # razer-specific host config (host secrets file)
         sops.defaultSopsFile = ./secrets.yaml;
 
         boot.loader.grub = {

@@ -1,6 +1,3 @@
-# `docker` aspect (Linux/NixOS): rootless Docker. Kept separate from the
-# virtualisation aspect so the server can use Docker without pulling in libvirt.
-# Replaces system/hardware/docker.nix.
 {
   den.aspects.docker.nixos =
     { pkgs, ... }:

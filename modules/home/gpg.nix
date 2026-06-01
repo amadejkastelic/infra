@@ -1,4 +1,3 @@
-# The `gpg` aspect (home-manager). Converted from home/services/gpg/default.nix.
 {
   den.aspects.gpg.homeManager =
     {

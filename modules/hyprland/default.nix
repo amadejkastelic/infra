@@ -1,6 +1,3 @@
-# `hyprland` aspect (Linux/NixOS): the Hyprland compositor, its plugins, portal,
-# and the full settings/binds/rules/exec config.
-# Replaces system/programs/hyprland/{default,binds,rules,settings}.nix.
 { inputs, lib, ... }:
 {
   den.aspects.hyprland.nixos =
@@ -100,16 +97,13 @@
         ];
 
         settings = {
-          # mouse movements
           bindm = [
             "$mod, mouse:272, movewindow"
             "$mod, mouse:273, resizewindow"
             "$mod ALT, mouse:272, resizewindow"
           ];
 
-          # binds
           bind = [
-            # compositor commands
             # "$mod SHIFT, E, exec, pkill Hyprland"
             "$mod, Q, killactive,"
             "$mod, F, fullscreen,"
@@ -124,37 +118,25 @@
             # toggle "monocle" (no_gaps_when_only)
             "$mod, M, exec, hyprctl keyword ${monocle} $(($(hyprctl getoption ${monocle} -j | jaq -r '.int') ^ 1))"
 
-            # Gaming workspace
             "$mod, G, workspace, name:Gaming"
             "$mod SHIFT, G, movetoworkspace, name:Gaming"
 
-            # utility
-            # terminal
             "$mod, T, exec, GTK_IM_MODULE=simple ghostty"
-            # lock screen
             "$mod, L, exec, ${runOnce "hyprlock"}"
-            # select area to perform OCR on
             "$mod, O, exec, uwsm app -- wl-ocr"
-            # Emoji picker
             "$mod, E, exec, vicinae vicinae://launch/core/search-emojis"
-            # Clipboard manager
             "$mod, V, exec, vicinae vicinae://launch/clipboard/history"
-            # File manager
             "$mod, N, exec, nautilus"
 
-            # move focus
             "$mod, left, movefocus, l"
             "$mod, right, movefocus, r"
             "$mod, up, movefocus, u"
             "$mod, down, movefocus, d"
 
-            # Launcher
             "$mod, R, exec, vicinae toggle"
 
-            # Session menu
             "$mod, Escape, exec, noctalia-shell ipc call sessionMenu toggle"
 
-            # screenshot
             # stop animations while screenshotting
             ", Print, exec, ${screenshotarea}"
             "$mod, Print, exec, grimblast --notify --cursor copysave output"
@@ -162,18 +144,15 @@
           ++ workspaces;
 
           bindl = [
-            # media controls
             ", XF86AudioPlay, exec, playerctl play-pause"
             ", XF86AudioPrev, exec, playerctl previous"
             ", XF86AudioNext, exec, playerctl next"
 
-            # volume
             ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
             ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
           ];
 
           bindle = [
-            # volume
             ", XF86AudioRaiseVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%+"
             ", XF86AudioLowerVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%-"
           ];
@@ -197,51 +176,39 @@
           ];
 
           windowrule = [
-            # Media viewer
             "match:title ^(Media viewer)$, float true"
 
-            # Audio/Network controls
             "match:class ^(pavucontrol)$, float true, opacity ${opacity}"
             "match:initial_class ^(org.pulseaudio.pavucontrol)$, float true, opacity ${opacity}"
             "match:class ^(nm-connection-editor)$, float true, opacity ${opacity}"
 
-            # File manager
             "match:initial_class ^(org.gnome.Nautilus)$, float true, opacity ${opacity}"
 
-            # Communication apps
             "match:class ^(vesktop)$, float true, workspace 8 silent, center true, size 1920 1080, opacity ${opacity}"
 
-            # Music apps
             "match:initial_class ^(Cider)$, float true, opacity ${opacity}, workspace 9 silent, center true, size 1920 1080"
 
-            # Firefox/Zen Picture-in-Picture
             "match:title ^(Picture-in-Picture)$, float true, pin true"
 
-            # Sharing indicators
             "match:title ^(Firefox — Sharing Indicator)$, workspace special silent"
             "match:title ^(Zen — Sharing Indicator)$, workspace special silent"
             "match:title ^(.*is sharing (your screen|a window)\\.)$, workspace special silent"
 
-            # Steam
             "match:class ^(steam), workspace 10 silent"
 
-            # Gaming
             "match:class gamescope, workspace name:Gaming"
             "match:initial_class cs2, workspace name:Gaming, immediate true, fullscreen true, render_unfocused true"
             "match:initial_class ^(steam_app_)(.*)$, workspace name:Gaming, immediate true, fullscreen true, render_unfocused true"
             "match:initial_title Hearthstone, float true, size 1920 1080, max_size 1920 1080, min_size 1920 1080, center true"
 
-            # Idle inhibit
             "match:class ^(mpv|.+exe|celluloid)$, idle_inhibit focus"
             "match:class ^(firefox)$, match:title ^(.*YouTube.*)$, idle_inhibit focus"
             "match:class ^(firefox)$, match:fullscreen true, idle_inhibit fullscreen"
 
-            # System dialogs
             "match:class ^(gcr-prompter)$, dim_around true"
             "match:class ^(xdg-desktop-portal-gtk)$, dim_around true, float true, center true, size 1920 1080"
             "match:class ^(polkit-gnome-authentication-agent-1)$, dim_around true"
 
-            # Waydroid
             "match:class Waydroid, float true"
           ];
 
@@ -328,7 +295,6 @@
           input = {
             kb_layout = "si";
 
-            # focus change on cursor move
             follow_mouse = 1;
             force_no_accel = true;
 
@@ -342,16 +308,13 @@
           };
 
           misc = {
-            # disable auto polling for config file changes
             disable_autoreload = true;
 
             force_default_wallpaper = 0;
 
-            # disable annoying dialogs
             enable_anr_dialog = false;
             disable_watchdog_warning = true;
 
-            # disable dragging animation
             animate_mouse_windowdragging = false;
 
             vrr = 0;

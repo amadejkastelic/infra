@@ -1,5 +1,3 @@
-# The `shell` aspect (home-manager). Shared shell session environment.
-# Converted from home/terminal/default.nix (sessionVariables + sops secrets).
 {
   den.aspects.shell.homeManager =
     {

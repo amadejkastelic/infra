@@ -1,7 +1,3 @@
-# `gaming` aspect (Linux/NixOS): Steam, gamescope, gamemode, switch tooling and
-# power-profiles-daemon. Combined into a single nixos block to avoid functor
-# merges across files.
-# Replaces system/programs/gaming/{default,steam,switch,gamemode,gamescope}.nix.
 { inputs, ... }:
 {
   den.aspects.gaming.nixos =
@@ -12,7 +8,6 @@
       ...
     }:
     let
-      # --- gamemode helpers ---
       inherit (pkgs.writers) writeDash;
 
       hyprctl = "${lib.getExe' config.programs.hyprland.package "hyprctl"} -i 0";
@@ -46,7 +41,6 @@
         ${notify-send} -u low -a 'Gamemode' 'Optimizations deactivated'
       '';
 
-      # --- steam helpers ---
       defaults = {
         launchOptions = {
           env = { };
@@ -65,10 +59,8 @@
 
       services.power-profiles-daemon.enable = true;
 
-      # switch.nix
       programs.quark-goldleaf.enable = false;
 
-      # gamescope.nix
       programs.gamescope = {
         enable = true;
         package = pkgs.gamescope;
@@ -82,7 +74,6 @@
         ];
       };
 
-      # gamemode.nix
       environment.systemPackages = [ resolutionScript ];
 
       programs.gamemode = {
@@ -100,7 +91,6 @@
         };
       };
 
-      # steam.nix
       programs.steam = {
         enable = true;
 

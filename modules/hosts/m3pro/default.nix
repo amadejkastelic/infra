@@ -10,16 +10,13 @@
 
   den.aspects.m3pro = {
     provides.to-users.includes = with den.aspects; [
-      # core (base/secrets/user carry os/darwin/homeManager)
       base
       secrets
       amadejk
       theme
-      # macOS system
       homebrew
       macos-preferences
       macos-security
-      # cross-platform home-manager
       shell
       nushell
       starship
@@ -41,7 +38,6 @@
       neovim
       vscode
       zed
-      # mac-safe extras
       browsers
       social
       gpg

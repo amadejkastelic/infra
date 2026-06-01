@@ -1,6 +1,3 @@
-# `llama-cpp` aspect (Linux/NixOS): the custom `services.llama-cpp-server`
-# option-module (llama.cpp server with ROCm support) plus the host enabling/models.
-# Combines modules/services/llama-cpp.nix + system/services/llama-cpp.nix.
 {
   den.aspects.llama-cpp.nixos =
     {
@@ -133,7 +130,6 @@
           }) cfg.models;
         })
 
-        # Host config (from system/services/llama-cpp.nix).
         {
           services.llama-cpp-server = {
             enable = true;

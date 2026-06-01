@@ -1,5 +1,3 @@
-# `clipboard-sync` aspect (Linux/NixOS): cross-host clipboard syncing.
-# Replaces system/services/clipboard-sync.nix.
 { inputs, ... }:
 {
   den.aspects.clipboard-sync.nixos = {

@@ -1,4 +1,3 @@
-# The `carapace` aspect (home-manager). Converted from home/terminal/shell/carapace.nix.
 {
   den.aspects.carapace.homeManager =
     { config, ... }:

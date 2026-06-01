@@ -1,4 +1,3 @@
-# Formatting + git hooks (replaces top-level pre-commit-hooks.nix + treefmt.toml).
 { inputs, ... }:
 {
   flake-file.inputs.pre-commit-hooks = {

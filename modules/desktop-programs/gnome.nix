@@ -1,5 +1,3 @@
-# `gnome` aspect (Linux/NixOS): GDM display manager + GNOME desktop, trimmed down.
-# Replaces system/programs/gnome/default.nix.
 {
   den.aspects.gnome.nixos =
     { pkgs, ... }:

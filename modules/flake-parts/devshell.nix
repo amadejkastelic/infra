@@ -1,4 +1,3 @@
-# Development shell (`nix develop`).
 {
   perSystem =
     {

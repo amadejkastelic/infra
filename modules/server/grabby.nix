@@ -1,5 +1,3 @@
-# `grabby` aspect (Linux/NixOS): the grabby Discord bot (from the grabby flake input).
-# Replaces system/services/grabby.nix.
 { inputs, ... }:
 {
   den.aspects.grabby.nixos =

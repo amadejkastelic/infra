@@ -1,6 +1,3 @@
-# The `amadejk` user aspect. Included by every host via provides.to-users.
-# Defines the OS account (nixos + darwin) and the home-manager identity.
-# Replaces system/core/users.nix and the identity bits of home/default.nix.
 let
   authorizedKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIN7DVOB0DJ1x6G9WetQGxzKhj2TgH8DitfTf2xof/Ep amadejkastelic7@gmail.com"
@@ -53,7 +50,6 @@ in
           };
         };
 
-      # home-manager identity (forwarded into home-manager.users.amadejk).
       homeManager =
         { pkgs, lib, ... }:
         {

@@ -1,6 +1,3 @@
-# The `transient-services` aspect (home-manager, Linux only).
-# Provides `run-as-service` to run processes as systemd transient services.
-# Converted from home/terminal/programs/transient-services.nix.
 {
   den.aspects.transient-services.homeManager =
     {
@@ -31,7 +28,6 @@
         exec "$@"
       '';
 
-      # runs processes as systemd transient services
       run-as-service = pkgs.writeShellScriptBin "run-as-service" ''
         exec ${pkgs.systemd}/bin/systemd-run \
           --slice=app-manual.slice \

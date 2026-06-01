@@ -1,6 +1,3 @@
-# `blocky` aspect (Linux/NixOS): the custom `services.blocky.nginx` reverse-proxy
-# option-module plus the host enabling/settings.
-# Combines modules/services/blocky.nix + system/services/blocky.nix.
 {
   den.aspects.blocky.nixos =
     {
@@ -55,7 +52,6 @@
           };
         })
 
-        # Host config (from system/services/blocky.nix).
         {
           networking.nameservers = [ "127.0.0.1" ] ++ dnsServers;
 

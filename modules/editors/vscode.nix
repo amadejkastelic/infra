@@ -1,8 +1,3 @@
-# The `vscode` editor aspect (home-manager). Combines the old
-# home/editors/vscode/{default,extensions,keybindings,server,settings}.nix
-# into one aspect. References the `nixpkgs-vscode` input (for the unfree vscode
-# package + extensions), the `nix-vscode-extensions` overlay (applied in
-# modules/base, providing pkgs.vscode-marketplace), and the `vscode-server` input.
 { inputs, ... }:
 {
   den.aspects.vscode.homeManager =
@@ -22,7 +17,6 @@
 
       vscodeUnfree = mkNixpkgsUnfree pkgs.stdenv.hostPlatform.system;
 
-      # --- settings (from settings.nix) ---
       editor = {
         "editor.fontSize" = lib.mkForce 18;
         "editor.fontWeight" = "500";
@@ -93,7 +87,6 @@
         "update.showReleaseNotes" = false;
       };
 
-      # Extensions
       catppuccin = {
         "catppuccin.italicComments" = false;
         "catppuccin.italicKeywords" = false;
@@ -177,52 +170,38 @@
 
           extensions =
             (with pkgs.vscode-marketplace; [
-              # Icons
               pkief.material-product-icons
               pkief.material-icon-theme
 
-              # Rust
               rust-lang.rust-analyzer
 
-              # Python
               astral-sh.ty
               ms-python.python
               charliermarsh.ruff
 
-              # TOML
               tamasfe.even-better-toml
 
-              # Docker
               ms-azuretools.vscode-docker
 
-              # Svelte
               svelte.svelte-vscode
 
-              # go
               golang.go
 
-              # AI
               sst-dev.opencode
               anthropic.claude-code
             ])
             ++ (with vscodeUnfree.vscode-extensions; [
-              # Nix
               jnoortheen.nix-ide
               mkhl.direnv
 
-              # Rust
               vadimcn.vscode-lldb
 
-              # Typst
               myriad-dreamin.tinymist
 
-              # Zig
               ziglang.vscode-zig
 
-              # Git Blame
               eamodio.gitlens
 
-              # AI
               # continue.continue
             ]);
 

@@ -1,5 +1,3 @@
-# `nfs-mount` aspect (Linux/NixOS): the shared NFS *client* mounts of the NAS
-# (oblak) storage, used by ryzen/aspire. Replaces hosts/common/shared/nfs-mount.nix.
 {
   den.aspects.nfs-mount.nixos =
     {

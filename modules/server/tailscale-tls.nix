@@ -1,6 +1,3 @@
-# `tailscale-tls` aspect (Linux/NixOS): the custom `services.tailscale.tls`
-# option-module (automatic Tailscale cert renewal + nginx integration) plus the
-# host enabling that lived in system/services/nginx.nix.
 {
   den.aspects.tailscale-tls.nixos =
     {
@@ -135,7 +132,6 @@
           });
         })
 
-        # Host enabling (from system/services/nginx.nix).
         {
           services.tailscale.tls = {
             enable = true;

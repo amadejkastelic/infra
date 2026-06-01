@@ -1,4 +1,3 @@
-# The `zed` editor aspect (home-manager). Converted from home/editors/zed.
 {
   den.aspects.zed.homeManager =
     {
