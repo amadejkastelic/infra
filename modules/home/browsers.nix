@@ -3,6 +3,7 @@
   den.aspects.browsers.homeManager =
     {
       pkgs,
+      lib,
       ...
     }:
     let
@@ -44,7 +45,7 @@
     {
       imports = [ inputs.zen-browser.homeModules.twilight ];
 
-      programs.chromium = {
+      programs.chromium = lib.mkIf (!pkgs.stdenv.isDarwin) {
         enable = true;
         commandLineArgs = [ "--enable-features=TouchpadOverscrollHistoryNavigation" ];
         extensions = [ ];
