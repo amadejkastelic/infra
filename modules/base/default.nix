@@ -177,6 +177,9 @@ in
           copyApps.enable = true;
         };
 
+        # darwin: Determinate owns Nix so the system nix.package is unset; HM needs one
+        nix.package = lib.mkIf pkgs.stdenv.isDarwin pkgs.nix;
+
         programs.home-manager.enable = true;
       };
   };
