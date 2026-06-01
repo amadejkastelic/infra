@@ -200,8 +200,6 @@
 
               eamodio.gitlens
 
-              svelte.svelte-vscode
-
               # continue.continue
             ]);
 
