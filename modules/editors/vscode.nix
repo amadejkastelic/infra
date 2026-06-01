@@ -183,8 +183,6 @@
 
               ms-azuretools.vscode-docker
 
-              svelte.svelte-vscode
-
               golang.go
 
               sst-dev.opencode
@@ -201,6 +199,8 @@
               ziglang.vscode-zig
 
               eamodio.gitlens
+
+              svelte.svelte-vscode
 
               # continue.continue
             ]);
