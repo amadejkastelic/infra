@@ -1,0 +1,13 @@
+diff --git a/OpenRGB.pro b/OpenRGB.pro
+index 8e68a856..30f9e95e 100644
+--- a/OpenRGB.pro
++++ b/OpenRGB.pro
+@@ -592,7 +592,7 @@ contains(QMAKE_PLATFORM, linux) {
+     systemd_service.files+=qt/openrgb.service
+     tmpfiles.path=$$PREFIX/lib/tmpfiles.d/
+     tmpfiles.files+=qt/openrgb.conf
+-    INSTALLS += target desktop icon metainfo udev_rules systemd_service tmpfiles
++    INSTALLS += target desktop icon metainfo udev_rules tmpfiles
+ }
+ 
+ #-----------------------------------------------------------------------------------------------#

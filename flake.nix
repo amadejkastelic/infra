@@ -1,49 +1,16 @@
 {
-  description = "amadejk's NixOS and Home-Manager flake";
+  description = "amadejk's NixOS, nix-darwin and Home-Manager flake (dendritic / den)";
 
+  # Dendritic pattern: every file under ./modules is a flake-parts module,
+  # auto-imported by import-tree. den (github:denful/den) layers the aspect
+  # model on top. See modules/dendritic.nix for the bridge.
+  #
+  # NOTE: flake-file is wired (modules/dendritic.nix) so `nix run .#write-flake`
+  # can regenerate this file from per-module `flake-file.inputs`. Until the
+  # remaining inputs are distributed, this file stays the authoritative input
+  # list and is hand-maintained.
   outputs =
-    inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
-      imports = [
-        ./home/profiles
-        ./hosts
-        ./lib
-        ./modules
-        ./pkgs
-        ./pre-commit-hooks.nix
-      ];
-
-      perSystem =
-        {
-          config,
-          pkgs,
-          ...
-        }:
-        {
-          devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              just
-              nixd
-              nixfmt
-              nodejs-slim
-              git
-              config.packages.repl
-            ];
-            name = "dots";
-            DIRENV_LOG_FORMAT = "";
-            shellHook = ''
-              ${config.pre-commit.installationScript}
-            '';
-          };
-
-          formatter = pkgs.nixfmt;
-        };
-    };
+    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
     systems.url = "github:nix-systems/default";
@@ -52,6 +19,21 @@
 
     # https://github.com/microsoft/vscode/issues/260391
     nixpkgs-vscode.url = "github:NixOS/nixpkgs?ref=4c7d90a136071eb8154d6b3fe63b0046de9d4712";
+
+    # --- dendritic / den infrastructure ---
+    import-tree.url = "github:vic/import-tree";
+
+    den.url = "github:denful/den";
+
+    flake-file.url = "github:denful/flake-file";
+
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # ---------------------------------------
 
     flake-compat = {
       url = "github:NixOS/flake-compat";
@@ -78,11 +60,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hm = {
+    # den expects the home-manager input to be named `home-manager`
+    # (it reads inputs.home-manager."${host.class}Modules".home-manager).
+    home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # den expects the nix-darwin input to be named `darwin`
+    # (it derives instantiate = inputs.darwin.lib.darwinSystem for darwin hosts).
     darwin = {
       url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -193,7 +179,7 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "hm";
+        home-manager.follows = "home-manager";
       };
     };
 

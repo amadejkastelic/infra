@@ -1,0 +1,186 @@
+# The `base` aspect: configuration shared by every host (nixos + darwin) and the
+# always-on home-manager bits. Replaces system/core, system/nix/*, the nixpkgs
+# overlays, and the platform-agnostic parts of home/default.nix.
+{ inputs, lib, ... }:
+let
+  cache = builtins.fromJSON (builtins.readFile ./cache.json);
+in
+{
+  den.aspects.base = {
+    # Applied to whichever OS class the host is (nixos OR darwin).
+    os =
+      {
+        config,
+        pkgs,
+        ...
+      }:
+      {
+        nixpkgs.config.allowUnfree = true;
+        nixpkgs.overlays = [
+          inputs.self.overlays.default # pkgs.local.* (custom packages)
+          (final: prev: {
+            lib = prev.lib // {
+              colors = import ../../lib/colors prev.lib;
+            };
+          })
+          inputs.nix-vscode-extensions.overlays.default
+          inputs.firefox-addons.overlays.default
+        ];
+
+        environment.systemPackages = [ pkgs.git ];
+
+        time.timeZone = lib.mkDefault "Europe/Ljubljana";
+
+        # Nix settings common to nixos + darwin. Per-class gc and trusted-users
+        # live in the nixos/darwin blocks below (they diverge between platforms).
+        nix =
+          let
+            flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
+          in
+          {
+            package = pkgs.lixPackageSets.latest.lix;
+
+            # pin the registry to avoid re-evaling nixpkgs every time
+            registry = lib.mapAttrs (_: v: { flake = v; }) flakeInputs;
+            nixPath = lib.mapAttrsToList (key: _: "${key}=flake:${key}") config.nix.registry;
+
+            settings = {
+              inherit (cache) substituters trusted-public-keys;
+              auto-optimise-store = true;
+              builders-use-substitutes = true;
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+              flake-registry = "/etc/nix/registry.json";
+              keep-derivations = true;
+              keep-outputs = true;
+              accept-flake-config = false;
+            };
+          };
+      };
+
+    # Linux / NixOS-only base.
+    nixos =
+      { lib, ... }:
+      {
+        imports = [ inputs.nix-exec.nixosModules.default ];
+
+        nixpkgs.overlays = [ inputs.cachyos-kernel.overlays.pinned ];
+
+        documentation.dev.enable = true;
+
+        i18n = {
+          defaultLocale = "en_US.UTF-8";
+          supportedLocales = [ "en_US.UTF-8/UTF-8" ];
+        };
+
+        system.stateVersion = lib.mkDefault "23.11";
+
+        zramSwap.enable = false;
+
+        # home-manager-as-NixOS-module settings. den's HM battery imports the
+        # actual home-manager NixOS module; we only set its options here.
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "bak";
+        };
+
+        nix.settings.trusted-users = [
+          "root"
+          "@wheel"
+        ];
+        nix.gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 7d";
+        };
+
+        programs.nix-exec = {
+          enable = true;
+          settings.sandbox.timeout = "5m";
+        };
+
+        # security tweaks borrowed from @hlissner
+        boot.kernel.sysctl = {
+          "kernel.sysrq" = 0;
+          "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
+          "net.ipv4.conf.default.rp_filter" = 1;
+          "net.ipv4.conf.all.rp_filter" = 1;
+          "net.ipv4.conf.all.accept_source_route" = 0;
+          "net.ipv6.conf.all.accept_source_route" = 0;
+          "net.ipv4.conf.all.send_redirects" = 0;
+          "net.ipv4.conf.default.send_redirects" = 0;
+          "net.ipv4.conf.all.accept_redirects" = 0;
+          "net.ipv4.conf.default.accept_redirects" = 0;
+          "net.ipv4.conf.all.secure_redirects" = 0;
+          "net.ipv4.conf.default.secure_redirects" = 0;
+          "net.ipv6.conf.all.accept_redirects" = 0;
+          "net.ipv6.conf.default.accept_redirects" = 0;
+          "net.ipv4.tcp_syncookies" = 1;
+          "net.ipv4.tcp_rfc1337" = 1;
+          "net.ipv4.tcp_fastopen" = 3;
+          "net.ipv4.tcp_congestion_control" = "bbr";
+          "net.core.default_qdisc" = "cake";
+        };
+        boot.kernelModules = [ "tcp_bbr" ];
+
+        security = {
+          pam.services.hyprlock.text = "auth include login";
+          rtkit.enable = true;
+          sudo.wheelNeedsPassword = false;
+        };
+      };
+
+    # macOS / nix-darwin-only base.
+    darwin = {
+      system.stateVersion = 6;
+
+      nix.settings.trusted-users = [
+        "root"
+        "admin"
+      ];
+      nix.gc = {
+        automatic = true;
+        interval = [ { Weekday = 1; } ];
+        options = "--delete-older-than 7d";
+      };
+
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        backupFileExtension = "bak";
+      };
+    };
+
+    # Always-on home-manager (platform-agnostic). Forwarded into
+    # home-manager.users.amadejk on every host by den's HM battery.
+    homeManager =
+      { pkgs, lib, ... }:
+      {
+        imports = [ inputs.nix-index-db.homeModules.nix-index ];
+
+        home = {
+          stateVersion = "23.11";
+          extraOutputsToInstall = [
+            "doc"
+            "devdoc"
+          ];
+        };
+
+        manual = {
+          html.enable = false;
+          json.enable = false;
+          manpages.enable = false;
+        };
+
+        targets.darwin = lib.mkIf pkgs.stdenv.isDarwin {
+          linkApps.enable = false;
+          copyApps.enable = true;
+        };
+
+        programs.home-manager.enable = true;
+      };
+  };
+}
