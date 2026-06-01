@@ -2325,11 +2325,11 @@
         "zig": "zig"
       },
       "locked": {
-        "lastModified": 1780329792,
-        "narHash": "sha256-cXPIiBanyf3k17eIP9EqxG28iqffZ0fWghKsh+lEECk=",
+        "lastModified": 1780335364,
+        "narHash": "sha256-Bg0iTetwr+xhC+YkazQfzlkTtcFko52fbM/XPY4Py2o=",
         "owner": "amadejkastelic",
         "repo": "nanofetch",
-        "rev": "2b55e890ae1d7ecdf6f76f32b19095a20cce1ba2",
+        "rev": "e5e82c1849591ed76cac35613a2fd5d4374b10f1",
         "type": "github"
       },
       "original": {
