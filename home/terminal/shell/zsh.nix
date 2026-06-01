@@ -6,11 +6,7 @@
   ...
 }:
 let
-  fetch =
-    if pkgs.stdenv.isDarwin then
-      pkgs.fastfetch
-    else
-      inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
+  fetch = inputs.nanofetch.packages.${pkgs.stdenv.hostPlatform.system}.nanofetch;
 in
 {
   home.packages = [
