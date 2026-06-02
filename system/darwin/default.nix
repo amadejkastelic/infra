@@ -77,7 +77,7 @@
       ];
     };
 
-    determinateNixd.garbageCollector.strategy = "automatic";
+    determinateNixd.garbageCollector.strategy = "disabled";
   };
 
   environment.systemPackages = with pkgs; [

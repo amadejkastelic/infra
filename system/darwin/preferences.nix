@@ -54,12 +54,5 @@
     rm -f /Library/Keyboard\ Layouts/*Slovensko*
     cp -f ${./keyboard/Slovensko.keylayout} "/Library/Keyboard Layouts/Slovensko.keylayout"
     cp -f ${./keyboard/Slovensko.icns} "/Library/Keyboard Layouts/Slovensko.icns"
-
-    rm -rf /Library/Caches/com.apple.iconservices.store
-    find /private/var/folders \
-      \( -name com.apple.dock.iconcache -o -name com.apple.iconservices \) \
-      -exec rm -rf {} + 2>/dev/null || true
-    killall iconservicesagent 2>/dev/null || true
-    killall Dock 2>/dev/null || true
   '';
 }
