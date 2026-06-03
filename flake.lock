@@ -185,11 +185,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1780472519,
-        "narHash": "sha256-qUdgXQGGvouOGVnnistDIqBx8g60HNwoSGrcUBSJCks=",
+        "lastModified": 1780496837,
+        "narHash": "sha256-uOf+dlx58Qc/yV9T/zilvQlsDlmaYDoyyV2inr8Un9o=",
         "owner": "amadejkastelic",
         "repo": "bb-launcher-nix",
-        "rev": "73f2e1acd8b89fca80039b86baaef076bbc132e4",
+        "rev": "90d284c9fe735bd3f8a087a5ab33ba0913811956",
         "type": "github"
       },
       "original": {
