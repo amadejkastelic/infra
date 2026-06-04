@@ -90,9 +90,8 @@
 
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
-    # https://github.com/nix-community/stylix/pull/2337
     stylix = {
-      url = "github:nix-community/stylix/pull/2337/head";
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
