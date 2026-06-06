@@ -73,7 +73,7 @@
       accept-flake-config = false;
       trusted-users = [
         "root"
-        "admin"
+        "@admin"
       ];
     };
 

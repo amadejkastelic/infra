@@ -46,8 +46,8 @@
   };
 
   system.keyboard = {
-    enableKeyMapping = true;
-    remapCapsLockToControl = true;
+    enableKeyMapping = false;
+    remapCapsLockToControl = false;
   };
 
   system.activationScripts.extraActivation.text = ''
