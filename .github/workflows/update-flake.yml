@@ -18,7 +18,7 @@ jobs:
       actions: write
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Read Nix cache config
         id: caches
