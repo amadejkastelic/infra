@@ -7,7 +7,7 @@ in
 
   home.packages = [ pkgs.fastfetch ];
 
-  programs.noctalia-shell = {
+  programs.noctalia = {
     enable = true;
 
     plugins = {
