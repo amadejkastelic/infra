@@ -63,10 +63,7 @@
       inputs.systems.follows = "systems";
     };
 
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
