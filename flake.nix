@@ -94,7 +94,7 @@
 
     catppuccin.url = "github:catppuccin/nix";
 
-    apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
+    apple-fonts.url = "github:Lyndeno/apple-fonts.nix?ref=update/flake-update";
 
     hyprland = {
       url = "github:hyprwm/Hyprland?ref=v0.55.4";
