@@ -1,7 +1,10 @@
 { config, ... }:
 {
   homelab.subdomains = [ "grafana" ];
-  imports = [ ./datasources.nix ];
+  imports = [
+    ./datasources.nix
+    ./dashboards.nix
+  ];
 
   services.grafana = {
     enable = true;
