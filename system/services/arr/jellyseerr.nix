@@ -6,7 +6,10 @@ in
   services.seerr = {
     enable = true;
 
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "jellyseerr.amadejk.com";
+    };
 
     jellyfin = {
       hostname = "127.0.0.1";

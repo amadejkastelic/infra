@@ -10,9 +10,12 @@ let
   apiCfg = config.services.sonarr-anime.apiConfig;
   apiConfigurator = import ./api-configurator.nix { inherit lib pkgs config; };
 
+  locationPath = if nginxCfg.location == "" then "/" else "/${nginxCfg.location}/";
+  urlBaseStr = lib.optionalString (nginxCfg.location != "") "/${nginxCfg.location}";
+
   hostConfig = {
     inherit (config.services.sonarr-anime.settings.server) port;
-    urlBase = if nginxCfg.enable then "/${nginxCfg.location}" else "";
+    urlBase = if nginxCfg.enable then urlBaseStr else "";
     passwordPath = apiCfg.hostPasswordPath;
     instanceName = "Sonarr Anime";
   };
@@ -60,7 +63,7 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "sonarr-anime";
+      default = "";
       description = "Location path to expose sonarr-anime webui through nginx";
     };
   };
@@ -143,7 +146,7 @@ in
   };
 
   config = lib.mkIf config.services.sonarr-anime.enable {
-    services.sonarr-anime.settings.server.urlbase = lib.mkIf nginxCfg.enable "/${nginxCfg.location}";
+    services.sonarr-anime.settings.server.urlbase = lib.mkIf nginxCfg.enable urlBaseStr;
     systemd.tmpfiles.settings."10-sonarr-anime".${config.services.sonarr-anime.dataDir}.d = {
       inherit (config.services.sonarr-anime) user group;
       mode = "0700";
@@ -227,8 +230,8 @@ in
       enable = true;
 
       virtualHosts."${nginxCfg.hostName}" = {
-        locations."/${nginxCfg.location}/" = {
-          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}/${nginxCfg.location}/";
+        locations."${locationPath}" = {
+          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}${locationPath}";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };

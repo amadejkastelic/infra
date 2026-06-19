@@ -10,9 +10,12 @@ let
   apiCfg = config.services.prowlarr.apiConfig;
   apiConfigurator = import ./api-configurator.nix { inherit lib pkgs config; };
 
+  locationPath = if nginxCfg.location == "" then "/" else "/${nginxCfg.location}/";
+  urlBaseStr = lib.optionalString (nginxCfg.location != "") "/${nginxCfg.location}";
+
   hostConfig = {
     inherit (config.services.prowlarr.settings.server) port;
-    urlBase = if nginxCfg.enable then "/${nginxCfg.location}" else "";
+    urlBase = if nginxCfg.enable then urlBaseStr else "";
     passwordPath = apiCfg.hostPasswordPath;
     instanceName = "Prowlarr";
   };
@@ -77,7 +80,7 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "prowlarr";
+      default = "";
       description = "Location path to expose prowlarr webui through nginx";
     };
   };
@@ -221,14 +224,14 @@ in
   };
 
   config = lib.mkIf nginxCfg.enable {
-    services.prowlarr.settings.server.urlbase = "/${nginxCfg.location}";
+    services.prowlarr.settings.server.urlbase = urlBaseStr;
 
     services.nginx = {
       enable = true;
 
       virtualHosts."${nginxCfg.hostName}" = {
-        locations."/${nginxCfg.location}/" = {
-          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}/${nginxCfg.location}/";
+        locations."${locationPath}" = {
+          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}${locationPath}";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };

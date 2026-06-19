@@ -2,7 +2,11 @@
 {
   services.bazarr = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "bazarr.amadejk.com";
+    };
+    urlBase = "/";
     listenPort = 6767;
 
     apiConfig = {
@@ -16,7 +20,7 @@
           hostname = "127.0.0.1";
           port = 7878;
           apiKeyPath = config.sops.secrets."radarr/api_key".path;
-          baseUrl = "/radarr";
+          baseUrl = "";
           is_default = true;
         }
         {
@@ -25,7 +29,7 @@
           hostname = "127.0.0.1";
           port = 8989;
           apiKeyPath = config.sops.secrets."sonarr/api_key".path;
-          baseUrl = "/sonarr";
+          baseUrl = "";
         }
         {
           name = "Sonarr Anime";
@@ -33,7 +37,7 @@
           hostname = "127.0.0.1";
           port = 8990;
           apiKeyPath = config.sops.secrets."sonarr-anime/api_key".path;
-          baseUrl = "/sonarr-anime";
+          baseUrl = "";
         }
         {
           name = "Sonarr KDrama";
@@ -41,7 +45,7 @@
           hostname = "127.0.0.1";
           port = 8991;
           apiKeyPath = config.sops.secrets."sonarr-kdrama/api_key".path;
-          baseUrl = "/sonarr-kdrama";
+          baseUrl = "";
         }
       ];
 

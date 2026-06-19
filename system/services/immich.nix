@@ -11,12 +11,10 @@
       };
     };
 
-    tailscale = {
+    nginx = {
       enable = true;
-      port = 8443;
+      hostName = "immich.amadejk.com";
     };
-
-    nginx.redirect.enable = true;
 
     port = 2283;
 

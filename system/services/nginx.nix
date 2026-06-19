@@ -1,6 +1,24 @@
-{ config, ... }:
+{ lib, ... }:
 let
-  hostName = config.networking.hostName;
+  domain = "amadejk.com";
+
+  subdomains = [
+    "home"
+    "jellyfin"
+    "sonarr"
+    "sonarr-anime"
+    "sonarr-kdrama"
+    "radarr"
+    "bazarr"
+    "prowlarr"
+    "qbittorrent"
+    "jellyseerr"
+    "vaultwarden"
+    "blocky"
+    "immich"
+  ];
+
+  subdomainHosts = map (s: "${s}.${domain}") subdomains;
 in
 {
   services.nginx = {
@@ -12,18 +30,22 @@ in
     recommendedTlsSettings = true;
     recommendedProxySettings = true;
 
-    tailscaleAuth = {
-      enable = true;
-      virtualHosts = [ hostName ];
-    };
+    virtualHosts = lib.genAttrs subdomainHosts (_: {
+      forceSSL = true;
+      useACMEHost = domain;
+      extraConfig = ''
+        allow 127.0.0.1;
+        allow 192.168.1.0/24;
+        allow 100.64.0.0/10;
+        deny all;
+      '';
+    });
   };
 
-  services.tailscale.tls = {
-    enable = true;
-
-    nginx = {
-      enable = true;
-      virtualHosts = [ hostName ];
-    };
+  networking.firewall = {
+    allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }

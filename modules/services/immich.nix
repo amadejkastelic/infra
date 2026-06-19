@@ -1,71 +1,52 @@
 {
-  lib,
-  pkgs,
   config,
+  lib,
   ...
 }:
-# https://github.com/immich-app/immich/discussions/1679
-# Immich doesn't support a custom urlBase, so we have to expose it with tailscale
+
 let
-  cfg = config.services.immich;
+  cfg = config.services.immich.nginx;
+  locationPath = if cfg.location == "" then "/" else "/${cfg.location}/";
 in
 {
-  options.services.immich = {
-    tailscale = {
-      enable = lib.mkEnableOption "Enable tailscale routing for Immich";
+  options.services.immich.nginx = {
+    enable = lib.mkEnableOption "Enable nginx reverse proxy for Immich";
 
-      port = lib.mkOption {
-        type = lib.types.int;
-        default = 8443;
-        description = "Port to expose Immich through tailscale";
-      };
+    hostName = lib.mkOption {
+      type = lib.types.str;
+      default = config.networking.hostName;
+      description = "Host name to expose Immich through nginx";
     };
 
-    nginx.redirect = {
-      enable = lib.mkEnableOption "Enable nginx redirect";
+    port = lib.mkOption {
+      type = lib.types.int;
+      default = config.services.immich.port;
+      description = "Port to expose Immich through nginx";
+    };
 
-      path = lib.mkOption {
-        type = lib.types.str;
-        default = "immich";
-        description = "Path to redirect from";
-      };
-
-      port = lib.mkOption {
-        type = lib.types.int;
-        default = cfg.tailscale.port;
-        description = "Port to redirect to";
-      };
+    location = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Location path to expose Immich through nginx (empty for root)";
     };
   };
 
-  config = {
-    systemd.services.tailscale-serve-immich =
-      lib.mkIf (cfg.tailscale.enable && config.services.tailscale.enable)
-        {
-          description = "Tailscale Serve for Immich";
-          after = [
-            "tailscaled.service"
-            "immich-server.service"
-          ];
-          wantedBy = [ "multi-user.target" ];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            ExecStart = ''
-              ${lib.getExe pkgs.tailscale} serve \
-                --https=${toString cfg.tailscale.port} \
-                --bg http://${config.services.immich.host}:${toString config.services.immich.port}
-            '';
-          };
-        };
-
-    services.nginx = lib.mkIf cfg.nginx.redirect.enable {
+  config = lib.mkIf cfg.enable {
+    services.nginx = {
       enable = true;
 
-      virtualHosts."${config.networking.hostName}" = {
-        locations."/${cfg.nginx.redirect.path}".extraConfig = ''
-          return 301 https://$host:${toString cfg.nginx.redirect.port}/;
-        '';
+      virtualHosts."${cfg.hostName}" = {
+        locations."${locationPath}" = {
+          proxyPass = "http://${config.services.immich.host}:${toString cfg.port}/";
+          proxyWebsockets = true;
+          recommendedProxySettings = true;
+          extraConfig = ''
+            client_max_body_size 0;
+            proxy_read_timeout 75s;
+            proxy_buffering off;
+            proxy_request_buffering off;
+          '';
+        };
       };
     };
   };

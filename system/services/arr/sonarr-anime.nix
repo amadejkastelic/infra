@@ -6,7 +6,10 @@ in
 {
   services.sonarr-anime = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "sonarr-anime.amadejk.com";
+    };
 
     settings = {
       log.analyticsEnabled = false;

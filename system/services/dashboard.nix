@@ -4,7 +4,10 @@ in
 {
   services.homepage-dashboard = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "home.amadejk.com";
+    };
     listenPort = port;
 
     allowedHosts = "*";
@@ -28,7 +31,7 @@ in
         Services = [
           {
             Immich = {
-              href = "/immich";
+              href = "https://immich.amadejk.com";
               icon = "immich";
             };
           }
@@ -45,13 +48,13 @@ in
           }
           {
             Blocky = {
-              href = "/blocky";
+              href = "https://blocky.amadejk.com";
               icon = "blocky";
             };
           }
           {
             Vaultwarden = {
-              href = "/vaultwarden";
+              href = "https://vaultwarden.amadejk.com";
               icon = "vaultwarden";
             };
           }
@@ -62,55 +65,55 @@ in
           {
             Jellyseerr = {
               icon = "jellyseerr";
-              href = "/jellyseerr";
+              href = "https://jellyseerr.amadejk.com";
             };
           }
           {
             Jellyfin = {
               icon = "jellyfin";
-              href = "/jellyfin";
+              href = "https://jellyfin.amadejk.com";
             };
           }
           {
             "Sonarr TV" = {
               icon = "sonarr";
-              href = "/sonarr";
+              href = "https://sonarr.amadejk.com";
             };
           }
           {
             "Sonarr KDrama" = {
               icon = "sonarr";
-              href = "/sonarr-kdrama";
+              href = "https://sonarr-kdrama.amadejk.com";
             };
           }
           {
             "Sonarr Anime" = {
               icon = "sonarr";
-              href = "/sonarr-anime";
+              href = "https://sonarr-anime.amadejk.com";
             };
           }
           {
             Radarr = {
               icon = "radarr";
-              href = "/radarr";
+              href = "https://radarr.amadejk.com";
             };
           }
           {
             Bazarr = {
               icon = "bazarr";
-              href = "/bazarr";
+              href = "https://bazarr.amadejk.com";
             };
           }
           {
             Prowlarr = {
               icon = "prowlarr";
-              href = "/prowlarr";
+              href = "https://prowlarr.amadejk.com";
             };
           }
           {
             qBittorrent = {
               icon = "qbittorrent";
-              href = "/qbittorrent";
+              href = "https://qbittorrent.amadejk.com";
             };
           }
         ];

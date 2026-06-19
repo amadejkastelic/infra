@@ -9,9 +9,17 @@ in
 {
   networking.nameservers = [ "127.0.0.1" ] ++ dnsServers;
 
+  networking.firewall = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
+  };
+
   services.blocky = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "blocky.amadejk.com";
+    };
 
     settings = {
       ports = {
@@ -65,6 +73,29 @@ in
         maxTime = "30m";
         prefetching = true;
       };
+
+      customDNS.mapping = builtins.listToAttrs (
+        map
+          (name: {
+            inherit name;
+            value = "192.168.1.8";
+          })
+          [
+            "home.amadejk.com"
+            "jellyfin.amadejk.com"
+            "sonarr.amadejk.com"
+            "sonarr-anime.amadejk.com"
+            "sonarr-kdrama.amadejk.com"
+            "radarr.amadejk.com"
+            "bazarr.amadejk.com"
+            "prowlarr.amadejk.com"
+            "qbittorrent.amadejk.com"
+            "jellyseerr.amadejk.com"
+            "vaultwarden.amadejk.com"
+            "blocky.amadejk.com"
+            "immich.amadejk.com"
+          ]
+      );
     };
   };
 

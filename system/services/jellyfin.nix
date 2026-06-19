@@ -13,7 +13,10 @@
       jellyfin-plugin-file-transformation
     ];
 
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "jellyfin.amadejk.com";
+    };
 
     openFirewall = true;
 

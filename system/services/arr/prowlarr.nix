@@ -8,7 +8,10 @@
   services.prowlarr = {
     enable = true;
 
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "prowlarr.amadejk.com";
+    };
 
     settings = {
       log.analyticsEnabled = false;

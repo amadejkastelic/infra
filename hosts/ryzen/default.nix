@@ -25,6 +25,7 @@
   };
 
   networking.hostName = "ryzen";
+  networking.networkmanager.insertNameservers = [ "192.168.1.8" ];
 
   security.tpm2.enable = true;
 

@@ -30,7 +30,7 @@ in
 
       location = lib.mkOption {
         type = lib.types.str;
-        default = "jellyseerr";
+        default = "";
         description = "Location path to expose Jellyseerr webui through nginx";
       };
     };

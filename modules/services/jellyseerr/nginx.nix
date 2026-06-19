@@ -7,28 +7,25 @@
 let
   cfg = config.services.seerr;
   nginxCfg = cfg.nginx;
+  locationPath = if nginxCfg.location == "" then "/" else "/${nginxCfg.location}/";
 in
-
 {
   config = lib.mkIf (cfg.enable && nginxCfg.enable) {
     services.nginx = {
       enable = true;
 
       virtualHosts."${nginxCfg.hostName}" = {
-        locations."/${nginxCfg.location}/" = {
+        locations."${locationPath}" = {
           proxyPass = "http://127.0.0.1:${toString cfg.port}/";
           proxyWebsockets = true;
           recommendedProxySettings = true;
-          extraConfig = ''
-            # Remove /jellyseerr path to pass to the app
+          extraConfig = lib.optionalString (nginxCfg.location != "") ''
             rewrite ^/${nginxCfg.location}/?(.*)$ /$1 break;
 
-            # Redirect location headers
             proxy_redirect ^ /${nginxCfg.location};
             proxy_redirect /setup /${nginxCfg.location}/setup;
             proxy_redirect /login /${nginxCfg.location}/login;
 
-            # Sub filters to replace hardcoded paths
             proxy_set_header Accept-Encoding "";
             sub_filter_once off;
             sub_filter_types *;

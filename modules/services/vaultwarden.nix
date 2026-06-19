@@ -6,6 +6,7 @@
 
 let
   cfg = config.services.vaultwarden.nginx;
+  locationPath = if cfg.location == "" then "/" else "/${cfg.location}/";
 in
 {
   options.services.vaultwarden.nginx = {
@@ -25,7 +26,7 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "vaultwarden";
+      default = "";
       description = "Location path to expose vaultwarden webui through nginx";
     };
   };
@@ -35,8 +36,8 @@ in
       enable = true;
 
       virtualHosts."${cfg.hostName}" = {
-        locations."/${cfg.location}/" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.port}/vaultwarden/";
+        locations."${locationPath}" = {
+          proxyPass = "http://127.0.0.1:${toString cfg.port}${locationPath}";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };

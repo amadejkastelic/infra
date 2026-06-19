@@ -6,7 +6,10 @@ in
 {
   services.radarr = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "radarr.amadejk.com";
+    };
 
     settings = {
       log.analyticsEnabled = false;

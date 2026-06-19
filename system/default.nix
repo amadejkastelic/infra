@@ -48,6 +48,7 @@ let
 
     ./programs/msmtp.nix
 
+    ./services/acme.nix
     ./services/arr
     ./services/blocky.nix
     ./services/dashboard.nix

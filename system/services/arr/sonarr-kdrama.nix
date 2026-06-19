@@ -6,7 +6,10 @@ in
 {
   services.sonarr-kdrama = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "sonarr-kdrama.amadejk.com";
+    };
 
     settings = {
       log.analyticsEnabled = false;

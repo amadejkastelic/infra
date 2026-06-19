@@ -6,6 +6,7 @@
 
 let
   cfg = config.services.jellyfin.nginx;
+  locationPath = if cfg.location == "" then "/" else "/${cfg.location}/";
 in
 {
   options.services.jellyfin.nginx = {
@@ -25,7 +26,7 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "jellyfin";
+      default = "";
       description = "Location path to expose jellyfin webui through nginx";
     };
   };
@@ -35,7 +36,7 @@ in
       enable = true;
 
       virtualHosts."${cfg.hostName}" = {
-        locations."/${cfg.location}/" = {
+        locations."${locationPath}" = {
           proxyPass = "http://127.0.0.1:${toString cfg.port}/";
           proxyWebsockets = true;
           recommendedProxySettings = true;

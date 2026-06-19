@@ -3,7 +3,10 @@
   services.qbittorrent = {
     enable = true;
 
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "qbittorrent.amadejk.com";
+    };
 
     webuiPort = 8088;
 

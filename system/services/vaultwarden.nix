@@ -2,7 +2,10 @@
 {
   services.vaultwarden = {
     enable = true;
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "vaultwarden.amadejk.com";
+    };
 
     environmentFile = config.sops.secrets.vaultwarden-env.path;
 
@@ -10,7 +13,7 @@
     backupDir = "${config.nas.backupDir}/vaultwarden/";
 
     config = {
-      domain = "http://${config.networking.hostName}/vaultwarden";
+      domain = "https://vaultwarden.amadejk.com";
       signupsAllowed = false;
       showPasswordHint = false;
 

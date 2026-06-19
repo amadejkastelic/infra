@@ -10,9 +10,12 @@ let
   apiCfg = config.services.sonarr-kdrama.apiConfig;
   apiConfigurator = import ./api-configurator.nix { inherit lib pkgs config; };
 
+  locationPath = if nginxCfg.location == "" then "/" else "/${nginxCfg.location}/";
+  urlBaseStr = lib.optionalString (nginxCfg.location != "") "/${nginxCfg.location}";
+
   hostConfig = {
     inherit (config.services.sonarr-kdrama.settings.server) port;
-    urlBase = if nginxCfg.enable then "/${nginxCfg.location}" else "";
+    urlBase = if nginxCfg.enable then urlBaseStr else "";
     passwordPath = apiCfg.hostPasswordPath;
     instanceName = "Sonarr KDrama";
   };
@@ -60,7 +63,7 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "sonarr-kdrama";
+      default = "";
       description = "Location path to expose sonarr-kdrama webui through nginx";
     };
   };
@@ -143,7 +146,7 @@ in
   };
 
   config = lib.mkIf config.services.sonarr-kdrama.enable {
-    services.sonarr-kdrama.settings.server.urlbase = lib.mkIf nginxCfg.enable "/${nginxCfg.location}";
+    services.sonarr-kdrama.settings.server.urlbase = lib.mkIf nginxCfg.enable urlBaseStr;
     systemd.tmpfiles.settings."10-sonarr-kdrama".${config.services.sonarr-kdrama.dataDir}.d = {
       inherit (config.services.sonarr-kdrama) user group;
       mode = "0700";
@@ -230,8 +233,8 @@ in
       enable = true;
 
       virtualHosts."${nginxCfg.hostName}" = {
-        locations."/${nginxCfg.location}/" = {
-          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}/${nginxCfg.location}/";
+        locations."${locationPath}" = {
+          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}${locationPath}";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };

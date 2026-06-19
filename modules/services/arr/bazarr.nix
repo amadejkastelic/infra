@@ -6,6 +6,7 @@
 
 let
   nginxCfg = config.services.bazarr.nginx;
+  locationPath = if nginxCfg.location == "" then "/" else "/${nginxCfg.location}/";
 in
 {
   options.services.bazarr.urlBase = lib.mkOption {
@@ -31,7 +32,7 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "bazarr";
+      default = "";
       description = "Location path to expose bazarr webui through nginx";
     };
   };
@@ -162,8 +163,8 @@ in
       enable = true;
 
       virtualHosts."${nginxCfg.hostName}" = {
-        locations."/${nginxCfg.location}/" = {
-          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}/${nginxCfg.location}/";
+        locations."${locationPath}" = {
+          proxyPass = "http://127.0.0.1:${toString nginxCfg.port}${locationPath}";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };

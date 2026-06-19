@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   networking.networkmanager = {
     enable = true;
@@ -31,10 +36,12 @@
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   # Don't wait for network startup
-  systemd.services.NetworkManager-wait-online.serviceConfig.ExecStart = [
-    ""
-    "${pkgs.networkmanager}/bin/nm-online -q"
-  ];
+  systemd.services.NetworkManager-wait-online.serviceConfig.ExecStart =
+    lib.mkIf config.networking.networkmanager.enable
+      [
+        ""
+        "${pkgs.networkmanager}/bin/nm-online -q"
+      ];
 
   environment.systemPackages = with pkgs; [
     networkmanagerapplet

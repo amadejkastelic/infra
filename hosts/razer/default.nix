@@ -9,6 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
+    ./network.nix
     ./openrazer.nix
     ./immich.nix
     ./jellyfin.nix

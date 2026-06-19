@@ -7,7 +7,10 @@ in
   services.sonarr = {
     enable = true;
 
-    nginx.enable = true;
+    nginx = {
+      enable = true;
+      hostName = "sonarr.amadejk.com";
+    };
 
     settings = {
       log.analyticsEnabled = false;
