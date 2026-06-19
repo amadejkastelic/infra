@@ -2,7 +2,10 @@
 {
   services.prometheus.exporters.node = {
     enable = true;
-    enabledCollectors = [ "zfs" ];
+    enabledCollectors = [
+      "zfs"
+      "systemd"
+    ];
     openFirewall = true;
   };
 }

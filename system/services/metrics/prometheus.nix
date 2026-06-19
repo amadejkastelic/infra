@@ -53,7 +53,10 @@ in
 
     exporters.node = {
       enable = true;
-      enabledCollectors = [ "textfile" ];
+      enabledCollectors = [
+        "textfile"
+        "systemd"
+      ];
       extraFlags = [ "--collector.textfile.directory=${textfileDir}" ];
     };
   };

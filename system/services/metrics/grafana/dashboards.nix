@@ -31,6 +31,12 @@ let
         fetchGrafanaDashboard 24987 2 "sha256-Rg1cj2eBkN+/jWpuCF37JNAFA/2Pygk3JrbRe8rNFco="
       );
     }
+    {
+      name = "systemd-monitoring.json";
+      path = patchDatasource (
+        fetchGrafanaDashboard 25304 2 "sha256-TLfTwC6jhiQqNY6s5dHKAr5vMMqYzGN6MdKYFqllpNs="
+      );
+    }
   ];
 in
 {
