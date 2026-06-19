@@ -1,9 +1,13 @@
-{ lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 {
   networking.networkmanager.enable = lib.mkForce false;
   networking.useNetworkd = true;
   networking.nameservers = [
-    "192.168.1.8"
+    config.homelab.dnsServerIp
     "1.1.1.1"
   ];
 

@@ -4,11 +4,12 @@ let
   dir = "${config.nas.mediaDir}/${category}";
 in
 {
+  homelab.subdomains = [ "sonarr-kdrama" ];
   services.sonarr-kdrama = {
     enable = true;
     nginx = {
       enable = true;
-      hostName = "sonarr-kdrama.amadejk.com";
+      hostName = "sonarr-kdrama.${config.homelab.domain}";
     };
 
     settings = {

@@ -1,4 +1,8 @@
-{ lib, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   dnsServers = [
     "1.1.1.1"
@@ -7,6 +11,7 @@ let
   ];
 in
 {
+  homelab.subdomains = [ "blocky" ];
   networking.nameservers = [ "127.0.0.1" ] ++ dnsServers;
 
   networking.firewall = {
@@ -18,7 +23,7 @@ in
     enable = true;
     nginx = {
       enable = true;
-      hostName = "blocky.amadejk.com";
+      hostName = "blocky.${config.homelab.domain}";
     };
 
     settings = {
@@ -74,28 +79,7 @@ in
         prefetching = true;
       };
 
-      customDNS.mapping = builtins.listToAttrs (
-        map
-          (name: {
-            inherit name;
-            value = "192.168.1.8";
-          })
-          [
-            "home.amadejk.com"
-            "jellyfin.amadejk.com"
-            "sonarr.amadejk.com"
-            "sonarr-anime.amadejk.com"
-            "sonarr-kdrama.amadejk.com"
-            "radarr.amadejk.com"
-            "bazarr.amadejk.com"
-            "prowlarr.amadejk.com"
-            "qbittorrent.amadejk.com"
-            "jellyseerr.amadejk.com"
-            "vaultwarden.amadejk.com"
-            "blocky.amadejk.com"
-            "immich.amadejk.com"
-          ]
-      );
+      customDNS.mapping.${config.homelab.domain} = config.homelab.dnsServerIp;
     };
   };
 

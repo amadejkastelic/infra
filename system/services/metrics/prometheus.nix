@@ -1,5 +1,6 @@
 let
   port = 9090;
+  oblakIp = "192.168.1.6";
 in
 {
   services.prometheus = {
@@ -11,18 +12,20 @@ in
     scrapeConfigs = [
       {
         job_name = "node";
-        static_configs = [ { targets = [ "localhost:9100" ]; } ];
-      }
-      {
-        job_name = "sensors";
-        static_configs = [ { targets = [ "localhost:9216" ]; } ];
+        static_configs = [
+          {
+            targets = [ "localhost:9100" ];
+            labels.hostname = "razer";
+          }
+          {
+            targets = [ "${oblakIp}:9100" ];
+            labels.hostname = "oblak";
+          }
+        ];
       }
     ];
 
-    exporters = {
-      node.enable = true;
-      systemd.enable = true;
-    };
+    exporters.node.enable = true;
   };
 
   services.grafana.provision.datasources.settings.datasources = [

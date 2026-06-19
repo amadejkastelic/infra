@@ -1,5 +1,6 @@
 { config, ... }:
 {
+  homelab.subdomains = [ "immich" ];
   services.immich = {
     enable = true;
     openFirewall = true;
@@ -13,7 +14,7 @@
 
     nginx = {
       enable = true;
-      hostName = "immich.amadejk.com";
+      hostName = "immich.${config.homelab.domain}";
     };
 
     port = 2283;

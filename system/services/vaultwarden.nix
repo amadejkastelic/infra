@@ -1,10 +1,11 @@
 { config, ... }:
 {
+  homelab.subdomains = [ "vaultwarden" ];
   services.vaultwarden = {
     enable = true;
     nginx = {
       enable = true;
-      hostName = "vaultwarden.amadejk.com";
+      hostName = "vaultwarden.${config.homelab.domain}";
     };
 
     environmentFile = config.sops.secrets.vaultwarden-env.path;
@@ -13,7 +14,7 @@
     backupDir = "${config.nas.backupDir}/vaultwarden/";
 
     config = {
-      domain = "https://vaultwarden.amadejk.com";
+      domain = "https://vaultwarden.${config.homelab.domain}";
       signupsAllowed = false;
       showPasswordHint = false;
 

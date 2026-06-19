@@ -10,8 +10,9 @@
     acceptTerms = true;
     defaults.email = "amadejkastelic7@gmail.com";
 
-    certs."amadejk.com" = {
-      domain = "*.amadejk.com";
+    certs.${config.homelab.domain} = {
+      domain = config.homelab.domain;
+      extraDomainNames = [ "*.${config.homelab.domain}" ];
       dnsProvider = "cloudflare";
       environmentFile = config.sops.secrets."cloudflare/api_token_env".path;
       group = "nginx";

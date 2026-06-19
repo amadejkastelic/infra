@@ -1,11 +1,12 @@
 { config, ... }:
 {
+  homelab.subdomains = [ "qbittorrent" ];
   services.qbittorrent = {
     enable = true;
 
     nginx = {
       enable = true;
-      hostName = "qbittorrent.amadejk.com";
+      hostName = "qbittorrent.${config.homelab.domain}";
     };
 
     webuiPort = 8088;

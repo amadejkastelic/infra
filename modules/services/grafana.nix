@@ -6,6 +6,7 @@
 
 let
   cfg = config.services.grafana.nginx;
+  locationPath = if cfg.location == "" then "/" else "/${cfg.location}/";
 in
 {
   options.services.grafana.nginx = {
@@ -25,13 +26,13 @@ in
 
     location = lib.mkOption {
       type = lib.types.str;
-      default = "grafana";
+      default = "";
       description = "Location path to expose grafana webui through nginx";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    services.grafana.settings.server = {
+    services.grafana.settings.server = lib.optionalAttrs (cfg.location != "") {
       root_url = "%(protocol)s://%(domain)s:%(http_port)s/${cfg.location}/";
       serve_from_sub_path = true;
     };
@@ -40,7 +41,7 @@ in
       enable = true;
 
       virtualHosts."${cfg.hostName}" = {
-        locations."/${cfg.location}/" = {
+        locations."${locationPath}" = {
           proxyPass = "http://127.0.0.1:${toString cfg.port}/";
           proxyWebsockets = true;
           recommendedProxySettings = true;

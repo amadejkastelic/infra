@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   hasAuthKey = builtins.hasAttr "tailscale-auth-key" config.sops.secrets;
 in
@@ -14,7 +18,7 @@ in
     authKeyFile = if hasAuthKey then config.sops.secrets.tailscale-auth-key.path else null;
     extraUpFlags = lib.optionals config.services.nginx.enable [
       "--accept-dns=false"
-      "--advertise-routes=192.168.1.0/24"
+      "--advertise-routes=${config.homelab.lanCidr}"
     ];
   };
 }

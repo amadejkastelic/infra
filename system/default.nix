@@ -1,9 +1,11 @@
 { self, ... }:
 let
   common = [
+    self.modules.config
     self.modules.hardware
     self.modules.services
 
+    ./config.nix
     ./core
 
     ./network/avahi.nix
@@ -57,7 +59,7 @@ let
     ./services/grabby.nix
     ./services/immich.nix
     ./services/jellyfin.nix
-    # ./services/metrics
+    ./services/metrics
     ./services/nginx.nix
     ./services/vaultwarden.nix
   ];

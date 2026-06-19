@@ -5,6 +5,7 @@
   ...
 }:
 {
+  homelab.subdomains = [ "jellyfin" ];
   services.jellyfin = {
     enable = true;
 
@@ -15,7 +16,7 @@
 
     nginx = {
       enable = true;
-      hostName = "jellyfin.amadejk.com";
+      hostName = "jellyfin.${config.homelab.domain}";
     };
 
     openFirewall = true;

@@ -3,12 +3,13 @@ let
   mediaDir = config.nas.mediaDir;
 in
 {
+  homelab.subdomains = [ "jellyseerr" ];
   services.seerr = {
     enable = true;
 
     nginx = {
       enable = true;
-      hostName = "jellyseerr.amadejk.com";
+      hostName = "jellyseerr.${config.homelab.domain}";
     };
 
     jellyfin = {

@@ -5,12 +5,13 @@
   ...
 }:
 {
+  homelab.subdomains = [ "prowlarr" ];
   services.prowlarr = {
     enable = true;
 
     nginx = {
       enable = true;
-      hostName = "prowlarr.amadejk.com";
+      hostName = "prowlarr.${config.homelab.domain}";
     };
 
     settings = {

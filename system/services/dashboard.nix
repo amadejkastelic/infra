@@ -1,12 +1,14 @@
+{ config, ... }:
 let
   port = 8082;
 in
 {
+  homelab.subdomains = [ "home" ];
   services.homepage-dashboard = {
     enable = true;
     nginx = {
       enable = true;
-      hostName = "home.amadejk.com";
+      hostName = "home.${config.homelab.domain}";
     };
     listenPort = port;
 
@@ -31,7 +33,7 @@ in
         Services = [
           {
             Immich = {
-              href = "https://immich.amadejk.com";
+              href = "https://immich.${config.homelab.domain}";
               icon = "immich";
             };
           }
@@ -48,13 +50,13 @@ in
           }
           {
             Blocky = {
-              href = "https://blocky.amadejk.com";
+              href = "https://blocky.${config.homelab.domain}";
               icon = "blocky";
             };
           }
           {
             Vaultwarden = {
-              href = "https://vaultwarden.amadejk.com";
+              href = "https://vaultwarden.${config.homelab.domain}";
               icon = "vaultwarden";
             };
           }
@@ -65,55 +67,55 @@ in
           {
             Jellyseerr = {
               icon = "jellyseerr";
-              href = "https://jellyseerr.amadejk.com";
+              href = "https://jellyseerr.${config.homelab.domain}";
             };
           }
           {
             Jellyfin = {
               icon = "jellyfin";
-              href = "https://jellyfin.amadejk.com";
+              href = "https://jellyfin.${config.homelab.domain}";
             };
           }
           {
             "Sonarr TV" = {
               icon = "sonarr";
-              href = "https://sonarr.amadejk.com";
+              href = "https://sonarr.${config.homelab.domain}";
             };
           }
           {
             "Sonarr KDrama" = {
               icon = "sonarr";
-              href = "https://sonarr-kdrama.amadejk.com";
+              href = "https://sonarr-kdrama.${config.homelab.domain}";
             };
           }
           {
             "Sonarr Anime" = {
               icon = "sonarr";
-              href = "https://sonarr-anime.amadejk.com";
+              href = "https://sonarr-anime.${config.homelab.domain}";
             };
           }
           {
             Radarr = {
               icon = "radarr";
-              href = "https://radarr.amadejk.com";
+              href = "https://radarr.${config.homelab.domain}";
             };
           }
           {
             Bazarr = {
               icon = "bazarr";
-              href = "https://bazarr.amadejk.com";
+              href = "https://bazarr.${config.homelab.domain}";
             };
           }
           {
             Prowlarr = {
               icon = "prowlarr";
-              href = "https://prowlarr.amadejk.com";
+              href = "https://prowlarr.${config.homelab.domain}";
             };
           }
           {
             qBittorrent = {
               icon = "qbittorrent";
-              href = "https://qbittorrent.amadejk.com";
+              href = "https://qbittorrent.${config.homelab.domain}";
             };
           }
         ];
@@ -128,7 +130,7 @@ in
           }
           {
             Grafana = {
-              href = "/grafana";
+              href = "https://grafana.${config.homelab.domain}";
               icon = "grafana";
             };
           }

@@ -1,10 +1,11 @@
 { config, ... }:
 {
+  homelab.subdomains = [ "bazarr" ];
   services.bazarr = {
     enable = true;
     nginx = {
       enable = true;
-      hostName = "bazarr.amadejk.com";
+      hostName = "bazarr.${config.homelab.domain}";
     };
     urlBase = "/";
     listenPort = 6767;

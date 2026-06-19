@@ -9,6 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./disk-config.nix
     ./hardware-configuration.nix
+    ./monitoring.nix
     ./network.nix
     ./nfs.nix
     ./ugreen-leds.nix

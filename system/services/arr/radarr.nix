@@ -4,11 +4,12 @@ let
   dir = "${config.nas.mediaDir}/${category}";
 in
 {
+  homelab.subdomains = [ "radarr" ];
   services.radarr = {
     enable = true;
     nginx = {
       enable = true;
-      hostName = "radarr.amadejk.com";
+      hostName = "radarr.${config.homelab.domain}";
     };
 
     settings = {
