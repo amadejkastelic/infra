@@ -34,7 +34,6 @@ in
           implementationName = "qBittorrent";
           host = "127.0.0.1";
           port = 8088;
-          apiKeyPath = config.sops.secrets."qbittorrent/api_key".path;
           category = category;
           importMode = "hardlink";
         }
@@ -45,11 +44,6 @@ in
   sops.secrets."radarr/api_key" = {
     owner = "radarr";
     group = "radarr";
-  };
-
-  sops.secrets."qbittorrent/api_key" = {
-    owner = "qbittorrent";
-    group = "media";
   };
 
   systemd.tmpfiles.settings."radarr" = {

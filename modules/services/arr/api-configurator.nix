@@ -232,7 +232,7 @@ let
         ]
         ++ map (
           c: "client_api_${lib.replaceStrings [ "-" ] [ "_" ] (lib.toLower c.name)}:${c.apiKeyPath}"
-        ) serviceConfig.downloadClients;
+        ) (builtins.filter (c: c.apiKeyPath != null) serviceConfig.downloadClients);
         ExecStartPre = import ./wait-for-api.nix {
           inherit
             lib
@@ -276,9 +276,14 @@ let
         ${lib.concatMapStringsSep "\n" (clientConfig: ''
           echo "Processing download client: ${clientConfig.name}"
 
-          CLIENT_API_KEY=$(cat $CREDENTIALS_DIRECTORY/client_api_${
+          CLIENT_CRED_FILE="$CREDENTIALS_DIRECTORY/client_api_${
             lib.replaceStrings [ "-" ] [ "_" ] (lib.toLower clientConfig.name)
-          })
+          }"
+          if [ -f "$CLIENT_CRED_FILE" ]; then
+            CLIENT_API_KEY=$(cat "$CLIENT_CRED_FILE")
+          else
+            CLIENT_API_KEY=""
+          fi
 
           ALL_OVERRIDES=$(${pkgs.jq}/bin/jq -n \
             --arg host "${clientConfig.host or "127.0.0.1"}" \
@@ -305,12 +310,12 @@ let
               '$existing |
                 .enable = true |
                 .priority = 1 |
-                .fields |= map(
-                  if .name == "apiKey" then .value = $apiKey
-                  elif (.name | IN($overrides | keys[])) then .value = $overrides[.name]
-                  else .
-                  end
-                )')
+                 .fields |= map(
+                   if (.name == "apiKey" and ($apiKey | length > 0)) then .value = $apiKey
+                   elif (.name | IN($overrides | keys[])) then .value = $overrides[.name]
+                   else .
+                   end
+                 )')
 
             echo "Updating download client with payload:"
             echo "$UPDATED_CLIENT"
@@ -346,11 +351,11 @@ let
                 implementation: $implName,
                 implementationName: $implName,
                 configContract: $schema.configContract,
-                fields: $schema.fields |
-                  map(if .name == "apiKey" then .value = $apiKey
-                       elif (.name | IN($overrides | keys[])) then .value = $overrides[.name]
-                       else .
-                       end)
+                 fields: $schema.fields |
+                   map(if (.name == "apiKey" and ($apiKey | length > 0)) then .value = $apiKey
+                        elif (.name | IN($overrides | keys[])) then .value = $overrides[.name]
+                        else .
+                        end)
               }')
 
             echo "Creating download client with payload:"

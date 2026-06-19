@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   homelab.subdomains = [ "grafana" ];
   imports = [ ./datasources.nix ];
@@ -6,7 +7,7 @@
     enable = true;
     nginx = {
       enable = true;
-      hostName = "grafana.amadejk.com";
+      hostName = "grafana.${config.homelab.domain}";
     };
     provision.enable = true;
 

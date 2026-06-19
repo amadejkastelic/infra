@@ -110,8 +110,9 @@ in
               description = "Download client implementation (e.g., qBittorrent)";
             };
             apiKeyPath = lib.mkOption {
-              type = lib.types.path;
-              description = "Path to download client API key secret file";
+              type = lib.types.nullOr lib.types.path;
+              default = null;
+              description = "Path to download client API key secret file (null for no auth)";
             };
             host = lib.mkOption {
               type = lib.types.str;
