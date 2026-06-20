@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -11,7 +10,6 @@ let
     ;
 
   port = 9090;
-  textfileDir = "/var/lib/prometheus-node-exporter-textfiles";
 
   exporterPorts = {
     node = config.services.prometheus.exporters.node.port;
@@ -46,19 +44,6 @@ let
         }
       ];
     };
-
-  raplScript = pkgs.writeShellScript "rapl-collector" ''
-    echo "# HELP node_rapl_energy_joules RAPL energy counter in joules"
-    echo "# TYPE node_rapl_energy_joules counter"
-    for dir in /sys/class/powercap/intel-rapl:*/; do
-      [ -f "''${dir}energy_uj" ] || continue
-      name=$(cat "''${dir}name" 2>/dev/null)
-      energy=$(cat "''${dir}energy_uj" 2>/dev/null)
-      [ -n "$energy" ] || continue
-      joules=$(${pkgs.gawk}/bin/awk "BEGIN {printf \"%.3f\", $energy / 1000000}")
-      echo "node_rapl_energy_joules{package=\"$name\"} $joules"
-    done
-  '';
 in
 {
   services.prometheus = {
@@ -71,11 +56,7 @@ in
 
     exporters.node = {
       enable = true;
-      enabledCollectors = [
-        "textfile"
-        "systemd"
-      ];
-      extraFlags = [ "--collector.textfile.directory=${textfileDir}" ];
+      enabledCollectors = [ "systemd" ];
     };
 
     exporters.postgres = {
@@ -88,29 +69,7 @@ in
     exporters.nvidia-gpu.enable = true;
   };
 
-  systemd.tmpfiles.settings."node-exporter-textfiles" = {
-    "${textfileDir}".d = {
-      mode = "0755";
-    };
-  };
-
-  systemd.services.rapl-collector = {
-    description = "Collect RAPL energy metrics for node_exporter textfile collector";
-    script = ''
-      ${raplScript} > ${textfileDir}/rapl.prom
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-    };
-  };
-
-  systemd.timers.rapl-collector = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "5s";
-      OnUnitActiveSec = "15s";
-    };
-  };
+  services.rapl-collector.enable = true;
 
   services.grafana.provision.datasources.settings.datasources = [
     {

@@ -47,6 +47,10 @@ let
       name = "systemd-logs.json";
       path = ./systemd-logs.json;
     }
+    {
+      name = "rapl-energy.json";
+      path = ./rapl-energy.json;
+    }
   ];
 in
 {

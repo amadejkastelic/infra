@@ -12,6 +12,7 @@
     ./llama-cpp.nix
     ./pipewire
     ./qbittorrent.nix
+    ./rapl-collector.nix
     ./tailscale-funnel.nix
     ./tailscale-tls.nix
     ./vaultwarden.nix
