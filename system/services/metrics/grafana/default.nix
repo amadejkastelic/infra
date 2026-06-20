@@ -4,6 +4,7 @@
   imports = [
     ./datasources.nix
     ./dashboards
+    ./alerting.nix
   ];
 
   services.grafana = {
@@ -20,6 +21,8 @@
         http_port = 3000;
         http_addr = "0.0.0.0";
         enable_gzip = true;
+        root_url = "https://grafana.${config.homelab.domain}/";
+        serve_from_sub_path = false;
       };
       users = {
         allow_sign_up = false;
