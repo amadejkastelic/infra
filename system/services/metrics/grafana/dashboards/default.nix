@@ -44,6 +44,12 @@ let
       );
     }
     {
+      name = "nvidia-gpu.json";
+      path = patchDatasource (
+        fetchGrafanaDashboard 14574 11 "sha256-0qQ+nVYZ9skOsGhpIFbTtxSkYxe7yRv6WF/56/lbgpw="
+      );
+    }
+    {
       name = "systemd-logs.json";
       path = ./systemd-logs.json;
     }
