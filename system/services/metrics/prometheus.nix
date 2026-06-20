@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 let
@@ -49,6 +48,23 @@ in
           }
         ];
       }
+      {
+        job_name = "postgres";
+        static_configs = [
+          {
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.postgres.port}"
+            ];
+            labels.hostname = "razer";
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "hostname" ];
+            target_label = "instance";
+          }
+        ];
+      }
     ];
 
     exporters.node = {
@@ -58,6 +74,13 @@ in
         "systemd"
       ];
       extraFlags = [ "--collector.textfile.directory=${textfileDir}" ];
+    };
+
+    exporters.postgres = {
+      enable = true;
+      user = "postgres_monitor";
+      group = "postgres_monitor";
+      dataSourceName = "user=postgres_monitor host=/run/postgresql dbname=postgres sslmode=disable";
     };
   };
 

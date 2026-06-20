@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   services.postgresql.enable = true;
 
@@ -12,4 +12,18 @@
 
     location = "${config.nas.backupDir}/postgresql";
   };
+
+  users.users.postgres_monitor = {
+    isSystemUser = true;
+    group = "postgres_monitor";
+    home = "/var/empty";
+    createHome = false;
+  };
+  users.groups.postgres_monitor = { };
+
+  services.postgresql.ensureUsers = [ { name = "postgres_monitor"; } ];
+
+  systemd.services.postgresql.postStart = lib.mkAfter ''
+    ${config.services.postgresql.package}/bin/psql -tAc "GRANT pg_monitor TO postgres_monitor;" || true
+  '';
 }

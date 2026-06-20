@@ -37,6 +37,12 @@ let
         fetchGrafanaDashboard 25304 2 "sha256-TLfTwC6jhiQqNY6s5dHKAr5vMMqYzGN6MdKYFqllpNs="
       );
     }
+    {
+      name = "postgres-details.json";
+      path = patchDatasource (
+        fetchGrafanaDashboard 9628 8 "sha256-UhusNAZbyt7fJV/DhFUK4FKOmnTpG0R15YO2r+nDnMc="
+      );
+    }
   ];
 in
 {
