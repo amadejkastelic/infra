@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  ...
 }:
 let
   mkHostConfigService =

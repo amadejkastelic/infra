@@ -16,6 +16,7 @@ let
   exporterPorts = {
     node = config.services.prometheus.exporters.node.port;
     postgres = config.services.prometheus.exporters.postgres.port;
+    nvidia-gpu = config.services.prometheus.exporters.nvidia-gpu.port;
   };
 
   exporterNames = lib.unique (lib.concatLists (lib.mapAttrsToList (_: h: h.exporters) homelab.hosts));
@@ -83,6 +84,8 @@ in
       group = "postgres_monitor";
       dataSourceName = "user=postgres_monitor host=/run/postgresql dbname=postgres sslmode=disable";
     };
+
+    exporters.nvidia-gpu.enable = true;
   };
 
   systemd.tmpfiles.settings."node-exporter-textfiles" = {

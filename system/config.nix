@@ -12,6 +12,7 @@
         exporters = [
           "node"
           "postgres"
+          "nvidia-gpu"
         ];
       };
       oblak = {
