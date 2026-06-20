@@ -79,7 +79,12 @@ in
         prefetching = true;
       };
 
-      customDNS.mapping.${config.homelab.domain} = config.homelab.dnsServerIp;
+      customDNS.mapping = builtins.listToAttrs (
+        map (sub: {
+          name = "${sub}.${config.homelab.domain}";
+          value = config.homelab.dnsServerIp;
+        }) config.homelab.subdomains
+      );
     };
   };
 
