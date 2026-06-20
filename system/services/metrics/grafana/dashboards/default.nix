@@ -43,6 +43,10 @@ let
         fetchGrafanaDashboard 9628 8 "sha256-UhusNAZbyt7fJV/DhFUK4FKOmnTpG0R15YO2r+nDnMc="
       );
     }
+    {
+      name = "systemd-logs.json";
+      path = ./systemd-logs.json;
+    }
   ];
 in
 {

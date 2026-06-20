@@ -8,6 +8,7 @@
     ./immich.nix
     ./jellyfin
     ./jellyseerr
+    ./journald-loki.nix
     ./llama-cpp.nix
     ./pipewire
     ./qbittorrent.nix

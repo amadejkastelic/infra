@@ -3,7 +3,7 @@
   homelab.subdomains = [ "grafana" ];
   imports = [
     ./datasources.nix
-    ./dashboards.nix
+    ./dashboards
   ];
 
   services.grafana = {
