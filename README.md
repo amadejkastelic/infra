@@ -73,7 +73,7 @@ nix build .#nixosConfigurations.ryzen.config.system.build.toplevel
 nix develop
 
 # Format all Nix files
-nix fmt
+treefmt
 
 # Build custom packages
 nix build .#catppuccin-plymouth

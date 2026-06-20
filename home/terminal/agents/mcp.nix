@@ -1,7 +1,7 @@
 {
+  config,
   inputs,
   lib,
-  osConfig,
   pkgs,
   ...
 }:
@@ -12,6 +12,7 @@ in
 {
   home.packages = with pkgs; [
     github-mcp-server
+    mcp-grafana
     mcp-nixos
   ];
 
@@ -29,15 +30,8 @@ in
         ];
         env.GITHUB_PERSONAL_ACCESS_TOKEN = "{env:GITHUB_TOKEN}";
       };
-      nix-exec = {
-        command = lib.getExe inputs.nix-exec.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      };
       nixos = {
         command = lib.getExe pkgs.mcp-nixos;
-      };
-      nushell = {
-        command = lib.getExe pkgs.nushell;
-        args = [ "--mcp" ];
       };
       web-search-prime = {
         type = "remote";
@@ -59,6 +53,13 @@ in
         env = {
           Z_AI_MODE = "ZAI";
           Z_AI_API_KEY = "{env:Z_AI_API_KEY}";
+        };
+      };
+      grafana = {
+        command = lib.getExe pkgs.mcp-grafana;
+        env = {
+          GRAFANA_URL = "https://grafana.amadejk.com";
+          GRAFANA_SERVICE_ACCOUNT_TOKEN = "{file:${config.sops.secrets.grafana-service-account-token.path}}";
         };
       };
     };

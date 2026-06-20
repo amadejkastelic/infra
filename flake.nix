@@ -30,6 +30,7 @@
               just
               nixd
               nixfmt
+              nixfmt-tree
               nodejs-slim
               git
               config.packages.repl

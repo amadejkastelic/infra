@@ -30,7 +30,7 @@ Skip agents and use direct tools when:
 ### Formatting and Linting
 ```bash
 # Format all Nix files
-nix fmt
+treefmt
 
 # Pre-commit hooks (run automatically on commit)
 nix-shell -p pre-commit --run "pre-commit run --all-files"
@@ -139,7 +139,7 @@ nix build .#bibata-cursors-svg
 After completing changes, run:
 ```bash
 # Format code
-nix fmt
+treefmt
 
 # Check for any obvious issues
 nix flake check
