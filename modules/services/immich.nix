@@ -7,6 +7,8 @@
 let
   cfg = config.services.immich.nginx;
   locationPath = if cfg.location == "" then "/" else "/${cfg.location}/";
+  accelDevices = config.services.immich.accelerationDevices;
+  hasNvidia = accelDevices != [ ] && lib.any (dev: lib.hasInfix "nvidia" dev) accelDevices;
 in
 {
   options.services.immich.nginx = {
@@ -48,6 +50,24 @@ in
           '';
         };
       };
+    };
+
+    systemd.services.immich-server.serviceConfig = lib.mkIf hasNvidia {
+      DeviceAllow = [
+        "char-drm rw"
+        "char-nvidia rw"
+        "char-nvidia-uvm rw"
+      ];
+      PrivateDevices = false;
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_NETLINK"
+        "AF_INET"
+        "AF_INET6"
+      ];
+      Environment = [
+        "LD_LIBRARY_PATH=${config.hardware.nvidia.package}/lib"
+      ];
     };
   };
 }
