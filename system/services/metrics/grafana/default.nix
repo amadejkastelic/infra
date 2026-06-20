@@ -5,6 +5,7 @@
     ./datasources.nix
     ./dashboards
     ./alerting.nix
+    ./rules.nix
   ];
 
   services.grafana = {
