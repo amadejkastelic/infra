@@ -24,7 +24,7 @@ pkgs.writeShellScript "${serviceName}-wait-for-api" ''
 
   echo "API key: "${"$"}{API_KEY:0:20}"..."
 
-  BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+  BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
   FULL_URL="$BASE_URL/system/status"
   echo "Full URL: $FULL_URL"

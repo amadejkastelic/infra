@@ -161,7 +161,7 @@ in
           wantedBy = [ "multi-user.target" ];
           environment = lib.mapAttrs' (name: value: {
             name = lib.toUpper "SONARR__${name}";
-            value = builtins.toString value;
+            value = toString value;
           }) (lib.filterAttrs (name: value: !(builtins.isAttrs value)) config.services.sonarr-anime.settings);
 
           serviceConfig = {

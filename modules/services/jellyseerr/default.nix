@@ -1,13 +1,11 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 let
   cfg = config.services.seerr;
-  nginxCfg = cfg.nginx;
 in
 
 {

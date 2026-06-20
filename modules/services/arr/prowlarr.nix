@@ -24,7 +24,6 @@ let
     serviceName:
     let
       serviceConfig = config.services.${serviceName}.apiConfig;
-      serviceNginxCfg = config.services.${serviceName}.nginx or { enable = false; };
       displayName = lib.concatMapStringsSep " " (
         word: lib.toUpper (builtins.substring 0 1 word) + builtins.substring 1 (-1) word
       ) (lib.splitString "-" serviceName);
@@ -33,7 +32,6 @@ let
       implementationName =
         lib.toUpper (builtins.substring 0 1 serviceBase) + builtins.substring 1 (-1) serviceBase;
 
-      useNginx = config.services.${serviceName}.nginx.enable or false;
       servicePort = config.services.${serviceName}.settings.server.port;
       serviceLocation = config.services.${serviceName}.nginx.location or "";
       baseUrl = "http://127.0.0.1:${toString servicePort}/${serviceLocation}";

@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  config,
 }:
 let
   mkHostConfigService =
@@ -42,7 +41,7 @@ let
           serviceConfig.hostConfig.passwordPath != null
         ) "AUTH_PASSWORD=$(cat $CREDENTIALS_DIRECTORY/auth_password)"}
 
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching current host configuration..."
         HOST_CONFIG=$(${pkgs.curl}/bin/curl -s -H "X-Api-Key: $API_KEY" "$BASE_URL/config/host" 2>&1)
@@ -76,7 +75,7 @@ let
               serviceConfig.hostConfig.passwordPath != null
             ) "--arg password \"$AUTH_PASSWORD\""
           } \
-          --argjson port "${builtins.toString serviceConfig.hostConfig.port}" \
+          --argjson port "${toString serviceConfig.hostConfig.port}" \
           --arg urlBase "${serviceConfig.hostConfig.urlBase}" \
           --arg instanceName "${serviceConfig.hostConfig.instanceName}" \
           --arg logLevel "info" \
@@ -153,7 +152,7 @@ let
         set -eu
 
         API_KEY=$(cat $CREDENTIALS_DIRECTORY/api_key)
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching existing root folders..."
         ROOT_FOLDERS=$(${pkgs.curl}/bin/curl -s -H "X-Api-Key: $API_KEY" "$BASE_URL/rootfolder")
@@ -247,7 +246,7 @@ let
         set -eu
 
         API_KEY=$(cat $CREDENTIALS_DIRECTORY/api_key)
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching download client schemas..."
         SCHEMAS=$(${pkgs.curl}/bin/curl -sS -H "X-Api-Key: $API_KEY" "$BASE_URL/downloadclient/schema")
@@ -420,7 +419,7 @@ let
         set -eu
 
         API_KEY=$(cat $CREDENTIALS_DIRECTORY/api_key)
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching application schemas..."
         echo "URL: $BASE_URL/applications/schema"
@@ -544,7 +543,7 @@ let
         set -eu
 
         API_KEY=$(cat $CREDENTIALS_DIRECTORY/api_key)
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching indexer schemas..."
         SCHEMAS=$(${pkgs.curl}/bin/curl -sS -H "X-Api-Key: $API_KEY" "$BASE_URL/indexer/schema")
@@ -596,7 +595,7 @@ let
           ALL_OVERRIDES=$(${pkgs.jq}/bin/jq -n \
             --argjson config '${
               builtins.toJSON (
-                builtins.removeAttrs indexerConfig [
+                removeAttrs indexerConfig [
                   "name"
                   "apiKeyPath"
                   "credentialsPaths"
@@ -741,7 +740,7 @@ let
         set -eu
 
         API_KEY=$(cat $CREDENTIALS_DIRECTORY/api_key)
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching indexer proxy schemas..."
         SCHEMAS=$(${pkgs.curl}/bin/curl -sS -H "X-Api-Key: $API_KEY" "$BASE_URL/indexerproxy/schema")
@@ -785,7 +784,7 @@ let
 
             UPDATED_PROXY=$(echo "$EXISTING_PROXY" | ${pkgs.jq}/bin/jq \
               --arg hostUrl "${proxyConfig.hostUrl}" \
-              --argjson requestTimeout ${builtins.toString proxyConfig.requestTimeout} \
+              --argjson requestTimeout ${toString proxyConfig.requestTimeout} \
               --argjson tagIds "$TAG_IDS" \
               '.fields |= (map(if .name == "hostUrl" then .value = $hostUrl elif .name == "requestTimeout" then .value = $requestTimeout else . end)) | .tags = $tagIds')
 
@@ -809,7 +808,7 @@ let
             NEW_PROXY=$(echo "$SCHEMA" | ${pkgs.jq}/bin/jq \
               --arg name "${proxyConfig.name}" \
               --arg hostUrl "${proxyConfig.hostUrl}" \
-              --argjson requestTimeout ${builtins.toString proxyConfig.requestTimeout} \
+              --argjson requestTimeout ${toString proxyConfig.requestTimeout} \
               --argjson tagIds "$TAG_IDS" \
               '.name = $name | .fields |= (map(if .name == "hostUrl" then .value = $hostUrl elif .name == "requestTimeout" then .value = $requestTimeout else . end)) | .tags = $tagIds')
 
@@ -855,7 +854,7 @@ let
         set -eu
 
         API_KEY=$(cat $CREDENTIALS_DIRECTORY/api_key)
-        BASE_URL="http://127.0.0.1:${builtins.toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
+        BASE_URL="http://127.0.0.1:${toString serviceConfig.hostConfig.port}${serviceConfig.hostConfig.urlBase}/api/${serviceConfig.apiVersion}"
 
         echo "Fetching instance schemas..."
         SCHEMAS=$(${pkgs.curl}/bin/curl -sS -H "X-Api-Key: $API_KEY" "$BASE_URL/instance/schema")

@@ -16,22 +16,6 @@ let
 
   # Cookie file for authentication
   cookieFile = "/run/jellyseerr/cookies.txt";
-
-  # Auth script to source for authenticated requests
-  authScript = pkgs.writeText "jellyseerr-auth.sh" ''
-    # Wait for Jellyseerr to be ready
-    for i in {1..60}; do
-      if ${pkgs.curl}/bin/curl -sf "${baseUrl}/api/v1/status" >/dev/null 2>&1; then
-        break
-      fi
-      sleep 1
-    done
-
-    # Check if we need to authenticate
-    if [ ! -f "${cookieFile}" ]; then
-      echo "Cookie file not found, authentication may be required"
-    fi
-  '';
 in
 
 {
