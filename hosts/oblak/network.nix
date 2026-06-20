@@ -15,7 +15,7 @@
     enable = true;
     networks."10-lan" = {
       matchConfig.Name = "enp1s0";
-      address = [ "192.168.1.6/24" ];
+      address = [ "${config.homelab.hosts.oblak.ip}/24" ];
       gateway = [ "192.168.1.1" ];
     };
   };

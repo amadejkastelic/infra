@@ -29,5 +29,26 @@
       default = [ ];
       description = "Subdomains registered by service configs (without the domain suffix)";
     };
+
+    hosts = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            ip = lib.mkOption {
+              type = lib.types.str;
+              description = "LAN IP of the host";
+            };
+
+            exporters = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "Prometheus exporters this host exposes for scraping";
+            };
+          };
+        }
+      );
+      default = { };
+      description = "Inventory of NixOS hosts in the homelab";
+    };
   };
 }

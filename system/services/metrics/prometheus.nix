@@ -1,12 +1,50 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
 let
+  inherit (config)
+    networking
+    homelab
+    ;
+
   port = 9090;
-  oblakIp = "192.168.1.6";
   textfileDir = "/var/lib/prometheus-node-exporter-textfiles";
+
+  exporterPorts = {
+    node = config.services.prometheus.exporters.node.port;
+    postgres = config.services.prometheus.exporters.postgres.port;
+  };
+
+  exporterNames = lib.unique (lib.concatLists (lib.mapAttrsToList (_: h: h.exporters) homelab.hosts));
+
+  mkScrapeConfig =
+    name:
+    let
+      eport = exporterPorts.${name};
+      targetHosts = lib.attrNames (lib.filterAttrs (_: h: lib.elem name h.exporters) homelab.hosts);
+      staticConfig =
+        hname:
+        let
+          addr = if hname == networking.hostName then "localhost" else homelab.hosts.${hname}.ip;
+        in
+        {
+          targets = [ "${addr}:${toString eport}" ];
+          labels.hostname = hname;
+        };
+    in
+    {
+      job_name = name;
+      static_configs = map staticConfig targetHosts;
+      relabel_configs = [
+        {
+          source_labels = [ "hostname" ];
+          target_label = "instance";
+        }
+      ];
+    };
 
   raplScript = pkgs.writeShellScript "rapl-collector" ''
     echo "# HELP node_rapl_energy_joules RAPL energy counter in joules"
@@ -28,44 +66,7 @@ in
 
     port = port;
 
-    scrapeConfigs = [
-      {
-        job_name = "node";
-        static_configs = [
-          {
-            targets = [ "localhost:9100" ];
-            labels.hostname = "razer";
-          }
-          {
-            targets = [ "${oblakIp}:9100" ];
-            labels.hostname = "oblak";
-          }
-        ];
-        relabel_configs = [
-          {
-            source_labels = [ "hostname" ];
-            target_label = "instance";
-          }
-        ];
-      }
-      {
-        job_name = "postgres";
-        static_configs = [
-          {
-            targets = [
-              "localhost:${toString config.services.prometheus.exporters.postgres.port}"
-            ];
-            labels.hostname = "razer";
-          }
-        ];
-        relabel_configs = [
-          {
-            source_labels = [ "hostname" ];
-            target_label = "instance";
-          }
-        ];
-      }
-    ];
+    scrapeConfigs = map mkScrapeConfig exporterNames;
 
     exporters.node = {
       enable = true;
