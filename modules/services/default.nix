@@ -10,6 +10,7 @@
     ./jellyseerr
     ./journald-loki.nix
     ./llama-cpp.nix
+    ./nixos-info-collector.nix
     ./pipewire
     ./qbittorrent.nix
     ./rapl-collector.nix

@@ -56,7 +56,13 @@ in
 
     exporters.node = {
       enable = true;
-      enabledCollectors = [ "systemd" ];
+      enabledCollectors = [
+        "systemd"
+        "textfile"
+      ];
+      extraFlags = [
+        "--collector.textfile.directory=/var/lib/prometheus-node-exporter-textfiles"
+      ];
     };
 
     exporters.postgres = {
@@ -70,6 +76,7 @@ in
   };
 
   services.rapl-collector.enable = true;
+  services.nixos-info-collector.enable = true;
 
   services.grafana.provision.datasources.settings.datasources = [
     {

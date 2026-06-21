@@ -1,0 +1,138 @@
+{
+  "uid": "nixos-overview",
+  "title": "NixOS Overview",
+  "description": "Per-host overview: kernel version/build, NixOS release, codename, booted system closure hash, and last deployment time. Kernel data comes from node_exporter's uname collector; NixOS data comes from the nixos-info-collector textfile collector.",
+  "tags": ["nixos", "overview"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "panels": [
+    {
+      "id": 1,
+      "type": "table",
+      "title": "Hosts",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "node_uname_info{job=\"node\"} * on (instance) group_left(nixos_version, nixos_codename, nixos_revision, nixos_deployment) nixos_info",
+          "legendFormat": "{{instance}}",
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "description": "Left-joined from node_uname_info so hosts where the nixos-info-collector has not yet published are still listed (NixOS columns will be blank). System closure hash is the /nix/store basename of /run/current-system; 'Deployed' is its mtime.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": ["sum"],
+          "countRows": false,
+          "fields": ""
+        }
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "domainname": true,
+              "hostname": true,
+              "job": true,
+              "nodename": true,
+              "sysname": true
+            },
+            "indexByName": {
+              "instance": 0,
+              "machine": 1,
+              "release": 2,
+              "version": 3,
+              "nixos_version": 4,
+              "nixos_codename": 5,
+              "nixos_revision": 6,
+              "nixos_deployment": 7
+            },
+            "renameByName": {
+              "instance": "Host",
+              "machine": "Arch",
+              "release": "Kernel",
+              "version": "Kernel Build",
+              "nixos_version": "NixOS",
+              "nixos_codename": "Codename",
+              "nixos_revision": "System Closure",
+              "nixos_deployment": "Deployed"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -57,6 +57,10 @@ let
       name = "rapl-energy.json";
       path = ./rapl-energy.json;
     }
+    {
+      name = "nixos-overview.json";
+      path = ./nixos-overview.json;
+    }
   ];
 in
 {

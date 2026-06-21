@@ -28,11 +28,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.prometheus.exporters.node = {
-      enabledCollectors = [ "textfile" ];
-      extraFlags = [ "--collector.textfile.directory=${textfileDir}" ];
-    };
-
     systemd.tmpfiles.settings."node-exporter-textfiles" = {
       "${textfileDir}".d = {
         mode = "0755";
