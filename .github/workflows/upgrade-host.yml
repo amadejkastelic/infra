@@ -69,6 +69,8 @@ jobs:
           ssh-keyscan -T 30 ${{ matrix.host }} >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Upgrade host
+        env:
+          TMPDIR: /tmp
         run: |
           nix run nixpkgs#nixos-rebuild -- switch \
             --flake .#${{ inputs.flake || matrix.host }} \
