@@ -50,6 +50,12 @@ let
       );
     }
     {
+      name = "blocky.json";
+      path = patchDatasource (
+        fetchGrafanaDashboard 13768 8 "sha256-gwPOcnVC7BXTlhOCRvENAXZfGdQGVCPEUrLCl4ASkVE="
+      );
+    }
+    {
       name = "systemd-logs.json";
       path = ./systemd-logs.json;
     }

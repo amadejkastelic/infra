@@ -52,7 +52,16 @@ in
 
     port = port;
 
-    scrapeConfigs = map mkScrapeConfig exporterNames;
+    scrapeConfigs = (map mkScrapeConfig exporterNames) ++ [
+      {
+        job_name = "blocky";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString config.services.blocky.settings.ports.http}" ];
+          }
+        ];
+      }
+    ];
 
     exporters.node = {
       enable = true;

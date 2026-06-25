@@ -79,6 +79,8 @@ in
         prefetching = true;
       };
 
+      prometheus.enable = true;
+
       customDNS.mapping = builtins.listToAttrs (
         map (sub: {
           name = "${sub}.${config.homelab.domain}";
