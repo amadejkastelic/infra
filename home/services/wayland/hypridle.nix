@@ -127,7 +127,7 @@ in
           on-timeout = "loginctl lock-session";
         }
         {
-          timeout = 360;
+          timeout = 600;
           on-timeout = "${lib.getExe saveWindows} && hyprctl dispatch dpms off";
           on-resume = "hyprctl dispatch dpms on && ${lib.getExe restoreWindows}";
         }
