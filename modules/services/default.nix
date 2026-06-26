@@ -4,6 +4,7 @@
     ./blocky.nix
     ./dashboard.nix
     ./firefox-syncserver.nix
+    ./forgejo.nix
     ./grafana.nix
     ./immich.nix
     ./jellyfin

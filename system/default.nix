@@ -53,9 +53,10 @@ let
     ./services/acme.nix
     ./services/arr
     ./services/blocky.nix
+    ./services/cloudflared.nix
     ./services/dashboard.nix
     ./services/databases
-    # ./services/firefox-syncserver.nix
+    ./services/forgejo.nix
     ./services/grabby.nix
     ./services/immich.nix
     ./services/jellyfin.nix

@@ -56,6 +56,16 @@ in
         ];
       }
       {
+        Developer = [
+          {
+            Forgejo = {
+              href = "https://forgejo.${config.homelab.domain}";
+              icon = "forgejo";
+            };
+          }
+        ];
+      }
+      {
         Multimedia = [
           {
             Jellyseerr = {
