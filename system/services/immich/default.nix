@@ -1,5 +1,7 @@
 { config, ... }:
 {
+  imports = [ ./proxy.nix ];
+
   homelab.subdomains = [ "immich" ];
   services.immich = {
     enable = true;
@@ -23,6 +25,21 @@
 
     database = {
       enable = true;
+    };
+
+    settings = {
+      ffmpeg = {
+        accel = "nvenc";
+        accelDecode = true;
+        acceptedVideoCodecs = [ "hevc" ];
+        crf = 28;
+        preset = "medium";
+        targetResolution = "original";
+        targetVideoCodec = "hevc";
+      };
+      machineLearning.urls = [ "http://localhost:3003" ];
+      newVersionCheck.enabled = false;
+      server.externalDomain = "https://gallery.${config.homelab.domain}";
     };
   };
 

@@ -58,7 +58,7 @@ let
     ./services/databases
     ./services/forgejo.nix
     ./services/grabby.nix
-    ./services/immich.nix
+    ./services/immich
     ./services/jellyfin.nix
     ./services/metrics
     ./services/nginx.nix
