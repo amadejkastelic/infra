@@ -139,7 +139,7 @@ in
           {
             Website = [
               {
-                icon = "si-home";
+                icon = "firefox";
                 href = "https://amadejk.com";
               }
             ];
