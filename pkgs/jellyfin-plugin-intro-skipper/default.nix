@@ -1,7 +1,11 @@
 {
   buildDotnetModule,
   fetchFromGitHub,
+  fetchPnpmDeps,
   dotnetCorePackages,
+  nodejs,
+  pnpm,
+  pnpmConfigHook,
   ...
 }:
 let
@@ -10,13 +14,13 @@ in
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-intro-skipper";
 
-  version = "1.10.11.14";
+  version = "1.10.11.21";
 
   src = fetchFromGitHub {
     owner = "intro-skipper";
     repo = "intro-skipper";
     tag = "${branch}/v${finalAttrs.version}";
-    hash = "sha256-NMwBaghTSph1bNwo1xQAEnfEwf+XGFbTmcOORQzz6yQ=";
+    hash = "sha256-/Gxvcm8pbFe8py/9gvqrW7S2+Zzlrz9sSFwHBrgE1AU=";
   };
 
   dotnet-sdk = dotnetCorePackages.sdk_9_0;
@@ -26,6 +30,27 @@ buildDotnetModule (finalAttrs: {
 
   projectFile = "IntroSkipper/IntroSkipper.csproj";
   nugetDeps = ./deps.json;
+
+  pnpmDeps = fetchPnpmDeps {
+    inherit (finalAttrs) pname src;
+    preInstall = "cd web";
+    fetcherVersion = 4;
+    hash = "sha256-xMS1lZaM45qT6kdpJrp2aBdZfWcNceMc01DuK6DccSg=";
+  };
+
+  pnpmRoot = "web";
+
+  nativeBuildInputs = [
+    nodejs
+    pnpm
+    pnpmConfigHook
+  ];
+
+  dotnet-build-flags = [ "/p:SkipWebBuild=true" ];
+
+  preBuild = ''
+    (cd "$pnpmRoot" && pnpm build)
+  '';
 
   postFixup = ''
     mkdir -p $out/share/jellyfin/plugins/IntroSkipper
