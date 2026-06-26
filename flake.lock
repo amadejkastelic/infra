@@ -3882,11 +3882,11 @@
         "systems": "systems_14"
       },
       "locked": {
-        "lastModified": 1782481853,
-        "narHash": "sha256-H8eo7e/kMWkEglt3KCbm2pwNJwSBwgxGydQ6/+9wdHk=",
+        "lastModified": 1782483043,
+        "narHash": "sha256-j728H861meVeVak5QuxCJ4IsouVxKGR5JQeLzDCFLQU=",
         "owner": "vicinaehq",
         "repo": "vicinae",
-        "rev": "8b8584758cd49f8cb220f735006f5ac45e041b27",
+        "rev": "d6ee77672aeb274740780c6f9e60036432747c36",
         "type": "github"
       },
       "original": {
