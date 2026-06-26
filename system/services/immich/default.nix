@@ -39,6 +39,15 @@
       };
       machineLearning.urls = [ "http://localhost:3003" ];
       newVersionCheck.enabled = false;
+      notifications.smtp = {
+        enabled = true;
+        from = config.programs.msmtp.accounts.default.from;
+        transport = {
+          inherit (config.programs.msmtp.accounts.default) host port;
+          username = config.programs.msmtp.accounts.default.from;
+          password._secret = config.sops.secrets.gmail-password.path;
+        };
+      };
       server.externalDomain = "https://gallery.${config.homelab.domain}";
     };
   };
