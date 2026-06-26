@@ -42,13 +42,6 @@ in
       {
         Utilities = [
           {
-            # TODO
-            Traefik = {
-              href = "/traefik";
-              icon = "traefik";
-            };
-          }
-          {
             Blocky = {
               href = "https://blocky.${config.homelab.domain}";
               icon = "blocky";
@@ -123,12 +116,6 @@ in
       {
         Monitoring = [
           {
-            Prometheus = {
-              href = "/prometheus";
-              icon = "prometheus";
-            };
-          }
-          {
             Grafana = {
               href = "https://grafana.${config.homelab.domain}";
               icon = "grafana";
@@ -146,6 +133,14 @@ in
               {
                 icon = "si-github";
                 href = "https://github.com/";
+              }
+            ];
+          }
+          {
+            Website = [
+              {
+                icon = "si-home";
+                href = "https://amadejk.com";
               }
             ];
           }
