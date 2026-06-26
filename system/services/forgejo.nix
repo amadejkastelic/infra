@@ -44,7 +44,7 @@ in
 
     provision = {
       enable = true;
-      adminUsername = "amadejk";
+      adminUsername = "amadejkastelic";
       adminEmail = "amadejkastelic7@gmail.com";
       passwordFile = config.sops.secrets."forgejo/admin-password".path;
       sshKeys = keys;
