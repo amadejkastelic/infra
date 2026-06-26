@@ -13,14 +13,13 @@
 # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/op/openrgb/package.nix
 stdenv.mkDerivation (finalAttrs: {
   pname = "openrgb";
-  version = "unstable-2026-06-19";
+  version = "unstable-2026-06-26";
 
-  # https://gitlab.com/CalcProgrammer1/OpenRGB/-/merge_requests/3290
   src = fetchFromGitLab {
-    owner = "amadejkastelic";
+    owner = "CalcProgrammer1";
     repo = "OpenRGB";
-    rev = "82c79b385615aab166c957427f3ae1bdc1ea2075";
-    hash = "sha256-ljC03xdkGIVpiJgFXWVcU4UXRZWim/rXf6CEukcb8eY=";
+    rev = "94042375a7b78cd2eb76418590b70096a0d7a362";
+    hash = "sha256-XRWW+k8aE1iSPTjQ+kWMTq62/EH0PW98y3oX2krZyfU=";
   };
 
   nativeBuildInputs = [
