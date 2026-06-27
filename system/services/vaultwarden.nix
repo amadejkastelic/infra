@@ -21,6 +21,12 @@
       rocketAddress = "127.0.0.1";
       rocketPort = 8222;
       rocketLog = "critical";
+
+      SMTP_HOST = "smtp.gmail.com";
+      SMTP_PORT = 587;
+      SMTP_SECURITY = "starttls";
+      SMTP_FROM = "amadejkastelic7@gmail.com";
+      SMTP_FROM_NAME = "Vaultwarden";
     };
   };
 
