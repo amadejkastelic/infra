@@ -8,6 +8,8 @@ let
   ) config.users.users.amadejk.openssh.authorizedKeys.keys;
 in
 {
+  catppuccin.forgejo.enable = true;
+
   homelab.subdomains = [ "forgejo" ];
 
   services.forgejo = {

@@ -8,6 +8,8 @@ let
     ./config.nix
     ./core
 
+    ./theme/catppuccin.nix
+
     ./network/avahi.nix
     ./network/default.nix
     ./network/nfs.nix
