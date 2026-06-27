@@ -44,6 +44,8 @@ in
       "col.active_border" = "rgba(88888888)";
       "col.inactive_border" = "rgba(00000088)";
 
+      layout = "master";
+
       allow_tearing = true;
       resize_on_border = true;
     };
@@ -105,8 +107,10 @@ in
       };
     };
 
-    dwindle = {
-      preserve_split = true;
+    master = {
+      mfact = 0.40;
+      new_status = "slave";
+      orientation = "center";
     };
 
     misc = {
