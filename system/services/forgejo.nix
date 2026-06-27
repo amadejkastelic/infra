@@ -33,10 +33,21 @@ in
         SSH_PORT = sshPort;
         SSH_LISTEN_PORT = sshPort;
       };
+      mailer = {
+        ENABLED = true;
+        PROTOCOL = "smtps";
+        SMTP_ADDR = "smtp.gmail.com";
+        SMTP_PORT = 465;
+        FROM = "Forgejo <amadejkastelic7@gmail.com>";
+        USER = "amadejkastelic7@gmail.com";
+      };
       service.DISABLE_REGISTRATION = true;
+      service.ENABLE_NOTIFY_MAIL = true;
       session.COOKIE_SECURE = true;
       log.LEVEL = "Info";
     };
+
+    secrets.mailer.PASSWD = config.sops.secrets.gmail-password.path;
 
     dump = {
       enable = true;
