@@ -33,7 +33,7 @@ in
     # binds
     bind =
       let
-        monocle = "master:no_gaps_when_only";
+        monocle = "dwindle:no_gaps_when_only";
       in
       [
         # compositor commands
@@ -45,7 +45,7 @@ in
         "$mod SHIFT, P, changegroupactive, b"
         # "$mod, R, togglesplit,"
         "$mod, W, togglefloating,"
-        "$mod, P, layoutmsg, orientationcycle,"
+        "$mod, P, pseudo,"
         "$mod ALT, ,resizeactive,"
 
         # toggle "monocle" (no_gaps_when_only)
