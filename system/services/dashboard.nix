@@ -59,7 +59,7 @@ in
         Developer = [
           {
             Forgejo = {
-              href = "https://forgejo.${config.homelab.domain}";
+              href = "https://git.${config.homelab.domain}";
               icon = "forgejo";
             };
           }

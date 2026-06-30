@@ -10,7 +10,7 @@ in
 {
   catppuccin.forgejo.enable = true;
 
-  homelab.subdomains = [ "forgejo" ];
+  homelab.subdomains = [ "git" ];
 
   services.forgejo = {
     enable = true;
@@ -24,8 +24,8 @@ in
 
     settings = {
       server = {
-        DOMAIN = "forgejo.${config.homelab.domain}";
-        ROOT_URL = "https://forgejo.${config.homelab.domain}";
+        DOMAIN = "git.${config.homelab.domain}";
+        ROOT_URL = "https://git.${config.homelab.domain}";
         HTTP_ADDR = "127.0.0.1";
         HTTP_PORT = 3001;
         DISABLE_SSH = false;
@@ -64,7 +64,7 @@ in
     };
   };
 
-  services.nginx.virtualHosts."forgejo.${config.homelab.domain}".locations."/" = {
+  services.nginx.virtualHosts."git.${config.homelab.domain}".locations."/" = {
     proxyPass = "http://127.0.0.1:${port}";
     proxyWebsockets = true;
   };
