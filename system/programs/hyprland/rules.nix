@@ -61,6 +61,7 @@ in
 
       # Communication apps
       "match:class ^(vesktop)$, float true, workspace 8 silent, center true, size 1920 1080, opacity ${opacity}"
+      "match:class ^(discord)$, float true, workspace 8 silent, center true, size 1920 1080, opacity ${opacity}"
 
       # Music apps
       "match:initial_class ^(Cider)$, float true, opacity ${opacity}, workspace 9 silent, center true, size 1920 1080"
