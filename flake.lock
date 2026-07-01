@@ -1057,7 +1057,7 @@
           "nix-gaming",
           "flake-compat"
         ],
-        "gitignore": "gitignore_7",
+        "gitignore": "gitignore_6",
         "nixpkgs": [
           "nix-gaming",
           "nixpkgs"
@@ -1128,7 +1128,7 @@
     "gitignore_2": {
       "inputs": {
         "nixpkgs": [
-          "grabby",
+          "hyprland",
           "pre-commit-hooks",
           "nixpkgs"
         ]
@@ -1150,7 +1150,7 @@
     "gitignore_3": {
       "inputs": {
         "nixpkgs": [
-          "hyprland",
+          "hyprlux",
           "pre-commit-hooks",
           "nixpkgs"
         ]
@@ -1172,28 +1172,6 @@
     "gitignore_4": {
       "inputs": {
         "nixpkgs": [
-          "hyprlux",
-          "pre-commit-hooks",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1709087332,
-        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "type": "github"
-      }
-    },
-    "gitignore_5": {
-      "inputs": {
-        "nixpkgs": [
           "lanzaboote",
           "pre-commit",
           "nixpkgs"
@@ -1213,7 +1191,7 @@
         "type": "github"
       }
     },
-    "gitignore_6": {
+    "gitignore_5": {
       "inputs": {
         "nixpkgs": [
           "nix-exec",
@@ -1235,7 +1213,7 @@
         "type": "github"
       }
     },
-    "gitignore_7": {
+    "gitignore_6": {
       "inputs": {
         "nixpkgs": [
           "nix-gaming",
@@ -1257,7 +1235,7 @@
         "type": "github"
       }
     },
-    "gitignore_8": {
+    "gitignore_7": {
       "inputs": {
         "nixpkgs": [
           "sekiro-tweaker",
@@ -1305,11 +1283,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1782606793,
-        "narHash": "sha256-/eQS1llQtUxKhY3kF8pe3VLhFsNn4oPTD8coZhOFg7w=",
+        "lastModified": 1782916584,
+        "narHash": "sha256-R/McZaMFxn67tPQ0eQnM95leEm9of5EudZOsu9q31RE=",
         "owner": "amadejkastelic",
         "repo": "grabby",
-        "rev": "a437b9e4d49a1fad738e89fdc1e5b07353f9dd66",
+        "rev": "34c472131dc3fa4e6b8cfa538f001092747524fe",
         "type": "github"
       },
       "original": {
@@ -2946,11 +2924,11 @@
     },
     "nixpkgs_9": {
       "locked": {
-        "lastModified": 1782467914,
-        "narHash": "sha256-pGvFkM8N0xEkIIXDe5YYfbEAvHrk4IxBrjB/x8OomhE=",
+        "lastModified": 1782723713,
+        "narHash": "sha256-oPXCU/SSUokcGaJREHibG1CBX3+s/W7orDWQOZDsEeQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e73de5be04e0eff4190a1432b946d469c794e7b4",
+        "rev": "b5aa0fbd538984f6e3d201be0005b4463d8b09f8",
         "type": "github"
       },
       "original": {
@@ -3045,7 +3023,7 @@
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat_8",
-        "gitignore": "gitignore_5",
+        "gitignore": "gitignore_4",
         "nixpkgs": [
           "lanzaboote",
           "nixpkgs"
@@ -3091,18 +3069,17 @@
     "pre-commit-hooks_2": {
       "inputs": {
         "flake-compat": "flake-compat_5",
-        "gitignore": "gitignore_2",
         "nixpkgs": [
           "grabby",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1781733627,
-        "narHash": "sha256-U3yTuGBnmXvXoQI3qkpfEDsn9RovQPAjN7ndRco+3u0=",
+        "lastModified": 1782908218,
+        "narHash": "sha256-wLMOrPgVyeF3XmP+qfYcLqnVdTxikdcSvbIY7rA9jTA=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "3bbec39bc90eadfa031e6f3b77272f3f60803e39",
+        "rev": "9f7e99119ece7705299595299f3b031f39356de1",
         "type": "github"
       },
       "original": {
@@ -3114,7 +3091,7 @@
     "pre-commit-hooks_3": {
       "inputs": {
         "flake-compat": "flake-compat_6",
-        "gitignore": "gitignore_3",
+        "gitignore": "gitignore_2",
         "nixpkgs": [
           "hyprland",
           "nixpkgs"
@@ -3137,7 +3114,7 @@
     "pre-commit-hooks_4": {
       "inputs": {
         "flake-compat": "flake-compat_7",
-        "gitignore": "gitignore_4",
+        "gitignore": "gitignore_3",
         "nixpkgs": [
           "hyprlux",
           "nixpkgs"
@@ -3160,7 +3137,7 @@
     "pre-commit-hooks_5": {
       "inputs": {
         "flake-compat": "flake-compat_10",
-        "gitignore": "gitignore_6",
+        "gitignore": "gitignore_5",
         "nixpkgs": [
           "nix-exec",
           "nixpkgs"
@@ -3204,7 +3181,7 @@
     "pre-commit-hooks_7": {
       "inputs": {
         "flake-compat": "flake-compat_14",
-        "gitignore": "gitignore_8",
+        "gitignore": "gitignore_7",
         "nixpkgs": [
           "sekiro-tweaker",
           "nixpkgs"
@@ -3300,11 +3277,11 @@
         "nixpkgs": "nixpkgs_10"
       },
       "locked": {
-        "lastModified": 1782530211,
-        "narHash": "sha256-Zn5H2VVMaP79C+bvaUQD+SBXSKoTnURMZGiUrG00zII=",
+        "lastModified": 1782875958,
+        "narHash": "sha256-5eqDcnBjb1424HRQdnhuhNOBZguq1Z2tqSa2OMF/m2c=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "06ba695dfefc4afc513b49dfc41c4bf0dd2eaeb1",
+        "rev": "13139aefa973f3d96c60c0fbab801de058ae25ca",
         "type": "github"
       },
       "original": {
