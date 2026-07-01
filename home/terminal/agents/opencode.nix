@@ -6,7 +6,13 @@
 
     settings = {
       autoupdate = false;
-      theme = "catppuccin";
+      default_agent = "plan";
+
+      server = {
+        port = 4096;
+        hostname = "0.0.0.0";
+      };
+
       permission = {
         read = "allow";
         glob = "allow";
@@ -113,11 +119,10 @@
           "treefmt *" = "allow";
         };
       };
-      default_agent = "plan";
-      server = {
-        port = 4096;
-        hostname = "0.0.0.0";
-      };
+    };
+
+    tui = {
+      theme = "catppuccin";
     };
   };
 
