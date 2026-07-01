@@ -25,6 +25,24 @@
           "tnktok.com"
         ];
       }
+      # FRI VSŠ
+      {
+        serverId = "370216420199628800";
+        autoEmbedChannels = [
+          "759012897979629594" # debug
+          "934069591234187304" # rant
+          "555027099350728714" # tech-general
+          "435071209240264704" # politics
+        ];
+        embedEnabled = true;
+        transformOnly = true;
+        allowedDomains = [
+          "tiktok.com"
+          "instagram.com"
+          "x.com"
+          "reddit.com"
+        ];
+      }
     ];
   };
 
