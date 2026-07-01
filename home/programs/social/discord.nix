@@ -6,15 +6,8 @@
     enable = true;
 
     discord = {
-      enable = false;
-      vencord.enable = false;
-    };
-
-    vesktop = {
       enable = true;
-      # Disable in case of errors
-      useSystemVencord = true;
-      autoscroll.enable = true;
+      vencord.enable = true;
     };
 
     config = {
