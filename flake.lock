@@ -1283,11 +1283,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1782916584,
-        "narHash": "sha256-R/McZaMFxn67tPQ0eQnM95leEm9of5EudZOsu9q31RE=",
+        "lastModified": 1782999907,
+        "narHash": "sha256-+HMtLDGsINdHOsQq0SD5gpReoS5PeezYfYlV3lWzK0E=",
         "owner": "amadejkastelic",
         "repo": "grabby",
-        "rev": "34c472131dc3fa4e6b8cfa538f001092747524fe",
+        "rev": "267a0d3c6f6afda256365f6c84c129ad37aca3c0",
         "type": "github"
       },
       "original": {
