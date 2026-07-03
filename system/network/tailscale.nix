@@ -12,6 +12,11 @@ in
     checkReversePath = "loose";
   };
 
+  boot.kernel.sysctl = lib.optionalAttrs config.services.nginx.enable {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+
   services.tailscale = {
     enable = true;
     openFirewall = true;
