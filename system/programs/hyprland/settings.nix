@@ -31,9 +31,7 @@ in
     exec-once = [
       "uwsm finalize"
       "hyprctl setcursor ${cursorName} ${toString cursorSize}"
-      "hyprlock"
       "noctalia-shell"
-      # "hyprlux > /tmp/hyprlux.log 2>&1"
       "wl-paste --watch cliphist store"
     ];
 
