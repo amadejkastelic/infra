@@ -81,6 +81,11 @@ in
       "general.smoothScroll" = true;
 
       "extensions.update.enabled" = false;
+
+      # Load profile-level stylesheets (userChrome.css / userContent.css).
+      # Stock Firefox defaults this to false; Zen defaults it true.
+      "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      "layout.css.has-selector.enabled" = true;
     };
 
     userContent = builtins.readFile userStyles;
