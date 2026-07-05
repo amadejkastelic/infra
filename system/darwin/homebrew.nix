@@ -22,6 +22,7 @@
       "tailscale-app"
       "karabiner-elements"
       "maccy"
+      "ledger-wallet"
     ];
   };
 }
