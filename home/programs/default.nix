@@ -6,7 +6,7 @@
 }:
 {
   imports = [
-    ./browsers/zen.nix
+    ./browsers
     ./media
     ./nix.nix
     ./gtk.nix

@@ -5,7 +5,6 @@
     ../../editors/zed
 
     ../../programs
-    ../../programs/browsers/zen.nix
 
     ../../services/gpg
 
