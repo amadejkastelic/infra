@@ -11,7 +11,6 @@ in
 
   programs.zen-browser = {
     enable = true;
-    setAsDefaultBrowser = true;
     inherit (base) policies;
     profiles.default = base.profile;
   };

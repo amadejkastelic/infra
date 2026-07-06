@@ -68,9 +68,8 @@ in
 
       # Prefer dark theme
       "layout.css.prefers-color-scheme.content-override" = 0;
-      # -1.0 = auto (system DPI scaling). Explicitly set so user.js overrides
-      # any stale value Firefox previously cached in prefs.js.
-      "layout.css.devPixelsPerPx" = -1.0;
+      # Scaling, -1 for system
+      "layout.css.devPixelsPerPx" = 1.15;
 
       "widget.use-xdg-desktop-portal.file-picker" = true;
 

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  browser = [ "zen" ];
+  browser = [ "firefox" ];
   fileManager = [ "org.gnome.Nautilus" ];
   archiver = [ "org.gnome.Nautilus" ];
   imageViewer = [ "org.gnome.Loupe" ];
