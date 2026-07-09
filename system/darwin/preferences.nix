@@ -12,8 +12,9 @@
         { app = "/Users/amadejk/Applications/Home Manager Apps/Visual Studio Code.app"; }
         { app = "/Users/amadejk/Applications/Home Manager Apps/Ghostty.app"; }
         { app = "/System/Applications/Music.app"; }
-        { app = "/Users/amadejk/Applications/Home Manager Apps/Zen Browser (Twilight).app"; }
-        { app = "/Users/amadejk/Applications/Home Manager Apps/Vesktop.app"; }
+        { app = "/System/Applications/Messages.app"; }
+        { app = "/Users/amadejk/Applications/Home Manager Apps/Firefox.app"; }
+        { app = "/Users/amadejk/Applications/Home Manager Apps/Discord.app"; }
       ];
     };
 
