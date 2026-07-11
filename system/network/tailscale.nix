@@ -24,6 +24,7 @@ in
     extraUpFlags = lib.optionals config.services.nginx.enable [
       "--accept-dns=false"
       "--advertise-routes=${config.homelab.lanCidr}"
+      "--advertise-exit-node"
     ];
   };
 }
