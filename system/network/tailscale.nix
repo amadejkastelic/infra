@@ -12,16 +12,12 @@ in
     checkReversePath = "loose";
   };
 
-  boot.kernel.sysctl = lib.optionalAttrs config.services.nginx.enable {
-    "net.ipv4.ip_forward" = 1;
-    "net.ipv6.conf.all.forwarding" = 1;
-  };
-
   services.tailscale = {
     enable = true;
     openFirewall = true;
     authKeyFile = if hasAuthKey then config.sops.secrets.tailscale-auth-key.path else null;
-    extraUpFlags = lib.optionals config.services.nginx.enable [
+    useRoutingFeatures = lib.mkIf config.services.nginx.enable "server";
+    extraSetFlags = lib.optionals config.services.nginx.enable [
       "--accept-dns=false"
       "--advertise-routes=${config.homelab.lanCidr}"
       "--advertise-exit-node"
