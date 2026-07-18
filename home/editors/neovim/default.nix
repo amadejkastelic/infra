@@ -1,13 +1,15 @@
 {
-  programs.neovim = {
+  inputs,
+  ...
+}:
+{
+  imports = [
+    inputs.nvf.homeManagerModules.default
+    ./settings.nix
+  ];
+
+  programs.nvf = {
     enable = true;
-
-    vimAlias = true;
-    viAlias = true;
-
-    withPython3 = false;
-    withRuby = false;
+    enableManpages = true;
   };
-
-  catppuccin.nvim.enable = true;
 }

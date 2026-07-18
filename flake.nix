@@ -225,5 +225,10 @@
     bb-launcher.url = "github:amadejkastelic/bb-launcher-nix";
 
     nix-exec.url = "github:amadejkastelic/nix-exec";
+
+    nvf = {
+      url = "github:NotAShelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }
