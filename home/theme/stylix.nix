@@ -23,7 +23,6 @@
       nixcord.enable = false;
       mangohud.enable = false;
       hyprlock.enable = false;
-      zen-browser.profileNames = [ "default" ];
       firefox.profileNames = [ "default" ];
       hyprpaper.enable = false;
       nushell.enable = false;
