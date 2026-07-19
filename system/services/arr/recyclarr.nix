@@ -1,9 +1,15 @@
 { config, ... }:
 let
-  inherit (config.services) sonarr sonarr-anime sonarr-kdrama;
+  inherit (config.services)
+    sonarr
+    sonarr-anime
+    sonarr-kdrama
+    radarr
+    ;
 
   web2160pCombined = "c4cadd6b35b95f62c3d47a408e53e2f7";
   animeRemux1080p = "20e0fc959f1f1704bed501f23bdae76f";
+  remuxWeb2160p = "fd161a61e3ab826d3a22d53f935696dd";
 in
 {
   services.recyclarr = {
@@ -12,6 +18,18 @@ in
     schedule = "*-*-* 03:00:00";
 
     configuration = {
+      radarr.radarr = {
+        base_url = "http://127.0.0.1:${toString radarr.settings.server.port}";
+        api_key._secret = config.sops.secrets."radarr/api_key".path;
+        quality_definition.type = "movie";
+        quality_profiles = [
+          {
+            trash_id = remuxWeb2160p;
+            reset_unmatched_scores.enabled = true;
+          }
+        ];
+      };
+
       sonarr.sonarr-tv = {
         base_url = "http://127.0.0.1:${toString sonarr.settings.server.port}";
         api_key._secret = config.sops.secrets."sonarr/api_key".path;
