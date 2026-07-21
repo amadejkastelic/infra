@@ -1274,16 +1274,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1780484690,
-        "narHash": "sha256-G3VOjqBgsnwaYQicqC4zjaUVCdsnzZ5sMPoUOPPnfXQ=",
+        "lastModified": 1784620401,
+        "narHash": "sha256-HKzJtEkafkWjTx35spDp6pm1oClN7vIipJ2wwU4ocNY=",
         "owner": "VirtCode",
         "repo": "hypr-dynamic-cursors",
-        "rev": "da447486c84e0be81f2cdd208af1ef92469f0a88",
+        "rev": "f5ba36c7622098b53bf62ddb8ddf03b914abbdf8",
         "type": "github"
       },
       "original": {
         "owner": "VirtCode",
-        "ref": "da447486c84e0be81f2cdd208af1ef92469f0a88",
         "repo": "hypr-dynamic-cursors",
         "type": "github"
       }
@@ -1968,16 +1967,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1778404600,
-        "narHash": "sha256-O7NEixijhpd0gPHHkgm+BX9P9sVfLNz+Q5brPzIKH5Y=",
-        "owner": "amadejkastelic",
+        "lastModified": 1784594344,
+        "narHash": "sha256-K0H7YbSTgdnwkhDMUp7v08R6ZsGI1f0eYkZ/z/GrEig=",
+        "owner": "devcexx",
         "repo": "hyprvibr",
-        "rev": "5d6945cbab08f52f6b3e6074fd4dcb2e159d3a12",
+        "rev": "f7b99e3f1dbfd8291a4acafb3209e4cee983f447",
         "type": "github"
       },
       "original": {
-        "owner": "amadejkastelic",
-        "ref": "chase-hypr",
+        "owner": "devcexx",
         "repo": "hyprvibr",
         "type": "github"
       }

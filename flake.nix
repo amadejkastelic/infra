@@ -98,7 +98,7 @@
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
     hyprland = {
-      url = "github:hyprwm/Hyprland?ref=v0.55.4";
+      url = "github:hyprwm/Hyprland?ref=v0.56.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -133,7 +133,7 @@
     };
 
     hypr-dynamic-cursors = {
-      url = "github:VirtCode/hypr-dynamic-cursors?ref=da447486c84e0be81f2cdd208af1ef92469f0a88";
+      url = "github:VirtCode/hypr-dynamic-cursors";
       inputs.hyprland.follows = "hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -149,7 +149,7 @@
     };
 
     hyprvibr = {
-      url = "github:amadejkastelic/hyprvibr?ref=chase-hypr";
+      url = "github:devcexx/hyprvibr";
       inputs.hyprland.follows = "hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
