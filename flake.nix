@@ -98,7 +98,8 @@
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
     hyprland = {
-      url = "github:hyprwm/Hyprland?ref=v0.56.0";
+      # Include https://github.com/hyprwm/Hyprland/commit/1a3606234c59842340ad9a42baeeffe44a9d6cda
+      url = "github:hyprwm/Hyprland?ref=1a3606234c59842340ad9a42baeeffe44a9d6cda";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
