@@ -6,10 +6,33 @@
 let
   extraSpecialArgs = { inherit inputs self; };
 
+  mkPkgs =
+    system:
+    import inputs.nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+      overlays = [
+        (final: prev: {
+          lib = prev.lib // {
+            colors = import "${self}/lib/colors" prev.lib;
+          };
+        })
+        inputs.nix-vscode-extensions.overlays.default
+        inputs.firefox-addons.overlays.default
+      ]
+      ++ inputs.nixpkgs.lib.optional (system == "x86_64-linux") inputs.cachyos-kernel.overlays.pinned;
+    };
+
   homeImports = {
     "amadejk@ryzen" = [
       ../.
       ./ryzen
+    ];
+
+    "amadejk@aspire" = [
+      ../.
+      ./linux
+      ./aspire
     ];
 
     "amadejk@m3pro" = [
@@ -26,14 +49,22 @@ in
   flake = {
     homeConfigurations = {
       "amadejk_ryzen" = homeManagerConfiguration {
-        modules = homeImports."amadejk@ryzen";
-        pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          inputs.stylix.homeModules.stylix
+          ../../system/theme/shared.nix
+        ]
+        ++ homeImports."amadejk@ryzen";
+        pkgs = mkPkgs "x86_64-linux";
         inherit extraSpecialArgs;
       };
 
       "amadejk_m3pro" = homeManagerConfiguration {
-        modules = homeImports."amadejk@m3pro";
-        pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
+        modules = [
+          inputs.stylix.homeModules.stylix
+          ../../system/theme/shared.nix
+        ]
+        ++ homeImports."amadejk@m3pro";
+        pkgs = mkPkgs "aarch64-darwin";
         inherit extraSpecialArgs;
       };
     };

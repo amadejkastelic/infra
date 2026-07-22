@@ -17,14 +17,9 @@ in
 {
   imports = [
     inputs.hyprland.nixosModules.default
-
-    ./binds.nix
-    ./rules.nix
-    ./settings.nix
   ];
 
   environment.systemPackages = [
-    inputs.hyprland-contrib.packages.${pkgs.stdenv.hostPlatform.system}.grimblast
     inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.bibata-cursors-svg
   ];
 
@@ -40,14 +35,7 @@ in
 
     withUWSM = true;
 
-    plugins = [
-      inputs.hypr-dynamic-cursors.packages.${pkgs.stdenv.hostPlatform.system}.hypr-dynamic-cursors
-      inputs.hyprvibr.packages.${pkgs.stdenv.hostPlatform.system}.hyprvibr
-    ];
   };
 
   services.seatd.enable = true;
-
-  # tell Electron/Chromium to run on Wayland
-  environment.variables.NIXOS_OZONE_WL = "1";
 }

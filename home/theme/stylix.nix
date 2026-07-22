@@ -23,9 +23,10 @@
       nvf.enable = false;
       nixcord.enable = false;
       mangohud.enable = false;
+      hyprland.enable = false;
       hyprlock.enable = false;
       firefox.profileNames = [ "default" ];
-      hyprpaper.enable = false;
+      hyprpaper.enable = lib.mkForce false;
       nushell.enable = false;
       starship.enable = false;
       zed.enable = false;

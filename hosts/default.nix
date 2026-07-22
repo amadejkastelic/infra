@@ -58,7 +58,7 @@
 
           {
             home-manager = {
-              users.amadejk.imports = homeImports."amadejk@ryzen";
+              users.amadejk.imports = homeImports."amadejk@aspire";
               extraSpecialArgs = specialArgs;
             };
           }

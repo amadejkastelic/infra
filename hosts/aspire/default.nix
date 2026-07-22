@@ -10,7 +10,6 @@
     ./cpu.nix
     ./disk-config.nix
     ./hardware-configuration.nix
-    ./hyprland.nix
   ];
 
   services.openssh.enable = true;
