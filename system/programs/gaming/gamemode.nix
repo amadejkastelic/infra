@@ -13,21 +13,25 @@ let
 
   resolutionScript = pkgs.writeShellScriptBin "resolution" ''
     refresh_rate=''${3:-120}
-    ${hyprctl} keyword monitor "DP-2,$1x$2@''${refresh_rate},0x0,1"
+    ${hyprctl} eval "hl.monitor({ output = \"DP-2\", mode = \"$1x$2@''${refresh_rate}\", position = \"0x0\", scale = 1 })"
   '';
 
   startScript = writeDash "gamemode-start" ''
     ${lib.getExe resolutionScript} 2560 1440
     ${hyprctl} hyprsunset identity
-    ${hyprctl} --batch "\
-      keyword animations:enabled 0;\
-      keyword decoration:shadow:enabled 0;\
-      keyword decoration:blur:enabled 0;\
-      keyword general:gaps_in 0;\
-      keyword general:gaps_out 0;\
-      keyword general:border_size 1;\
-      keyword plugin:dynamic-cursors:enabled 0;\
-      keyword decoration:rounding 0"
+    ${hyprctl} eval "hl.config({
+      animations = { enabled = false },
+      decoration = {
+        shadow = { enabled = false },
+        blur = { enabled = false },
+        rounding = 0,
+      },
+      general = {
+        gaps_in = 0,
+        gaps_out = 0,
+        border_size = 1,
+      },
+    })"
     ${powerprofilesctl} set performance
     ${notify-send} -u low -a 'Gamemode' 'Optimizations activated'
   '';

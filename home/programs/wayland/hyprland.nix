@@ -82,7 +82,6 @@ in
     systemd.enable = false;
 
     plugins = [
-      inputs.hypr-dynamic-cursors.packages.${pkgs.stdenv.hostPlatform.system}.hypr-dynamic-cursors
       inputs.hyprvibr.packages.${pkgs.stdenv.hostPlatform.system}.hyprvibr
     ];
 
@@ -203,7 +202,7 @@ in
         (bind "SUPER + W" ''hl.dsp.window.float({ action = "toggle" })'')
         (bind "SUPER + P" "hl.dsp.window.pseudo()")
         (bind "SUPER + ALT" "hl.dsp.window.resize()")
-        (exec "SUPER + M" "hyprctl keyword dwindle:no_gaps_when_only $(($(hyprctl getoption dwindle:no_gaps_when_only -j | jaq -r '.int') ^ 1))")
+        (exec "SUPER + M" "enabled=$(hyprctl getoption dwindle:no_gaps_when_only -j | jaq -r '.int'); if [ \"$enabled\" = 0 ]; then enabled=true; else enabled=false; fi; hyprctl eval \"hl.config({ dwindle = { no_gaps_when_only = $enabled } })\"")
         (bind "SUPER + G" ''hl.dsp.focus({ workspace = "name:Gaming" })'')
         (bind "SUPER + SHIFT + G" ''hl.dsp.window.move({ workspace = "name:Gaming" })'')
         (exec "SUPER + T" "GTK_IM_MODULE=simple ghostty")
@@ -360,27 +359,6 @@ in
     };
 
     extraConfig = ''
-      if hl.plugin.dynamic_cursors then
-        hl.config({
-          plugin = {
-            dynamic_cursors = {
-              enabled = true,
-              mode = "none",
-              shake = {
-                enabled = true,
-                threshold = 3.0,
-                timeout = 500,
-                base = 2.0,
-              },
-              hyprcursor = {
-                enabled = true,
-                nearest = false,
-              },
-            },
-          },
-        })
-      end
-
       if hl.plugin.hyprvibr then
         hl.plugin.hyprvibr.hyprvibr_app({
           class = "cs2",
