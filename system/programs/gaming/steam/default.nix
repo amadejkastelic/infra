@@ -42,6 +42,7 @@ in
           {
             cs2 = {
               id = 730;
+              files.install."game/csgo/cfg/autoexec.cfg".source = ./cs2/autoexec.cfg;
               launchOptions = {
                 env.SDL_VIDEO_DRIVER = "wayland";
                 args = [

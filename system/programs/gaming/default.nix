@@ -1,6 +1,6 @@
 {
   imports = [
-    ./steam.nix
+    ./steam
     ./switch.nix
     ./gamemode.nix
     ./gamescope.nix
