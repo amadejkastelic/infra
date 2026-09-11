@@ -16,17 +16,17 @@ in
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-intro-skipper";
 
-  version = "1.10.11.24";
+  version = "12.0.4.0";
 
   src = fetchFromGitHub {
     owner = "intro-skipper";
     repo = "intro-skipper";
     tag = "${branch}/v${finalAttrs.version}";
-    hash = "sha256-KV2iXlVEJkmvTtzcmLBFd7GnkN39+HZPXgY24/1moPE=";
+    hash = "sha256-LzNM5aQ7qjqxMqizlG3VpUHrt6a5SHPQf3AHaDhaNrM=";
   };
 
-  dotnet-sdk = dotnetCorePackages.sdk_9_0;
-  dotnet-runtime = dotnetCorePackages.runtime_9_0;
+  dotnet-sdk = dotnetCorePackages.sdk_10_0;
+  dotnet-runtime = dotnetCorePackages.runtime_10_0;
 
   enableParallelBuilding = false;
 
