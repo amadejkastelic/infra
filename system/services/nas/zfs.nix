@@ -22,5 +22,8 @@
     };
   };
 
-  boot.zfs.forceImportAll = false;
+  boot.zfs = {
+    forceImportAll = false;
+    forceImportRoot = false;
+  };
 }
