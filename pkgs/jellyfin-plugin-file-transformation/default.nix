@@ -7,17 +7,17 @@
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-file-transformation";
 
-  version = "2.5.11.0";
+  version = "3.0.0.0";
 
   src = fetchFromGitHub {
     owner = "IAmParadox27";
     repo = "jellyfin-plugin-file-transformation";
     tag = finalAttrs.version;
-    hash = "sha256-KcJvSSoRhsfikAsvOMW7gIQxzgn2BRAEbIWmRd/byNg=";
+    hash = "sha256-c1u4vMki8dsTM/vpvpm0/ipAP3wmeiLq+JjRDI3Mcpc=";
   };
 
-  dotnet-sdk = dotnetCorePackages.sdk_9_0;
-  dotnet-runtime = dotnetCorePackages.runtime_9_0;
+  dotnet-sdk = dotnetCorePackages.sdk_10_0;
+  dotnet-runtime = dotnetCorePackages.runtime_10_0;
 
   enableParallelBuilding = false;
 
