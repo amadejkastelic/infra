@@ -7,7 +7,7 @@
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-file-transformation";
 
-  version = "3.0.0.0";
+  version = "3.0.1.0";
 
   src = fetchFromGitHub {
     owner = "IAmParadox27";
