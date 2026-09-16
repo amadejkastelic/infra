@@ -6,13 +6,13 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "claude-plugins-official";
-  version = "0-unstable-2026-09-14";
+  version = "0-unstable-2026-09-16";
 
   src = fetchFromGitHub {
     owner = "anthropics";
     repo = "claude-plugins-official";
-    rev = "da823e86c8feef13b73b6712af11eadd38c992f6";
-    hash = "sha256-ZlFDfVxudxGzxwmkrMDun7wUMFBeyGBnnj1mAZPtjTw=";
+    rev = "76c85b7366c8be78ce3ac67dd21945b3960d1a8c";
+    hash = "sha256-q0KVwL/GmnFt1KoV2RTk3w1ZQwzVlRHGQcvDvnqKSzY=";
   };
 
   dontConfigure = true;
