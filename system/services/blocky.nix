@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -57,7 +58,12 @@ in
           "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/pro.txt"
           "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/tif.medium.txt"
         ];
-        allowlists.standard = [ "+triglav.si" ];
+        allowlists.standard = [
+          (pkgs.writeText "blocky-allowlist-standard" ''
+            triglav.si
+            *.triglav.si
+          '')
+        ];
         clientGroupsBlock = {
           default = [ "standard" ];
         };
