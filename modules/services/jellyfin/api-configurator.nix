@@ -18,6 +18,27 @@ let
   firstAdminName = if sortedAdminNames != [ ] then builtins.head sortedAdminNames else null;
   firstAdminUser = if firstAdminName != null then adminUsers.${firstAdminName} else null;
 
+  waitForApi =
+    {
+      timeout ? 180,
+    }:
+    ''
+      for attempt in {1..${toString timeout}}; do
+        HTTP_CODE=$(${pkgs.curl}/bin/curl --connect-timeout 5 --max-time 10 -s -o /dev/null -w "%{http_code}" "$BASE_URL/System/Info/Public" 2>/dev/null || echo "000")
+
+        if [ "$HTTP_CODE" = "200" ]; then
+          break
+        fi
+
+        if [ $attempt -eq ${toString timeout} ]; then
+          echo "ERROR: Jellyfin API did not become ready after ${toString timeout} attempts" >&2
+          exit 1
+        fi
+
+        sleep 1
+      done
+    '';
+
   mkWaitForApiService =
     {
       description ? "Wait for Jellyfin API to be ready",
@@ -39,22 +60,7 @@ let
 
         BASE_URL="${baseUrl}"
 
-        for attempt in {1..${toString timeout}}; do
-          HTTP_CODE=$(${pkgs.curl}/bin/curl --connect-timeout 5 --max-time 10 -s -o /dev/null -w "%{http_code}" "$BASE_URL/System/Info/Public" 2>/dev/null || echo "000")
-
-          if [ "$HTTP_CODE" = "200" ]; then
-            exit 0
-          fi
-
-          if [ $attempt -eq ${toString timeout} ]; then
-            echo "ERROR: Jellyfin API did not become ready after ${toString timeout} attempts" >&2
-            exit 1
-          fi
-
-          sleep 1
-        done
-
-        exit 1
+        ${waitForApi { inherit timeout; }}
       '';
     };
 
@@ -89,6 +95,8 @@ let
         BASE_URL="${baseUrl}"
         SERVER_NAME="${config.networking.hostName}"
 
+        ${waitForApi { }}
+
         ADMIN_PASSWORD=""
         ${lib.optionalString (adminPasswordPlain != null) ''ADMIN_PASSWORD="${adminPasswordPlain}"''}
 
@@ -96,7 +104,25 @@ let
           ADMIN_PASSWORD=$(cat "$CREDENTIALS_DIRECTORY/admin_password")
         fi
 
-        SYSTEM_INFO=$(${pkgs.curl}/bin/curl -s "$BASE_URL/System/Info/Public")
+        SYSTEM_INFO=""
+        for attempt in {1..20}; do
+          SYSTEM_INFO=$(${pkgs.curl}/bin/curl -s -w "\n%{http_code}" "$BASE_URL/System/Info/Public" 2>/dev/null || printf '\n000\n')
+
+          HTTP_CODE=$(echo "$SYSTEM_INFO" | tail -n1)
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            SYSTEM_INFO=$(echo "$SYSTEM_INFO" | sed '$d')
+            break
+          fi
+
+          if [[ $attempt -eq 20 ]]; then
+            echo "ERROR: Failed to fetch system info after 20 attempts (HTTP $HTTP_CODE)" >&2
+            exit 1
+          fi
+
+          sleep 1
+        done
+
         STARTUP_WIZARD_COMPLETED=$(echo "$SYSTEM_INFO" | ${pkgs.jq}/bin/jq -r '.StartupWizardCompleted // true' 2>/dev/null || echo "true")
 
         if [ "$STARTUP_WIZARD_COMPLETED" = "false" ]; then
@@ -106,7 +132,7 @@ let
               -H "Content-Type: application/json" \
               -d '{"ServerName":"'"$SERVER_NAME"'","UICulture":"en-US","MetadataCountryCode":"US","PreferredMetadataLanguage":"en"}' \
               -w "\n%{http_code}" \
-              "$BASE_URL/Startup/Configuration")
+              "$BASE_URL/Startup/Configuration" 2>/dev/null || printf '\n000\n')
 
             HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 
@@ -132,7 +158,7 @@ let
               -H "Content-Type: application/json" \
               -d '{"Name": "'"${firstAdminName}"'", "Password": "'"$ADMIN_PASSWORD"'"}' \
               -w "\n%{http_code}" \
-              "$BASE_URL/Startup/User")
+              "$BASE_URL/Startup/User" 2>/dev/null || printf '\n000\n')
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 
@@ -158,7 +184,7 @@ let
               -H "Content-Type: application/json" \
               -d '{"EnableRemoteAccess":true}' \
               -w "\n%{http_code}" \
-              "$BASE_URL/Startup/RemoteAccess")
+              "$BASE_URL/Startup/RemoteAccess" 2>/dev/null || printf '\n000\n')
 
             HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 
@@ -182,7 +208,7 @@ let
           for attempt in {1..20}; do
             RESPONSE=$(${pkgs.curl}/bin/curl -s -X POST \
               -w "\n%{http_code}" \
-              "$BASE_URL/Startup/Complete")
+              "$BASE_URL/Startup/Complete" 2>/dev/null || printf '\n000\n')
 
             HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 
@@ -236,17 +262,7 @@ let
         BASE_URL="${baseUrl}"
         TOKEN_FILE="/run/jellyfin/auth-token"
 
-        for i in {1..30}; do
-          if ${pkgs.curl}/bin/curl -sf "$BASE_URL/System/Info/Public" >/dev/null 2>&1; then
-            break
-          fi
-          sleep 1
-        done
-
-        if ! ${pkgs.curl}/bin/curl -sf "$BASE_URL/System/Info/Public" >/dev/null 2>&1; then
-          echo "ERROR: Jellyfin API not ready after 30 seconds" >&2
-          exit 1
-        fi
+        ${waitForApi { }}
 
         ADMIN_PASSWORD=""
         ${lib.optionalString (adminPasswordPlain != null) ''ADMIN_PASSWORD="${adminPasswordPlain}"''}
@@ -262,7 +278,7 @@ let
             -H "Content-Type: application/json" \
             -H 'Authorization: MediaBrowser Client="jellyfin-nixos", Device="NixOS", DeviceId="jellyfin-nixos", Version="1.0.0"' \
             -d '{"Username": "'"${firstAdminName}"'", "Pw": "'"$ADMIN_PASSWORD"'"}' \
-            "$BASE_URL/Users/AuthenticateByName")
+            "$BASE_URL/Users/AuthenticateByName" 2>/dev/null || echo "")
 
           ACCESS_TOKEN=$(echo "$AUTH_RESPONSE" | ${pkgs.jq}/bin/jq -r '.AccessToken // empty' 2>/dev/null || echo "")
 
@@ -319,6 +335,8 @@ let
           BASE_URL="${baseUrl}"
           CONFIGURED_NAMES='${configuredNamesJSON}'
 
+          ${waitForApi { }}
+
           ${lib.concatStringsSep "\n" (
             lib.mapAttrsToList (
               _: libCfg:
@@ -331,17 +349,32 @@ let
           ACCESS_TOKEN=$(cat /run/jellyfin/auth-token)
           export AUTH_HEADER='Authorization: MediaBrowser Client="jellyfin-nixos", Device="NixOS", DeviceId="jellyfin-nixos", Version="1.0.0", Token="'"$ACCESS_TOKEN"'"'
 
-          LIBRARIES_RESPONSE=$(${pkgs.curl}/bin/curl -s -w "\n%{http_code}" \
-            -H "$AUTH_HEADER" \
-            "$BASE_URL/Library/VirtualFolders")
+          LIBRARIES_RESPONSE=""
+          BACKOFF=1
+          for attempt in {1..20}; do
+            LIBRARIES_RESPONSE=$(${pkgs.curl}/bin/curl -s -w "\n%{http_code}" \
+              -H "$AUTH_HEADER" \
+              "$BASE_URL/Library/VirtualFolders" 2>/dev/null || printf '\n000\n')
 
-          LIBRARIES_HTTP_CODE=$(echo "$LIBRARIES_RESPONSE" | tail -n1)
+            LIBRARIES_HTTP_CODE=$(echo "$LIBRARIES_RESPONSE" | tail -n1)
+
+            if [ "$LIBRARIES_HTTP_CODE" -ge 200 ] && [ "$LIBRARIES_HTTP_CODE" -lt 300 ]; then
+              break
+            fi
+
+            if [[ $attempt -eq 20 ]]; then
+              echo "ERROR: Failed to fetch libraries from Jellyfin API (HTTP $LIBRARIES_HTTP_CODE)" >&2
+              exit 1
+            fi
+
+            sleep $BACKOFF
+            BACKOFF=$((BACKOFF * 2))
+            if [ $BACKOFF -gt 8 ]; then
+              BACKOFF=8
+            fi
+          done
+
           LIBRARIES_JSON=$(echo "$LIBRARIES_RESPONSE" | sed '$d')
-
-          if [ "$LIBRARIES_HTTP_CODE" -lt 200 ] || [ "$LIBRARIES_HTTP_CODE" -ge 300 ]; then
-            echo "ERROR: Failed to fetch libraries from Jellyfin API (HTTP $LIBRARIES_HTTP_CODE)" >&2
-            exit 1
-          fi
 
           echo "$LIBRARIES_JSON" | ${pkgs.jq}/bin/jq -r '.[] | @json' | while IFS= read -r library; do
             LIBRARY_NAME=$(echo "$library" | ${pkgs.jq}/bin/jq -r '.Name')
@@ -349,7 +382,7 @@ let
             if ! echo "$CONFIGURED_NAMES" | ${pkgs.jq}/bin/jq -e --arg name "$LIBRARY_NAME" 'index($name)' >/dev/null 2>&1; then
               DELETE_RESPONSE=$(${pkgs.curl}/bin/curl -s -w "\n%{http_code}" -X DELETE \
                 -H "$AUTH_HEADER" \
-                "$BASE_URL/Library/VirtualFolders?name=$(${pkgs.jq}/bin/jq -rn --arg n "$LIBRARY_NAME" '$n|@uri')")
+                "$BASE_URL/Library/VirtualFolders?name=$(${pkgs.jq}/bin/jq -rn --arg n "$LIBRARY_NAME" '$n|@uri')" 2>/dev/null || printf '\n000\n')
 
               DELETE_HTTP_CODE=$(echo "$DELETE_RESPONSE" | tail -n1)
 
@@ -361,7 +394,7 @@ let
 
         LIBRARIES_JSON=$(${pkgs.curl}/bin/curl -s \
           -H "$AUTH_HEADER" \
-          "$BASE_URL/Library/VirtualFolders")
+          "$BASE_URL/Library/VirtualFolders" 2>/dev/null || echo "[]")
 
         ${lib.concatStringsSep "\n" (
           lib.mapAttrsToList (libraryName: libCfg: ''
@@ -428,18 +461,35 @@ let
 
         BASE_URL="${baseUrl}"
 
+        ${waitForApi { }}
+
         ACCESS_TOKEN=$(cat /run/jellyfin/auth-token)
         export AUTH_HEADER='Authorization: MediaBrowser Client="jellyfin-nixos", Device="NixOS", DeviceId="jellyfin-nixos", Version="1.0.0", Token="'"$ACCESS_TOKEN"'"'
 
-        USERS_RESPONSE=$(${pkgs.curl}/bin/curl -s -w "\n%{http_code}" -H "$AUTH_HEADER" "$BASE_URL/Users")
+        USERS_RESPONSE=""
+        BACKOFF=1
+        for attempt in {1..20}; do
+          USERS_RESPONSE=$(${pkgs.curl}/bin/curl -s -w "\n%{http_code}" -H "$AUTH_HEADER" "$BASE_URL/Users" 2>/dev/null || printf '\n000\n')
 
-        USERS_HTTP_CODE=$(echo "$USERS_RESPONSE" | tail -n1)
+          USERS_HTTP_CODE=$(echo "$USERS_RESPONSE" | tail -n1)
+
+          if [ "$USERS_HTTP_CODE" -ge 200 ] && [ "$USERS_HTTP_CODE" -lt 300 ]; then
+            break
+          fi
+
+          if [[ $attempt -eq 20 ]]; then
+            echo "ERROR: Failed to fetch users from Jellyfin API (HTTP $USERS_HTTP_CODE)" >&2
+            exit 1
+          fi
+
+          sleep $BACKOFF
+          BACKOFF=$((BACKOFF * 2))
+          if [ $BACKOFF -gt 8 ]; then
+            BACKOFF=8
+          fi
+        done
+
         USERS_JSON=$(echo "$USERS_RESPONSE" | sed '$d')
-
-        if [ "$USERS_HTTP_CODE" -lt 200 ] || [ "$USERS_HTTP_CODE" -ge 300 ]; then
-          echo "ERROR: Failed to fetch users from Jellyfin API (HTTP $USERS_HTTP_CODE)" >&2
-          exit 1
-        fi
 
         ${lib.concatStringsSep "\n" (
           lib.mapAttrsToList (userName: userCfg: ''
@@ -457,7 +507,7 @@ let
                 -H "Content-Type: application/json" \
                 -d '{"Name": "'"${userName}"'", "Password": "'"$USER_PASSWORD"'"}' \
                 -w "\n%{http_code}" \
-                "$BASE_URL/Users/New")
+                "$BASE_URL/Users/New" 2>/dev/null || printf '\n000\n')
 
               HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
 
@@ -466,7 +516,7 @@ let
                 exit 1
               fi
 
-              USERS_JSON=$(${pkgs.curl}/bin/curl -s -H "$AUTH_HEADER" "$BASE_URL/Users")
+              USERS_JSON=$(${pkgs.curl}/bin/curl -s -H "$AUTH_HEADER" "$BASE_URL/Users" 2>/dev/null || echo "[]")
               USER_ID=$(echo "$USERS_JSON" | ${pkgs.jq}/bin/jq -r '.[] | select(.Name == "${userName}") | .Id')
             fi
           '') users
@@ -501,12 +551,14 @@ let
 
         BASE_URL="${baseUrl}"
 
+        ${waitForApi { }}
+
         ACCESS_TOKEN=$(cat /run/jellyfin/auth-token)
         export AUTH_HEADER='Authorization: MediaBrowser Client="jellyfin-nixos", Device="NixOS", DeviceId="jellyfin-nixos", Version="1.0.0", Token="'"$ACCESS_TOKEN"'"'
 
         mkdir -p /run/jellyfin/api-keys
 
-        KEYS_JSON=$(${pkgs.curl}/bin/curl -sf -H "$AUTH_HEADER" "$BASE_URL/Auth/Keys")
+        KEYS_JSON=$(${pkgs.curl}/bin/curl -sf -H "$AUTH_HEADER" "$BASE_URL/Auth/Keys" 2>/dev/null || echo "[]")
 
         ${lib.concatMapStringsSep "\n" (name: ''
           KEY_NAME="${name}"
@@ -518,9 +570,9 @@ let
           if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
             echo "API key '$KEY_NAME' not found, creating"
             ${pkgs.curl}/bin/curl -sSf -X POST -H "$AUTH_HEADER" \
-              "$BASE_URL/Auth/Keys?app=$(${pkgs.jq}/bin/jq -rn --arg n "$KEY_NAME" '$n|@uri')"
+              "$BASE_URL/Auth/Keys?app=$(${pkgs.jq}/bin/jq -rn --arg n "$KEY_NAME" '$n|@uri')" || true
 
-            KEYS_JSON=$(${pkgs.curl}/bin/curl -sf -H "$AUTH_HEADER" "$BASE_URL/Auth/Keys")
+            KEYS_JSON=$(${pkgs.curl}/bin/curl -sf -H "$AUTH_HEADER" "$BASE_URL/Auth/Keys" 2>/dev/null || echo "[]")
             TOKEN=$(echo "$KEYS_JSON" | ${pkgs.jq}/bin/jq -r --arg n "$KEY_NAME" '(.Items // .)[] | select(.AppName == $n) | .AccessToken' || echo "")
 
             if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then

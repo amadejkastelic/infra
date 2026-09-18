@@ -71,8 +71,10 @@ jobs:
       - name: Upgrade host
         env:
           TMPDIR: /tmp
+          NIX_CONFIG: flake-registry = https://channels.nixos.org/flake-registry.json
         run: |
           nix run nixpkgs#nixos-rebuild -- switch \
             --flake .#${{ inputs.flake || matrix.host }} \
             --target-host amadejk@${{ matrix.host }} \
-            --sudo
+            --sudo \
+            --use-substitutes

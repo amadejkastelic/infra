@@ -32,7 +32,13 @@ in
         ${domain} = {
           forceSSL = true;
           useACMEHost = domain;
-          locations."/".proxyPass = "https://amadejkastelic.github.io";
+          locations."/" = {
+            proxyPass = "https://$upstream";
+            extraConfig = ''
+              resolver 1.1.1.1 8.8.8.8 valid=300s ipv6=off;
+              set $upstream amadejkastelic.github.io;
+            '';
+          };
           extraConfig = ''
             proxy_ssl_server_name on;
           '';

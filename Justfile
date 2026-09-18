@@ -14,7 +14,8 @@ upgrade TARGET=host:
         nixos-rebuild switch \
             --flake .#{{TARGET}} \
             --target-host amadejk@{{TARGET}} \
-            --sudo
+            --sudo \
+            --use-substitutes
     fi
 
 [macos]
