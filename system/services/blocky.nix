@@ -57,7 +57,7 @@ in
           "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/pro.txt"
           "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/wildcard/tif.medium.txt"
         ];
-        allowlists.standard = [ ];
+        allowlists.standard = [ "+triglav.si" ];
         clientGroupsBlock = {
           default = [ "standard" ];
         };
