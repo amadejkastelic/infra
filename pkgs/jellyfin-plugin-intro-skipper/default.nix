@@ -37,7 +37,7 @@ buildDotnetModule (finalAttrs: {
     inherit (finalAttrs) pname src;
     preInstall = "cd web";
     fetcherVersion = 4;
-    hash = "sha256-xMS1lZaM45qT6kdpJrp2aBdZfWcNceMc01DuK6DccSg=";
+    hash = "sha256-Krukkmbu9zgEAkxXfY538a5tcWhCOnSWP3Ld400U3+8=";
   };
 
   pnpmRoot = "web";
