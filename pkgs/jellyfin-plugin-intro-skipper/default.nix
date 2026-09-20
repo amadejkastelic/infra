@@ -1,17 +1,15 @@
 {
-  lib,
   buildDotnetModule,
   fetchFromGitHub,
   fetchPnpmDeps,
   dotnetCorePackages,
-  jellyfin,
   nodejs,
   pnpm,
   pnpmConfigHook,
   ...
 }:
 let
-  branch = lib.versions.majorMinor jellyfin.version;
+  branch = "12.0";
 in
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-intro-skipper";

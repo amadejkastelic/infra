@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Tags look like "<branch>/v<version>" (e.g. 10.11/v1.10.11.21), where the
-# branch tracks the nixpkgs jellyfin version (see default.nix). Only consider
+# Tags look like "<branch>/v<version>" (e.g. 12.0/v12.0.4.0), where the
+# branch is pinned in default.nix. Only consider
 # tags on that branch, bump version + src (nix-update also re-hashes
 # pnpmDeps), then regenerate the nuget deps.json in place.
 set -euo pipefail
