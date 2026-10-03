@@ -16,6 +16,7 @@ let
   hostConfig = {
     inherit (config.services.sonarr-kdrama.settings.server) port;
     urlBase = if nginxCfg.enable then urlBaseStr else "";
+    allowedHosts = nginxCfg.hostName;
     passwordPath = apiCfg.hostPasswordPath;
     instanceName = "Sonarr KDrama";
   };

@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  config,
   ...
 }:
 let
@@ -78,6 +79,7 @@ let
           } \
           --argjson port "${toString serviceConfig.hostConfig.port}" \
           --arg urlBase "${serviceConfig.hostConfig.urlBase}" \
+          --arg allowedHosts "${serviceConfig.hostConfig.allowedHosts or config.networking.hostName}" \
           --arg instanceName "${serviceConfig.hostConfig.instanceName}" \
           --arg logLevel "info" \
           --argjson launchBrowser false \
@@ -87,6 +89,7 @@ let
           '{
             port: $port,
             urlBase: $urlBase,
+            allowedHosts: $allowedHosts,
             instanceName: $instanceName,
             apiKey: $apiKey,
             ${lib.optionalString (serviceConfig.hostConfig.passwordPath != null) ''

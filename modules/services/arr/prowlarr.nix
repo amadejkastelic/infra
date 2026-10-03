@@ -16,6 +16,7 @@ let
   hostConfig = {
     inherit (config.services.prowlarr.settings.server) port;
     urlBase = if nginxCfg.enable then urlBaseStr else "";
+    allowedHosts = nginxCfg.hostName;
     passwordPath = apiCfg.hostPasswordPath;
     instanceName = "Prowlarr";
   };
