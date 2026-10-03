@@ -11,11 +11,14 @@
   programs.vicinae = {
     enable = true;
 
+    package = pkgs.vicinae;
+
     systemd = {
       enable = true;
 
       environment = {
         USE_LAYER_SHELL = 1;
+        QSG_RHI_BACKEND = "vulkan";
       };
     };
 
