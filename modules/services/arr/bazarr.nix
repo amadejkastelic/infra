@@ -30,7 +30,7 @@ in
 
     port = lib.mkOption {
       type = lib.types.int;
-      default = config.services.bazarr.listenPort;
+      default = config.services.bazarr.settings.general.port;
       description = "Port to expose bazarr webui through nginx";
     };
 
@@ -66,14 +66,14 @@ in
 
         preStart = bazarrConfigurator.mkPreStart {
           inherit (cfg) dataDir;
-          port = cfg.listenPort;
+          port = cfg.settings.general.port;
           urlBase = cfg.urlBase;
         };
       };
 
       bazarr-config-settings = bazarrConfigurator.mkSettingsService {
         serviceName = "bazarr";
-        port = cfg.listenPort;
+        port = cfg.settings.general.port;
         urlBase = cfg.urlBase;
         apiConfig = apiCfg;
       };
@@ -81,7 +81,7 @@ in
       bazarr-config-jellyfin = lib.mkIf (apiCfg.jellyfin != null) (
         bazarrConfigurator.mkJellyfinService {
           serviceName = "bazarr";
-          port = cfg.listenPort;
+          port = cfg.settings.general.port;
           urlBase = cfg.urlBase;
           apiConfig = apiCfg;
         }
