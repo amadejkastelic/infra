@@ -8,7 +8,7 @@
       hostName = "bazarr.${config.homelab.domain}";
     };
     urlBase = "/";
-    listenPort = 6767;
+    services.bazarr.settings.general.port = 6767;
 
     apiConfig = {
       enable = true;
