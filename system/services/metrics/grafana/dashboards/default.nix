@@ -56,6 +56,12 @@ let
       );
     }
     {
+      name = "smartctl.json";
+      path = patchDatasource (
+        fetchGrafanaDashboard 22604 1 "sha256-Zlsn014or112snj3L7CFladjz9xMg1GmvIL16hrSjDo="
+      );
+    }
+    {
       name = "systemd-logs.json";
       path = ./systemd-logs.json;
     }

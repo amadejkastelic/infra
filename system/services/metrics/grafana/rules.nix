@@ -122,6 +122,30 @@ in
             severity = "warning";
             summary = "{{ $labels.instance }} has {{ $value }} failed systemd units";
           })
+          (mkAlert {
+            uid = "smart-health-failed";
+            title = "SMART Health Failed";
+            expr = "1 - smartctl_device_smart_status";
+            threshold = 0.5;
+            severity = "critical";
+            summary = "Disk {{ $labels.device }} on {{ $labels.instance }} failed SMART health";
+          })
+          (mkAlert {
+            uid = "smart-bad-sectors";
+            title = "SMART Bad Sectors";
+            expr = ''smartctl_device_attribute{attribute_name=~"Reallocated_Sector_Ct|Current_Pending_Sector|Offline_Uncorrectable",attribute_value_type="raw"}'';
+            threshold = 0;
+            severity = "warning";
+            summary = "Disk {{ $labels.device }} on {{ $labels.instance }} reports bad sectors";
+          })
+          (mkAlert {
+            uid = "smart-high-temperature";
+            title = "SMART High Temperature";
+            expr = ''smartctl_device_temperature{temperature_type="current"}'';
+            threshold = 45;
+            severity = "warning";
+            summary = "Disk {{ $labels.device }} on {{ $labels.instance }} is above 45°C";
+          })
         ];
       }
     ];

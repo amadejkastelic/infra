@@ -15,6 +15,7 @@ let
     node = config.services.prometheus.exporters.node.port;
     postgres = config.services.prometheus.exporters.postgres.port;
     nvidia-gpu = config.services.prometheus.exporters.nvidia-gpu.port;
+    smartctl = config.services.prometheus.exporters.smartctl.port;
   };
 
   exporterNames = lib.unique (lib.concatLists (lib.mapAttrsToList (_: h: h.exporters) homelab.hosts));

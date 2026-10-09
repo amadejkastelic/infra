@@ -17,7 +17,10 @@
       };
       oblak = {
         ip = "192.168.1.6";
-        exporters = [ "node" ];
+        exporters = [
+          "node"
+          "smartctl"
+        ];
       };
     };
   };

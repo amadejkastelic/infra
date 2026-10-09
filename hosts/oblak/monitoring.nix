@@ -13,6 +13,11 @@
     openFirewall = true;
   };
 
+  services.prometheus.exporters.smartctl = {
+    enable = true;
+    openFirewall = true;
+  };
+
   services.rapl-collector.enable = true;
   services.nixos-info-collector.enable = true;
 
