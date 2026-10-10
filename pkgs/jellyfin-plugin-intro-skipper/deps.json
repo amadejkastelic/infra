@@ -26,43 +26,43 @@
   },
   {
     "pname": "Jellyfin.Common",
-    "version": "12.0.0",
-    "hash": "sha256-g301r5Rr2p3QjJovgkwB0sNS9s1tWjGam1zY9Grlyhk="
+    "version": "12.1.0",
+    "hash": "sha256-h/tCbFIdOZFhtLPvWiMQXKE4TBowNWC7jni55yGdNlQ="
   },
   {
     "pname": "Jellyfin.Controller",
-    "version": "12.0.0",
-    "hash": "sha256-60Bs1qi1M1ypkWfzjHPiDi67L5t0N49KY7SdjSpw5mA="
+    "version": "12.1.0",
+    "hash": "sha256-D0Qo4fpIwTq+vYBBIKblibNwAFttNVgHIIrYhkM/pow="
   },
   {
     "pname": "Jellyfin.Data",
-    "version": "12.0.0",
-    "hash": "sha256-/5qbiDozMwLb6gDdtPch59YY1OfG5guhog+5gFmUOFg="
+    "version": "12.1.0",
+    "hash": "sha256-3YgG8Q3WM1Vhl1Tbjlzw9Z7AT+H1OxbWNfNk/6IkWxI="
   },
   {
     "pname": "Jellyfin.Database.Implementations",
-    "version": "12.0.0",
-    "hash": "sha256-iFLZaJ91PwO2g6xCl/h/c3Y0xgK1fivC4TGvTh/v/DQ="
+    "version": "12.1.0",
+    "hash": "sha256-Gs5PBw3j96ZowSytX9hgK8cDvSUU2BS/x1btGtfte/c="
   },
   {
     "pname": "Jellyfin.Extensions",
-    "version": "12.0.0",
-    "hash": "sha256-FNgk6CoErfhVwNiaF57MGo/9r0Hn+3Fj+KEqQ1TxoQo="
+    "version": "12.1.0",
+    "hash": "sha256-hSyKlFjddYQpFhwu9v26j8vITkE39uTtX/SbSf5XdoQ="
   },
   {
     "pname": "Jellyfin.MediaEncoding.Keyframes",
-    "version": "12.0.0",
-    "hash": "sha256-IbekbVAT6zsjGgwJUox3RDsLt7+SyX5KSaoLmxczQlc="
+    "version": "12.1.0",
+    "hash": "sha256-XPKEzu18Peq7QQ0kq6vennrJqoiQeiHEhIPA91USoI0="
   },
   {
     "pname": "Jellyfin.Model",
-    "version": "12.0.0",
-    "hash": "sha256-R9PN7d5PiSGzyKCo4QDDYrvKjYN3+FlVOWX3MAj5JVw="
+    "version": "12.1.0",
+    "hash": "sha256-ZbpQaGFF+48+Oo4KbKZJHzezBlUSqEx2Ur14Gici9jA="
   },
   {
     "pname": "Jellyfin.Naming",
-    "version": "12.0.0",
-    "hash": "sha256-aZrAZI+WuQSIczYKNTQBjZkLVvYF94unpkA7iuao2zI="
+    "version": "12.1.0",
+    "hash": "sha256-vRUOmV+nNIWiTW6S4AquFrQq2t7x0gyXZ2uvp9XuKGo="
   },
   {
     "pname": "Microsoft.Build.Framework",
