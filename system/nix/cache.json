@@ -7,7 +7,6 @@
     "https://nix-gaming.cachix.org",
     "https://amadejkastelic.cachix.org",
     "https://vicinae.cachix.org",
-    "https://attic.xuyh0120.win/lantian",
     "https://noctalia.cachix.org"
   ],
   "trusted-public-keys": [
@@ -18,7 +17,6 @@
     "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=",
     "amadejkastelic.cachix.org-1:EiQfTbiT0UKsynF4q3nbNYjNH6/l7zuhrNkQTuXmyOs=",
     "vicinae.cachix.org-1:1kDrfienkGHPYbkpNj1mWTr7Fm1+zcenzgTizIcI3oc=",
-    "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=",
     "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
   ]
 }
