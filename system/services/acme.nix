@@ -8,7 +8,10 @@
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "amadejkastelic7@gmail.com";
+    defaults = {
+      email = "amadejkastelic7@gmail.com";
+      dnsResolver = "1.1.1.1:53";
+    };
 
     certs.${config.homelab.domain} = {
       domain = config.homelab.domain;
