@@ -43,6 +43,8 @@
         };
 
         leshade = pkgs.callPackage ./leshade { };
+
+        bbport = pkgs.callPackage ./bbport { };
       };
     };
 }
