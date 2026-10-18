@@ -7,6 +7,7 @@ let
       title,
       expr,
       threshold,
+      evaluator ? "gt",
       duration ? "5m",
       severity,
       summary,
@@ -52,7 +53,7 @@ let
                 query.params = [ "A" ];
                 reducer.type = "last";
                 evaluator = {
-                  type = "gt";
+                  type = evaluator;
                   params = [ threshold ];
                 };
               }
@@ -77,16 +78,18 @@ in
           (mkAlert {
             uid = "host-down";
             title = "Host Down";
-            expr = ''up{job="node"} == 0'';
-            threshold = 0;
+            expr = ''up{job="node"}'';
+            threshold = 1;
+            evaluator = "lt";
             severity = "critical";
             summary = "Host {{ $labels.instance }} is unreachable";
           })
           (mkAlert {
             uid = "exporter-down";
             title = "Exporter Down";
-            expr = ''up{job!="node"} == 0'';
-            threshold = 0;
+            expr = ''up{job!="node"}'';
+            threshold = 1;
+            evaluator = "lt";
             severity = "warning";
             summary = "Exporter {{ $labels.job }} on {{ $labels.instance }} is down";
           })
