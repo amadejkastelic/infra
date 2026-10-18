@@ -7,7 +7,7 @@
   "schemaVersion": 39,
   "version": 1,
   "time": {
-    "from": "now-7d",
+    "from": "now-24h",
     "to": "now"
   },
   "refresh": "1m",
@@ -127,7 +127,7 @@
       "description": "Free space available in the pool.",
       "fieldConfig": {
         "defaults": {
-          "unit": "iecB",
+          "unit": "bytes",
           "decimals": 1,
           "color": {
             "mode": "thresholds"
@@ -357,7 +357,7 @@
       "description": "Allocated grows as the pool fills; free is the remaining headroom.",
       "fieldConfig": {
         "defaults": {
-          "unit": "iecB",
+          "unit": "bytes",
           "custom": {
             "drawStyle": "line",
             "lineInterpolation": "smooth",
@@ -441,7 +441,7 @@
       "description": "Used bytes per filesystem dataset. The pool root (storage) includes its children, so lines are not additive.",
       "fieldConfig": {
         "defaults": {
-          "unit": "iecB",
+          "unit": "bytes",
           "custom": {
             "drawStyle": "line",
             "lineInterpolation": "smooth",
