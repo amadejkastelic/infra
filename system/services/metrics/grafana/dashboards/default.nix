@@ -73,6 +73,10 @@ let
       name = "nixos-overview.json";
       path = ./nixos-overview.json;
     }
+    {
+      name = "zfs-storage.json";
+      path = ./zfs-storage.json;
+    }
   ];
 in
 {

@@ -20,6 +20,7 @@
         exporters = [
           "node"
           "smartctl"
+          "zfs"
         ];
       };
     };

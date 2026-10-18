@@ -18,6 +18,11 @@
     openFirewall = true;
   };
 
+  services.prometheus.exporters.zfs = {
+    enable = true;
+    openFirewall = true;
+  };
+
   services.rapl-collector.enable = true;
   services.nixos-info-collector.enable = true;
 

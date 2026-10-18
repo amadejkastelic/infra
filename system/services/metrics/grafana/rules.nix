@@ -110,6 +110,22 @@ in
             summary = "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} is above 95% full";
           })
           (mkAlert {
+            uid = "zfs-pool-capacity-warning";
+            title = "ZFS Pool Capacity Warning";
+            expr = "100 * zfs_pool_allocated_bytes / zfs_pool_size_bytes";
+            threshold = 80;
+            severity = "warning";
+            summary = "ZFS pool {{ $labels.pool }} on {{ $labels.instance }} is above 80% full";
+          })
+          (mkAlert {
+            uid = "zfs-pool-capacity-critical";
+            title = "ZFS Pool Capacity Critical";
+            expr = "100 * zfs_pool_allocated_bytes / zfs_pool_size_bytes";
+            threshold = 90;
+            severity = "critical";
+            summary = "ZFS pool {{ $labels.pool }} on {{ $labels.instance }} is above 90% full";
+          })
+          (mkAlert {
             uid = "high-memory";
             title = "High Memory Usage";
             expr = "100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)";
