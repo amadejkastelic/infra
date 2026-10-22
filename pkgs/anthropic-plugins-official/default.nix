@@ -11,8 +11,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "anthropics";
     repo = "claude-plugins-official";
-    rev = "d1adba47161a271799de7b548225d929310046bd";
-    hash = "sha256-lzO4kezYmYODY4iI7mkYSfMwa/jX8sVdXh6kFRkye5E=";
+    rev = "af59ee3a1051a29dda4a2e7a2af221aa457ae08b";
+    hash = "sha256-I7Ko4Ssksx6mkhej73jihZ3cuHuS7qePfBwpUebwttI=";
   };
 
   dontConfigure = true;
