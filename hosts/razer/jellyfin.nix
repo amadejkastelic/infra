@@ -19,8 +19,6 @@
       hardwareDecodingCodecs = {
         hevcRExt12bit = lib.mkForce false;
         hevcRExt10bit = lib.mkForce false;
-        hevc10bit = lib.mkForce false;
-        hevc = lib.mkForce false;
         av1 = lib.mkForce false;
       };
     };
