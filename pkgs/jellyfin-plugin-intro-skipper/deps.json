@@ -26,43 +26,43 @@
   },
   {
     "pname": "Jellyfin.Common",
-    "version": "12.1.0",
-    "hash": "sha256-h/tCbFIdOZFhtLPvWiMQXKE4TBowNWC7jni55yGdNlQ="
+    "version": "12.2.0",
+    "hash": "sha256-BfvmqniR0F8p1jhDHMiUsQtC3+i5HVdE/mrolKt5SXQ="
   },
   {
     "pname": "Jellyfin.Controller",
-    "version": "12.1.0",
-    "hash": "sha256-D0Qo4fpIwTq+vYBBIKblibNwAFttNVgHIIrYhkM/pow="
+    "version": "12.2.0",
+    "hash": "sha256-bafvODHEpFg6tPRpMMcOxe/5jSx1ABOVBkO/8yay3FU="
   },
   {
     "pname": "Jellyfin.Data",
-    "version": "12.1.0",
-    "hash": "sha256-3YgG8Q3WM1Vhl1Tbjlzw9Z7AT+H1OxbWNfNk/6IkWxI="
+    "version": "12.2.0",
+    "hash": "sha256-opOgCVarVNLXkaC1gUMfQCoMfLRWl8GfHymwTpN7RZA="
   },
   {
     "pname": "Jellyfin.Database.Implementations",
-    "version": "12.1.0",
-    "hash": "sha256-Gs5PBw3j96ZowSytX9hgK8cDvSUU2BS/x1btGtfte/c="
+    "version": "12.2.0",
+    "hash": "sha256-NdosoMv2HYtM6Hx9wX+VAL3UZBiOgjVmEJKrN5SpUKw="
   },
   {
     "pname": "Jellyfin.Extensions",
-    "version": "12.1.0",
-    "hash": "sha256-hSyKlFjddYQpFhwu9v26j8vITkE39uTtX/SbSf5XdoQ="
+    "version": "12.2.0",
+    "hash": "sha256-0kida1y1qfLxj9CC2G0+C7BES/7EuhIHLvJA1H8x0Ac="
   },
   {
     "pname": "Jellyfin.MediaEncoding.Keyframes",
-    "version": "12.1.0",
-    "hash": "sha256-XPKEzu18Peq7QQ0kq6vennrJqoiQeiHEhIPA91USoI0="
+    "version": "12.2.0",
+    "hash": "sha256-yvI0VYOAHWHFQCBPOjZHDc5QQvFFxxEiAPbbtdQoO30="
   },
   {
     "pname": "Jellyfin.Model",
-    "version": "12.1.0",
-    "hash": "sha256-ZbpQaGFF+48+Oo4KbKZJHzezBlUSqEx2Ur14Gici9jA="
+    "version": "12.2.0",
+    "hash": "sha256-seQ/T6X5oyetSic30yf7uRPQz694rud61nJH2L59zmg="
   },
   {
     "pname": "Jellyfin.Naming",
-    "version": "12.1.0",
-    "hash": "sha256-vRUOmV+nNIWiTW6S4AquFrQq2t7x0gyXZ2uvp9XuKGo="
+    "version": "12.2.0",
+    "hash": "sha256-+y6a6Wr3bMfjuVfrmKEPSb5F3x1o5wz/YYy3y3aG220="
   },
   {
     "pname": "Microsoft.Build.Framework",
@@ -333,5 +333,10 @@
     "pname": "System.Composition.TypedParts",
     "version": "9.0.0",
     "hash": "sha256-F5fpTUs3Rr7yP/NyIzr+Xn5NdTXXp8rrjBnF9UBBUog="
+  },
+  {
+    "pname": "UTF.Unknown",
+    "version": "2.7.0",
+    "hash": "sha256-3O8tLxj+oQSJdj39vvLs1OqMZt5dOfur2Z0l3SW46V0="
   }
 ]
