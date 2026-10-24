@@ -14,13 +14,13 @@ in
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-intro-skipper";
 
-  version = "12.0.5.0";
+  version = "12.0.6.0";
 
   src = fetchFromGitHub {
     owner = "intro-skipper";
     repo = "intro-skipper";
     tag = "${branch}/v${finalAttrs.version}";
-    hash = "sha256-0uK9O4QbeNCqp6lIzntdg2OmN5SG7sOh8D5S0SgGFgc=";
+    hash = "sha256-KFUoRtlWDCYvr3528f08hDGtQlecJJjFYdD56gYjz1M=";
   };
 
   dotnet-sdk = dotnetCorePackages.sdk_10_0;
@@ -35,7 +35,7 @@ buildDotnetModule (finalAttrs: {
     inherit (finalAttrs) pname src;
     preInstall = "cd web";
     fetcherVersion = 4;
-    hash = "sha256-Krukkmbu9zgEAkxXfY538a5tcWhCOnSWP3Ld400U3+8=";
+    hash = "sha256-vIyESmqTaPIPX2NWaE2DkGHXRXN+683bwktPMmnR7m8=";
   };
 
   pnpmRoot = "web";
