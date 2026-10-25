@@ -46,7 +46,7 @@
 
         bbport = pkgs.callPackage ./bbport { };
 
-        homeassistant-mojelektro = pkgs.callPackage ./homeassistant-mojelektro { };
+        homeassistant-mojelektro-stats = pkgs.callPackage ./homeassistant-mojelektro-stats { };
       };
     };
 }

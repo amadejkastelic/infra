@@ -1,0 +1,162 @@
+commit ead49381f95557296716558830a8026794939dd5
+Author: Amadej Kastelic <amadejkastelic7@gmail.com>
+Date:   Sun Oct 25 19:34:39 2026 +0100
+
+    fix: attribute daily stanje statistics to the day they close
+
+diff --git a/custom_components/mojelektro_stats/sinks/statistics.py b/custom_components/mojelektro_stats/sinks/statistics.py
+index 0fedc06..68b9a52 100644
+--- a/custom_components/mojelektro_stats/sinks/statistics.py
++++ b/custom_components/mojelektro_stats/sinks/statistics.py
+@@ -23,7 +23,7 @@ from __future__ import annotations
+ 
+ import logging
+ from collections import defaultdict
+-from datetime import date, datetime, time
++from datetime import date, datetime, time, timedelta
+ from typing import Final
+ 
+ from homeassistant.components.recorder.db_schema import Statistics, StatisticsMeta
+@@ -116,7 +116,10 @@ class StatisticsSink:
+             value = _parse_value(r.get("value"))
+             if value is None:
+                 continue
+-            hourly[_truncate_to_hour(ts)].append(value)
++            hour = _truncate_to_hour(ts)
++            if is_state:
++                hour -= timedelta(hours=24)
++            hourly[hour].append(value)
+ 
+         if not hourly:
+             return
+@@ -124,6 +127,11 @@ class StatisticsSink:
+         first_hour = min(hourly)
+         baseline = 0.0
+         skip_through: datetime | None = None
++        if is_state and statistic_id not in self._tail:
++            _, prior_hour = await self._previous_sum_before(statistic_id, first_hour)
++            if prior_hour is None:
++                hourly[first_hour - timedelta(hours=24)] = list(hourly[first_hour])
++                first_hour = min(hourly)
+         if has_sum and not is_state:
+             from_cache, skip_through = self._resolve_baseline(statistic_id, first_hour)
+             if from_cache is not None:
+@@ -169,6 +177,8 @@ class StatisticsSink:
+             # Remember our final cumulative so the next chunk in this cycle
+             # can pick up without a recorder round-trip.
+             self._tail[statistic_id] = (max(hourly), cumulative)
++        elif is_state:
++            self._tail[statistic_id] = (max(hourly), float(data[-1]["sum"]))
+         _LOGGER.debug(
+             "Imported %d hourly statistics rows for %s (from %d raw samples, baseline=%s)",
+             len(data),
+diff --git a/tests/ha/test_statistics_sink.py b/tests/ha/test_statistics_sink.py
+index d4aed47..b54a59b 100644
+--- a/tests/ha/test_statistics_sink.py
++++ b/tests/ha/test_statistics_sink.py
+@@ -195,7 +195,10 @@ async def test_stanje_uses_value_directly_without_accumulation(
+     recorder_mock: object, hass: object
+ ) -> None:
+     """STANJE (daily cumulative meter state) readings ARE the cumulative total
+-    — we shouldn't sum-accumulate them on top of themselves."""
++    — we shouldn't sum-accumulate them on top of themselves. Each reading is
++    attributed to the day it closes, and a fresh statistic gets a zero-change
++    anchor row one day earlier so the first day's change isn't the lifetime
++    register total."""
+     sink = StatisticsSink(hass)  # type: ignore[arg-type]
+     captured_data: list[list[dict]] = []
+ 
+@@ -209,8 +212,6 @@ async def test_stanje_uses_value_directly_without_accumulation(
+         {"timestamp": "2026-06-02T00:00:00+00:00", "value": "1005.0"},
+         {"timestamp": "2026-06-03T00:00:00+00:00", "value": "1010.0"},
+     ]
+-    # _previous_sum_before would normally return some baseline but for STANJE
+-    # we don't use it — assert that explicitly by giving it a poison value.
+     with (
+         patch(
+             "custom_components.mojelektro_stats.sinks.statistics.async_add_external_statistics",
+@@ -220,8 +221,82 @@ async def test_stanje_uses_value_directly_without_accumulation(
+     ):
+         await sink.write("4-1234567", info, readings)  # type: ignore[arg-type]
+ 
+-    sums = [row["sum"] for row in captured_data[0]]
+-    assert sums == [pytest.approx(1000.0), pytest.approx(1005.0), pytest.approx(1010.0)]
++    data = captured_data[0]
++    assert [row["start"] for row in data] == [
++        datetime(2026, 5, 30, 0, 0, tzinfo=UTC),
++        datetime(2026, 5, 31, 0, 0, tzinfo=UTC),
++        datetime(2026, 6, 1, 0, 0, tzinfo=UTC),
++        datetime(2026, 6, 2, 0, 0, tzinfo=UTC),
++    ]
++    sums = [row["sum"] for row in data]
++    assert sums == [
++        pytest.approx(1000.0),
++        pytest.approx(1000.0),
++        pytest.approx(1005.0),
++        pytest.approx(1010.0),
++    ]
++
++
++@pytest.mark.ha
++async def test_stanje_does_not_anchor_when_prior_data_exists(
++    recorder_mock: object, hass: object
++) -> None:
++    sink = StatisticsSink(hass)  # type: ignore[arg-type]
++    captured_data: list[list[dict]] = []
++
++    def fake(_hass: object, _md: dict, data: list) -> None:
++        captured_data.append(list(data))
++
++    info = BY_NAME["A_PLUS_T0_DAILY"]
++    readings = [
++        {"timestamp": "2026-06-02T00:00:00+00:00", "value": "1005.0"},
++        {"timestamp": "2026-06-03T00:00:00+00:00", "value": "1010.0"},
++    ]
++    prior_hour = datetime(2026, 5, 31, 0, 0, tzinfo=UTC)
++    with (
++        patch(
++            "custom_components.mojelektro_stats.sinks.statistics.async_add_external_statistics",
++            side_effect=fake,
++        ),
++        patch.object(StatisticsSink, "_previous_sum_before", return_value=(1000.0, prior_hour)),
++    ):
++        await sink.write("4-1234567", info, readings)  # type: ignore[arg-type]
++
++    assert len(captured_data[0]) == 2
++    assert captured_data[0][0]["start"] == datetime(2026, 6, 1, 0, 0, tzinfo=UTC)
++
++
++@pytest.mark.ha
++async def test_stanje_back_to_back_chunks_do_not_anchor_again(
++    recorder_mock: object, hass: object
++) -> None:
++    sink = StatisticsSink(hass)  # type: ignore[arg-type]
++    captured: list[list[dict]] = []
++
++    def fake(_hass: object, _md: dict, data: list) -> None:
++        captured.append(list(data))
++
++    info = BY_NAME["A_PLUS_T0_DAILY"]
++    chunk_a = [
++        {"timestamp": "2026-06-01T00:00:00+00:00", "value": "1000.0"},
++        {"timestamp": "2026-06-02T00:00:00+00:00", "value": "1005.0"},
++    ]
++    chunk_b = [
++        {"timestamp": "2026-06-03T00:00:00+00:00", "value": "1010.0"},
++    ]
++    with (
++        patch(
++            "custom_components.mojelektro_stats.sinks.statistics.async_add_external_statistics",
++            side_effect=fake,
++        ),
++        patch.object(StatisticsSink, "_previous_sum_before", return_value=(0.0, None)),
++    ):
++        await sink.write("4-1234567", info, chunk_a)  # type: ignore[arg-type]
++        await sink.write("4-1234567", info, chunk_b)  # type: ignore[arg-type]
++
++    assert len(captured[0]) == 3
++    assert len(captured[1]) == 1
++    assert captured[1][0]["start"] == datetime(2026, 6, 2, 0, 0, tzinfo=UTC)
+ 
+ 
+ @pytest.mark.ha
