@@ -2,7 +2,6 @@
 {
   boot = {
     initrd = {
-      systemd.enable = true;
       supportedFilesystems = [
         "ext4"
         "ntfs"

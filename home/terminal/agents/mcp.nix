@@ -8,6 +8,13 @@
 let
   zAiBaseUrl = "https://api.z.ai/api/mcp";
   zAiAuthorization = "Bearer \${Z_AI_API_KEY}";
+  mcp-nixos = pkgs.mcp-nixos.override {
+    python3Packages = pkgs.python3Packages.overrideScope (
+      final: prev: {
+        mcp = prev.mcp_1;
+      }
+    );
+  };
 in
 {
   home.packages = with pkgs; [
@@ -31,7 +38,7 @@ in
         env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_TOKEN}";
       };
       nixos = {
-        command = lib.getExe pkgs.mcp-nixos;
+        command = lib.getExe mcp-nixos;
       };
       web-search-prime = {
         type = "remote";
