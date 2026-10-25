@@ -121,8 +121,8 @@
       };
     };
 
-    tui = {
-      theme = "catppuccin";
+    cli = {
+      theme.name = "catppuccin";
     };
   };
 
