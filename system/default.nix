@@ -2,7 +2,6 @@
 let
   common = [
     self.modules.config
-    self.modules.hardware
     self.modules.services
 
     ./config.nix
