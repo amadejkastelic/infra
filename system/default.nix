@@ -59,7 +59,7 @@ let
     ./services/databases
     ./services/forgejo.nix
     ./services/grabby.nix
-    ./services/home-assistant.nix
+    ./services/home-assistant
     ./services/immich
     ./services/jellyfin.nix
     ./services/metrics

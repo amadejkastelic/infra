@@ -45,6 +45,8 @@
         leshade = pkgs.callPackage ./leshade { };
 
         bbport = pkgs.callPackage ./bbport { };
+
+        homeassistant-mojelektro = pkgs.callPackage ./homeassistant-mojelektro { };
       };
     };
 }

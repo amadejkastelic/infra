@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  self,
   ...
 }:
 let
@@ -12,7 +13,12 @@ in
   services.home-assistant = {
     enable = true;
     extraComponents = [ "mqtt" ];
+    customComponents = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+      homeassistant-mojelektro
+    ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      apexcharts-card
+      card-mod
       valetudo-map-card
     ];
 
@@ -53,6 +59,15 @@ in
                 }
               ];
             }
+          ];
+        }
+        {
+          title = "Electricity";
+          path = "electricity";
+          icon = "mdi:transmission-tower";
+          cards = [
+            (import ./cards/mojelektro-daily.nix)
+            (import ./cards/mojelektro-15min.nix)
           ];
         }
       ];
