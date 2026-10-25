@@ -1023,11 +1023,11 @@
         "pre-commit-hooks": "pre-commit-hooks_2"
       },
       "locked": {
-        "lastModified": 1792895283,
-        "narHash": "sha256-xtEEqD5MkDlHa6L9P2ZCigE0qCVV4x3q+kuMHTBsDEE=",
+        "lastModified": 1792942426,
+        "narHash": "sha256-DnMeTFIt+GZ0trUvtyx0uwLidL+NfSBBC3Dpdb4hIyE=",
         "owner": "amadejkastelic",
         "repo": "grabby",
-        "rev": "53b5f385366445ddbc1058041daff6555e51a062",
+        "rev": "628ff8a5a580c5457e7f1023d6706d301a59b6be",
         "type": "github"
       },
       "original": {
