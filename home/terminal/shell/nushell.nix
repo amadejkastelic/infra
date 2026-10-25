@@ -8,6 +8,7 @@
 {
   programs.nushell = {
     enable = true;
+    loadSessionVariables = true;
 
     shellAliases = {
       grep = "grep --color";
