@@ -1,24 +1,42 @@
 {
   config,
+  lib,
   pkgs,
   self,
   ...
 }:
 let
   port = 8123;
+
+  mojelektroMeters = [ "3-8119417" ];
+
+  electricityView = {
+    title = "Electricity";
+    path = "electricity";
+    icon = "mdi:transmission-tower";
+    cards = lib.concatMap (m: [
+      (import ./cards/mojelektro-daily.nix m)
+      (import ./cards/mojelektro-interval.nix m)
+    ]) (map (m: lib.replaceStrings [ "-" ] [ "" ] m) mojelektroMeters);
+  };
 in
 {
+  imports = [
+    (import ./mojelektro.nix {
+      meters = mojelektroMeters;
+      inherit port;
+    })
+  ];
+
   homelab.subdomains = [ "home" ];
 
   services.home-assistant = {
     enable = true;
     extraComponents = [ "mqtt" ];
     customComponents = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
-      homeassistant-mojelektro
+      homeassistant-mojelektro-stats
     ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
-      apexcharts-card
-      card-mod
       valetudo-map-card
     ];
 
@@ -29,6 +47,14 @@ in
         external_url = "https://home.${config.homelab.domain}";
         internal_url = "https://home.${config.homelab.domain}";
         unit_system = "metric";
+        auth_providers = [
+          { type = "homeassistant"; }
+          {
+            type = "trusted_networks";
+            trusted_networks = [ "127.0.0.2/32" ];
+            allow_bypass_login = true;
+          }
+        ];
       };
       http = {
         server_host = "127.0.0.1";
@@ -61,16 +87,8 @@ in
             }
           ];
         }
-        {
-          title = "Electricity";
-          path = "electricity";
-          icon = "mdi:transmission-tower";
-          cards = [
-            (import ./cards/mojelektro-daily.nix)
-            (import ./cards/mojelektro-15min.nix)
-          ];
-        }
-      ];
+      ]
+      ++ lib.optional (mojelektroMeters != [ ]) electricityView;
     };
   };
 

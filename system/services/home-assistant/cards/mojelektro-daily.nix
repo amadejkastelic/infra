@@ -1,141 +1,18 @@
-{
-  type = "custom:apexcharts-card";
-  card_mod.style = ''
-    ha-card .apexcharts-gridlines-horizontal{
-      transform: scaleX(0.90);
-    }
-    ha-card .apexcharts-grid{
-      transform: translate(14px, 0px);
-      overflow:hidden !important;
-    }
-    ha-card .apexcharts-xcrosshairs{
-      transform: translate(0px, 0px);
-    }
-    ha-card {
-       overflow:visible !important;
-    }
-    ha-card .apexcharts-tooltip{
-      border-radius: 0px;
-      border: 0 !important;
-      box-shadow: unset;
-    }
-    ha-card .apexcharts-legend{
-      display: none;
-    }
-  '';
-  apex_config = {
-    dataLabels = {
-      enabled = true;
-      offsetY = -8;
-      style = {
-        fontSize = "10px";
-        fontFamily = "SegoeUI";
-      };
-      background.enabled = false;
-    };
-    tooltip = {
-      filter = "(tooltipItem) => tooltipItem.raw > 0";
-      x.format = "dddd, d MMMM";
-      enabled = true;
-      followCursor = true;
-      fixed = {
-        enabled = true;
-        position = "topleft";
-        offsetY = 180;
-      };
-      items.display = "flex";
-    };
-    plotOptions.bar = {
-      borderRadius = 3;
-      borderRadiusApplication = "end";
-      borderRadiusWhenStacked = "last";
-      columnWidth = "98%";
-    };
-    stroke.colors = [ "transperent" ];
-    xaxis = {
-      floating = true;
-      labels.show = false;
-      axisTicks.show = false;
-      axisBorder.show = false;
-      tooltip.enabled = false;
-      crosshairs = {
-        show = true;
-        width = 25;
-        position = "front";
-        opacity = 0.2;
-      };
-    };
-    yaxis = {
-      min = 0;
-      decimals = 2;
-      tickAmount = 2;
-      floating = true;
-      labels = {
-        show = true;
-        offsetX = 31;
-        offsetY = -6;
-      };
-    };
-    grid = {
-      strokeDashArray = 2;
-      borderColor = "#666666";
-      padding = {
-        left = 0;
-        right = 0;
-      };
-    };
-    chart = {
-      stacked = true;
-      height = "180px";
-      animations.enabled = false;
-    };
-  };
-  graph_span = "14day";
-  hours_12 = false;
-  show.loading = false;
-  cache = true;
-  span = {
-    end = "day";
-    offset = "-2day";
-  };
-  color_list = [
-    "#335272"
-    "var(--paper-item-icon-active-color)"
-  ];
-  update_interval = "1hour";
-  series = [
+slug: {
+  type = "statistics-graph";
+  title = "Electricity (VT / MT)";
+  chart_type = "bar";
+  stat_types = [ "change" ];
+  period = "day";
+  days_to_show = 14;
+  entities = [
     {
-      entity = "sensor.moj_elektro_daily_input_peak";
+      entity = "mojelektro_stats:${slug}_a_plus_t1";
       name = "VT";
-      type = "column";
-      float_precision = 2;
-      show = {
-        legend_value = false;
-        offset_in_name = false;
-      };
-      statistics = {
-        type = "state";
-        period = "day";
-        align = "start";
-      };
-      offset = "+1day";
     }
     {
-      entity = "sensor.moj_elektro_daily_input_offpeak";
+      entity = "mojelektro_stats:${slug}_a_plus_t2";
       name = "MT";
-      type = "column";
-      float_precision = 2;
-      show = {
-        datalabels = "total";
-        legend_value = false;
-        offset_in_name = false;
-      };
-      statistics = {
-        type = "state";
-        period = "day";
-        align = "start";
-      };
-      offset = "+1day";
     }
   ];
 }
