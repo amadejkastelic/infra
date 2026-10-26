@@ -96,6 +96,7 @@ in
           {
             trash_id = asianReleaseGroups;
             select_all = true;
+            assign_scores_to = [ { trash_id = web2160pCombined; } ];
           }
         ];
         custom_formats = [
