@@ -90,6 +90,7 @@ in
           {
             trash_id = web2160pCombined;
             reset_unmatched_scores.enabled = true;
+            upgrade.allowed = false;
           }
         ];
         custom_format_groups.add = [
