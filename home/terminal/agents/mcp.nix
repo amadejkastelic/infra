@@ -63,11 +63,11 @@ in
         };
       };
       grafana = {
-        command = lib.getExe pkgs.mcp-grafana;
-        env = {
-          GRAFANA_URL = "https://grafana.amadejk.com";
-          GRAFANA_SERVICE_ACCOUNT_TOKEN = "{file:${config.sops.secrets.grafana-service-account-token.path}}";
-        };
+        command = "${pkgs.writeShellScript "mcp-grafana-wrapped" ''
+          export GRAFANA_SERVICE_ACCOUNT_TOKEN="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.grafana-service-account-token.path} | ${pkgs.coreutils}/bin/tr -d '[:space:]')"
+          exec ${lib.getExe pkgs.mcp-grafana}
+        ''}";
+        env.GRAFANA_URL = "https://grafana.amadejk.com";
       };
     };
   };
