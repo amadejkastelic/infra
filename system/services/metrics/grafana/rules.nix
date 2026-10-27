@@ -165,6 +165,16 @@ in
             severity = "warning";
             summary = "Disk {{ $labels.device }} on {{ $labels.instance }} is above 45°C";
           })
+          (mkAlert {
+            uid = "gpu-collect-failed";
+            title = "GPU Data Collection Failed";
+            expr = ''nvidia_smi_last_collect_success{job="nvidia-gpu"}'';
+            threshold = 1;
+            evaluator = "lt";
+            duration = "1m";
+            severity = "critical";
+            summary = "nvidia-smi collection failing on {{ $labels.instance }} — GPU may have fallen off the bus (Xid 79)";
+          })
         ];
       }
     ];
