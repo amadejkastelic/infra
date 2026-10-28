@@ -1,0 +1,120 @@
+name: AI Review
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.fork == false
+    permissions:
+      contents: read
+      pull-requests: write
+    concurrency:
+      group: ai-review-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Review diff
+        env:
+          Z_AI_TOKEN: ${{ secrets.Z_AI_API_TOKEN }}
+          Z_AI_MODEL: glm-5.3-flash
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${Z_AI_TOKEN}" ]; then
+            echo "Z_AI_API_TOKEN secret is missing"
+            exit 1
+          fi
+
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          git diff "${BASE_SHA}...${HEAD_SHA}" -- . ':(exclude)flake.lock' > diff.txt
+
+          if [ ! -s diff.txt ]; then
+            echo "No reviewable changes (excluding flake.lock), skipping"
+            exit 0
+          fi
+
+          truncation_note=""
+          if [ "$(stat -c%s diff.txt)" -gt 200000 ]; then
+            head -c 200000 diff.txt > diff-truncated.txt
+            mv diff-truncated.txt diff.txt
+            truncation_note=$'\n\nNote: the diff was truncated to its first 200,000 characters.'
+          fi
+
+          system_prompt=$(cat <<'EOF'
+          You are an expert NixOS reviewer for a personal flake-based dotfiles repository
+          using flake-parts, NixOS and nix-darwin systems, Home Manager, sops-nix, disko,
+          and custom modules under modules/ and system/.
+
+          Review only the provided diff, looking for:
+          1. Correctness: wrong or missing module options, type mismatches, missing imports,
+             eval-breaking mistakes, broken derivations, typos in attribute paths.
+          2. Nix hygiene: patterns inconsistent with surrounding code, logic duplicated from
+             lib/, versioned packages missing passthru.updateScript.
+          3. Security: reading or writing sops-encrypted secrets.yaml files (forbidden),
+             hardcoded credentials, unnecessarily broad permissions or open firewall ports.
+          4. Conventions: the repo formats with nixfmt-rfc-style and keeps code
+             self-documenting without comments.
+
+          Reply in Markdown:
+          - Findings ordered by severity, most severe first. Each finding: one-line summary,
+            a path/to/file.nix:123 reference, and a short suggested fix.
+          - Do not restate the diff or comment on routine changes. If nothing significant
+            remains, reply with exactly: No significant findings.
+          - Be strict about real bugs and conservative about style. When unsure, say so briefly.
+          EOF
+          )
+
+          jq -n \
+            --arg model "${Z_AI_MODEL}" \
+            --arg system "${system_prompt}" \
+            --rawfile diff diff.txt \
+            --arg note "${truncation_note}" \
+            '{
+              model: $model,
+              max_tokens: 8000,
+              system: $system,
+              messages: [
+                {
+                  role: "user",
+                  content: ("Review this pull request diff.\n\n" + $diff + $note)
+                }
+              ]
+            }' > payload.json
+
+          response=$(curl -sS --fail-with-body --max-time 600 \
+            "https://api.z.ai/api/anthropic/v1/messages" \
+            -H "x-api-key: ${Z_AI_TOKEN}" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            --data @payload.json)
+
+          printf '%s' "${response}" \
+            | jq -r '[.content[]? | select(.type == "text") | .text] | join("\n")' > review.md
+
+          if [ ! -s review.md ]; then
+            echo "Model returned no review text; raw response:"
+            printf '%s' "${response}" | jq .
+            exit 1
+          fi
+
+          {
+            echo "## AI Review (\`${Z_AI_MODEL}\`)"
+            echo
+            cat review.md
+          } > comment.md
+
+          gh pr comment "${PR_NUMBER}" --repo "${GITHUB_REPOSITORY}" --body-file comment.md
