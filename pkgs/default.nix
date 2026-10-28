@@ -38,6 +38,8 @@
         anthropic-plugins-official = pkgs.callPackage ./anthropic-plugins-official { };
         anthropic-skills = pkgs.callPackage ./anthropic-skills { };
 
+        cloudcli = pkgs.callPackage ./cloudcli { };
+
         nordvpn-proxy = pkgs.callPackage ./nordvpn-proxy {
           buildFirefoxXpiAddon = inputs.firefox-addons.lib.${system}.buildFirefoxXpiAddon;
         };
