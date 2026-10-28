@@ -54,6 +54,24 @@ jobs:
             truncation_note=$'\n\nNote: the diff was truncated to its first 200,000 characters.'
           fi
 
+          git diff -U0 "${BASE_SHA}...${HEAD_SHA}" -- . ':(exclude)flake.lock' \
+            | awk '
+              /^diff --git / { path = "" }
+              /^\+\+\+ / { if ($2 != "/dev/null") path = substr($2, 3); next }
+              /^--- / { next }
+              /^@@ / {
+                rl = 0; ll = 0
+                for (i = 2; i <= NF; i++) {
+                  if ($i ~ /^\+[0-9]/) rl = substr($i, 2) + 0
+                  else if ($i ~ /^-[0-9]/) ll = substr($i, 2) + 0
+                }
+                next
+              }
+              path == "" { next }
+              /^\+/ { print path, rl, "R"; rl++; next }
+              /^-/ { print path, ll, "L"; ll++; next }
+            ' > anchors.txt
+
           system_prompt=$(cat <<'EOF'
           You are an expert NixOS reviewer for a personal flake-based dotfiles repository
           using flake-parts, NixOS and nix-darwin systems, Home Manager, sops-nix, disko,
@@ -69,13 +87,19 @@ jobs:
           4. Conventions: the repo formats with nixfmt-rfc-style and keeps code
              self-documenting without comments.
 
-          Reply in Markdown with two sections:
-          - Summary: a brief neutral description of what the change does, derived from the
-            diff. Synthesize the intent; do not restate hunks line by line.
-          - Findings: ordered by severity, most severe first. Each finding: one-line summary,
-            a path/to/file.nix:123 reference, and a short suggested fix. If nothing
-            significant, write exactly: No significant findings.
-          Be strict about real bugs and conservative about style. When unsure, say so briefly.
+          Respond with only a JSON object, no prose and no code fences, of this shape:
+          {"summary": string, "findings": array}
+          where each finding is an object with fields:
+          file: a path exactly as it appears in the diff headers.
+          line: the line number in the new file for added or changed lines, or in the
+            old file for removed lines. Anchor to the changed line closest to the problem.
+          severity: one of critical, warning, nitpick.
+          message: one line describing the problem.
+          suggestion: a short suggested fix, or an empty string.
+
+          Order findings most severe first. Report only significant problems: strict about
+          real bugs, conservative about style, and say so in the message when unsure. An
+          empty findings array means the change looks good.
           EOF
           )
 
@@ -104,18 +128,78 @@ jobs:
             --data @payload.json)
 
           printf '%s' "${response}" \
-            | jq -r '[.content[]? | select(.type == "text") | .text] | join("\n")' > review.md
+            | jq -r '[.content[]? | select(.type == "text") | .text] | join("\n")' > reply.txt
 
-          if [ ! -s review.md ]; then
+          if [ ! -s reply.txt ]; then
             echo "Model returned no review text; raw response:"
             printf '%s' "${response}" | jq .
             exit 1
           fi
 
-          {
-            echo "## AI Review (\`${Z_AI_MODEL}\`)"
-            echo
-            cat review.md
-          } > comment.md
+          if ! jq -e 'if (type == "object" and (.summary | type == "string") and (.findings | type == "array"))
+              then . else error("invalid review JSON shape") end' \
+            reply.txt > findings.json 2> /dev/null; then
+            awk '/^```json|^```$/{f = !f; next} f' reply.txt \
+              | jq -e 'if (type == "object" and (.summary | type == "string") and (.findings | type == "array"))
+                then . else error("invalid review JSON shape") end' > findings.json \
+              || {
+                echo "Model did not return valid JSON; raw reply:"
+                cat reply.txt
+                exit 1
+              }
+          fi
 
-          gh pr comment "${PR_NUMBER}" --repo "${GITHUB_REPOSITORY}" --body-file comment.md
+          jq -n \
+            --arg model "${Z_AI_MODEL}" \
+            --rawfile findings findings.json \
+            --rawfile anchors anchors.txt \
+            '
+            def rank: {"critical": 0, "warning": 1, "nitpick": 2}[.severity] // 1;
+            def norm: map(
+              .file = (.file // "")
+              | .line = ((.line // 0) | (if type == "number" then . else (tonumber? // 0) end))
+              | .severity = (.severity // "warning")
+              | .message = (.message // "")
+              | .suggestion = (.suggestion // "")
+            );
+
+            ($anchors | split("\n") | map(select(length > 0) | split(" "))
+              | map({key: (.[0] + ":" + .[1]), value: .[2]}) | from_entries) as $a
+            | (($findings | fromjson).findings | norm | sort_by(rank)) as $fs
+            | ($fs | map(select($a[.file + ":" + (.line | tostring)] != null))) as $anchored
+            | ($fs | map(select($a[.file + ":" + (.line | tostring)] == null))) as $loose
+            | {
+                body: (
+                  "## AI Review (`" + $model + "`)\n\n### Summary\n\n"
+                  + (($findings | fromjson).summary | rtrimstr("\n"))
+                  + "\n\n### Findings\n\n"
+                  + (if ($fs | length) == 0 then "No significant findings."
+                     else ([
+                        $anchored[]
+                        | "- **" + .severity + "** `" + .file + ":" + (.line | tostring) + "` — " + .message
+                      ] + [
+                        $loose[]
+                        | "- **" + .severity + "** `" + .file + (if .line > 0 then ":" + (.line | tostring) else "" end) + "` — " + .message
+                          + (if .suggestion != "" then "\n\n  > Suggested fix: " + .suggestion else "" end)
+                      ]) | join("\n")
+                  end)
+                ),
+                event: "COMMENT",
+                comments: [
+                  $anchored[]
+                  | {
+                      path: .file,
+                      line: .line,
+                      side: (if $a[.file + ":" + (.line | tostring)] == "R" then "RIGHT" else "LEFT" end),
+                      body: ("**" + .severity + "** — " + .message
+                        + (if .suggestion != "" then "\n\nSuggested fix: " + .suggestion else "" end))
+                    }
+                ]
+              }
+            ' > review-payload.json
+
+          if ! gh api -X POST "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews" --input review-payload.json; then
+            echo "Review with inline comments failed, retrying as a plain review comment"
+            jq 'del(.comments)' review-payload.json > review-payload-plain.json
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews" --input review-payload-plain.json
+          fi
