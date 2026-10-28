@@ -5,7 +5,6 @@ keys:
     - &ryzen age122w6sw60n7xymp70fvq3p96k8x9a4s7070h0xque8c0j64rt05fqse463a
     - &razer age19vhjmhcla7z4n6sskwjjt6yd5dtafwnqrled8pdrrwheap9fqq5slf82vz
     - &oblak age14uz7wqwu7vurf63h2rdcrwanqun9sw9qvcwh9ktxyxl4486jdejqmxzd4h
-    - &aspire age1flp283d6rtzsa5yzf27vuquwvl04qww6metjf3j3n272y846s4yq6qftpc
     - &m3pro age1y5gafj7qwp9rgjlfnmwgg565lxcu6uht5j35kk5phr060u6zmces54783w
 creation_rules:
   - path_regex: hosts/ryzen/secrets.ya?ml$
@@ -30,12 +29,10 @@ creation_rules:
           - *ryzen
           - *razer
           - *oblak
-          - *aspire
   # hm secrets
   - path_regex: home/secrets.ya?ml$
     key_groups:
       - age:
           - *amadejk
           - *ryzen
-          - *aspire
           - *m3pro

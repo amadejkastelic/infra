@@ -12,7 +12,6 @@
 
       inherit (import "${self}/system" { inherit self; })
         desktop
-        laptop
         server
         nas
         ;
@@ -38,27 +37,6 @@
           {
             home-manager = {
               users.amadejk.imports = homeImports."amadejk@ryzen";
-              extraSpecialArgs = specialArgs;
-            };
-          }
-        ];
-      };
-
-      aspire = nixosSystem {
-        inherit specialArgs;
-        modules = laptop ++ [
-          ./aspire
-
-          ./common/secrets.nix
-          ./common/shared/nfs-mount.nix
-
-          "${mod}/programs/hyprland"
-
-          "${mod}/services/gnome-services.nix"
-
-          {
-            home-manager = {
-              users.amadejk.imports = homeImports."amadejk@aspire";
               extraSpecialArgs = specialArgs;
             };
           }
