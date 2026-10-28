@@ -135,7 +135,7 @@ in
       group = cfg.group;
       home = cfg.stateDir;
       shell = pkgs.bashInteractive;
-      packages = basePackages;
+      packages = basePackages ++ cfg.extraPackages;
     };
     users.groups.${cfg.group} = { };
 
