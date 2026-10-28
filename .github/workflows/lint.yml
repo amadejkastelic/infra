@@ -1,18 +1,28 @@
 name: nix
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     paths:
       - "**.nix"
       - "flake.lock"
       - "flake.nix"
   workflow_dispatch:
+    inputs:
+      host:
+        description: "Target host (e.g. razer, oblak)"
+        required: true
+        type: string
+      flake:
+        description: "Flake attribute (defaults to host)"
+        required: false
+        type: string
 
 jobs:
-  nix:
-    name: checks
+  checks:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out source repository
         uses: actions/checkout@v7
@@ -49,3 +59,148 @@ jobs:
       - name: Nix flake check
         run: |
           nix flake check
+
+  detect:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    outputs:
+      hosts: ${{ steps.diff.outputs.hosts }}
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v7
+
+      - name: Read Nix cache config
+        id: caches
+        run: |
+          echo "substituters=$(jq -r '.substituters | join(" ")' system/nix/cache.json)" >> "$GITHUB_OUTPUT"
+          echo "trusted-public-keys=$(jq -r '."trusted-public-keys" | join(" ")' system/nix/cache.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          install_url: https://nixos.org/nix/install
+          extra_nix_config: |
+            auto-optimise-store = true
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            experimental-features = nix-command flakes
+            substituters = ${{ steps.caches.outputs.substituters }}
+            trusted-public-keys = ${{ steps.caches.outputs.trusted-public-keys }}
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+          purge-created: 0
+          purge-last-accessed: P1DT12H
+          purge-primary-key: never
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ping: razer,oblak
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -T 30 razer oblak >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Compare built system against what is running
+        id: diff
+        env:
+          TMPDIR: /tmp
+        run: |
+          changed=""
+          for host in razer oblak; do
+            expected=$(nix eval --raw .#nixosConfigurations.$host.config.system.build.toplevel)
+            current=$(ssh -o ConnectTimeout=30 amadejk@$host readlink /run/current-system || true)
+            if [ "$expected" = "$current" ]; then
+              echo "$host up to date: $current"
+            else
+              echo "$host needs upgrade: $current -> $expected"
+              changed="$changed\"$host\","
+            fi
+          done
+          changed=${changed%,}
+          echo "hosts=[$changed]" >> "$GITHUB_OUTPUT"
+
+  upgrade:
+    name: upgrade ${{ matrix.host }}
+    needs:
+      - checks
+      - detect
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !cancelled() && (github.event_name != 'push' || (needs.checks.result == 'success' && needs.detect.result == 'success' && needs.detect.outputs.hosts != '[]')) }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: upgrade-${{ matrix.host }}
+      cancel-in-progress: false
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ${{ github.event_name == 'push' && fromJSON(needs.detect.outputs.hosts) || fromJSON(format('["{0}"]', inputs.host)) }}
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v7
+
+      - name: Read Nix cache config
+        id: caches
+        run: |
+          echo "substituters=$(jq -r '.substituters | join(" ")' system/nix/cache.json)" >> "$GITHUB_OUTPUT"
+          echo "trusted-public-keys=$(jq -r '."trusted-public-keys" | join(" ")' system/nix/cache.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          install_url: https://nixos.org/nix/install
+          extra_nix_config: |
+            auto-optimise-store = true
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            experimental-features = nix-command flakes
+            substituters = ${{ steps.caches.outputs.substituters }}
+            trusted-public-keys = ${{ steps.caches.outputs.trusted-public-keys }}
+
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+          purge-created: 0
+          purge-last-accessed: P1DT12H
+          purge-primary-key: never
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+          ping: ${{ matrix.host }}
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -T 30 ${{ matrix.host }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upgrade host
+        env:
+          TMPDIR: /tmp
+          NIX_CONFIG: flake-registry = https://channels.nixos.org/flake-registry.json
+        run: |
+          nix run nixpkgs#nixos-rebuild -- switch \
+            --flake .#${{ inputs.flake || matrix.host }} \
+            --target-host amadejk@${{ matrix.host }} \
+            --sudo \
+            --use-substitutes

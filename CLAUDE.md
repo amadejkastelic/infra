@@ -115,7 +115,7 @@ nix build .#bbport
 ├── .sops.yaml             # sops rules + public age keys (plain config, safe to read)
 ├── treefmt.toml           # nixfmt-rfc-style config
 ├── docs/                  # Topical docs (LUKS.md, SERVER.md)
-├── .github/workflows/     # CI: lint, update-flake, upgrade-host, mirrors
+├── .github/workflows/     # CI: nix (checks + host upgrades), update-flake, update-packages, mirrors
 ├── home/                  # Home Manager configurations
 │   ├── editors/           # Editor configs (neovim, vscode, zed)
 │   ├── profiles/          # Host-specific home profiles (ryzen, m3pro) + homeImports
@@ -168,7 +168,7 @@ nix build .#bbport
 - **Lanzaboote:** Secure boot for NixOS
 - **Tailscale:** VPN, mesh networking, and remote deployments
 - **Determinate:** Nix installer/updater
-- **GitHub Actions:** CI for lint (`nix flake check`, PRs), auto flake updates, host upgrades on push (razer/oblak, gated on flake check + toplevel build change)
+- **GitHub Actions:** CI for lint (`nix flake check`, push + PRs), auto flake updates, host upgrades on push (razer/oblak, gated on flake check + toplevel build change)
 
 ## Common Tasks
 
