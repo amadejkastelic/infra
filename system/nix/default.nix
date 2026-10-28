@@ -16,7 +16,7 @@
 
   nix =
     let
-      flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
+      flakeInputs = lib.filterAttrs (name: v: name != "self" && lib.isType "flake" v) inputs;
     in
     {
       package = pkgs.lixPackageSets.latest.lix;
