@@ -21,6 +21,7 @@ in
     gitUserName = "Amadej Kastelic";
     gitUserEmail = "amadejkastelic7@gmail.com";
     githubTokenFile = config.sops.secrets."github/infra_api_token".path;
+    apiKeyFile = config.sops.secrets."z_ai/api_token".path;
 
     settings = {
       includeCoAuthoredBy = false;
