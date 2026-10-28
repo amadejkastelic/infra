@@ -10,6 +10,30 @@ let
   claudeSettings = pkgs.writeText "claude-web-settings.json" (builtins.toJSON cfg.settings);
 
   vhostName = "${cfg.subdomain}.${config.homelab.domain}";
+
+  basePackages = with pkgs; [
+    nodejs
+    git
+    gh
+    coreutils
+    gnugrep
+    findutils
+    gnused
+    gawk
+    diffutils
+    patch
+    jq
+    curl
+    less
+    ripgrep
+    procps
+    util-linux
+    file
+    gnutar
+    gzip
+    xz
+    unzip
+  ];
 in
 {
   options.services.claude-web = {
@@ -81,6 +105,12 @@ in
       default = { };
       description = "Claude Code settings.json written for the service user";
     };
+
+    extraPackages = lib.mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [ ];
+      description = "Extra packages exposed to sessions and the web terminal";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -88,6 +118,8 @@ in
       isSystemUser = true;
       group = cfg.group;
       home = cfg.stateDir;
+      shell = pkgs.bashInteractive;
+      packages = basePackages;
     };
     users.groups.${cfg.group} = { };
 
@@ -160,11 +192,9 @@ in
       path = [
         cfg.package
         cfg.claudePackage
-        pkgs.nodejs
-        pkgs.git
-        pkgs.gh
-        pkgs.coreutils
-      ];
+      ]
+      ++ basePackages
+      ++ cfg.extraPackages;
       serviceConfig = {
         User = cfg.user;
         Group = cfg.group;
