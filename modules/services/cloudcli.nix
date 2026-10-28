@@ -100,6 +100,12 @@ in
       description = "File containing a GitHub token used for gh auth";
     };
 
+    apiKeyFile = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Optional file whose contents become ANTHROPIC_API_KEY for sessions and the provider status check";
+    };
+
     settings = lib.mkOption {
       type = lib.types.attrs;
       default = { };
@@ -142,7 +148,10 @@ in
         "blocky.service"
       ];
       wants = [ "network-online.target" ];
-      unitConfig.ConditionPathExists = [ cfg.githubTokenFile ];
+      unitConfig.ConditionPathExists = [
+        cfg.githubTokenFile
+      ]
+      ++ lib.optional (cfg.apiKeyFile != null) cfg.apiKeyFile;
       serviceConfig = {
         Type = "oneshot";
         User = cfg.user;
@@ -158,7 +167,9 @@ in
       ];
       script = ''
         mkdir -p "$HOME/.claude"
-        install -m 600 ${claudeSettings} "$HOME/.claude/settings.json"
+        if [ ! -f "$HOME/.claude/settings.json" ]; then
+          install -m 600 ${claudeSettings} "$HOME/.claude/settings.json"
+        fi
 
         ${pkgs.gh}/bin/gh auth login --with-token < ${cfg.githubTokenFile}
         ${pkgs.gh}/bin/gh auth setup-git
@@ -171,6 +182,11 @@ in
 
         ${pkgs.git}/bin/git -C "$HOME/dotfiles" config user.name "${cfg.gitUserName}"
         ${pkgs.git}/bin/git -C "$HOME/dotfiles" config user.email "${cfg.gitUserEmail}"
+
+        ${lib.optionalString (cfg.apiKeyFile != null) ''
+          umask 077
+          printf 'ANTHROPIC_API_KEY=%s\n' "$(${pkgs.coreutils}/bin/cat ${cfg.apiKeyFile})" > "$HOME/anthropic.env"
+        ''}
       '';
     };
 
@@ -201,6 +217,7 @@ in
         StateDirectory = builtins.baseNameOf cfg.stateDir;
         WorkingDirectory = "${cfg.stateDir}/dotfiles";
         ExecStart = lib.getExe cfg.package;
+        EnvironmentFile = lib.optional (cfg.apiKeyFile != null) "-${cfg.stateDir}/anthropic.env";
         Restart = "on-failure";
         RestartSec = "5s";
       };
