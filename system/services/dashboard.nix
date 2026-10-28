@@ -142,7 +142,10 @@ in
                 {
                   type = "monitor";
                   title = "Developer";
-                  sites = [ (site "Forgejo" "git" "di:forgejo" null) ];
+                  sites = [
+                    (site "Forgejo" "git" "di:forgejo" null)
+                    (site "CloudCLI" "vibe" "di:claude-ai" null)
+                  ];
                 }
                 {
                   type = "monitor";
