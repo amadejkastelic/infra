@@ -2,6 +2,7 @@
   imports = [
     ./arr
     ./blocky.nix
+    ./claude-web.nix
     ./dashboard.nix
     ./firefox-syncserver.nix
     ./forgejo.nix
