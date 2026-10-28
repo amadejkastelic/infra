@@ -16,6 +16,7 @@ let
   vhostName = "${cfg.subdomain}.${config.homelab.domain}";
 
   basePackages = with pkgs; [
+    bashInteractive
     nodejs
     git
     gh
