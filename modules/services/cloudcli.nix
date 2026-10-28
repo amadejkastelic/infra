@@ -5,9 +5,9 @@
   ...
 }:
 let
-  cfg = config.services.claude-web;
+  cfg = config.services.cloudcli;
 
-  claudeSettings = pkgs.writeText "claude-web-settings.json" (builtins.toJSON cfg.settings);
+  claudeSettings = pkgs.writeText "cloudcli-settings.json" (builtins.toJSON cfg.settings);
 
   vhostName = "${cfg.subdomain}.${config.homelab.domain}";
 
@@ -36,7 +36,7 @@ let
   ];
 in
 {
-  options.services.claude-web = {
+  options.services.cloudcli = {
     enable = lib.mkEnableOption "CloudCLI web interface for Claude Code";
 
     package = lib.mkOption {
@@ -58,19 +58,19 @@ in
 
     user = lib.mkOption {
       type = lib.types.str;
-      default = "claude-web";
+      default = "cloudcli";
       description = "User to run CloudCLI as";
     };
 
     group = lib.mkOption {
       type = lib.types.str;
-      default = "claude-web";
+      default = "cloudcli";
       description = "Group to run CloudCLI as";
     };
 
     stateDir = lib.mkOption {
       type = lib.types.str;
-      default = "/var/lib/claude-web";
+      default = "/var/lib/cloudcli";
       description = "State directory holding the claude config and git checkout";
     };
 
@@ -132,10 +132,10 @@ in
       };
     };
 
-    systemd.services.claude-web-init = {
+    systemd.services.cloudcli-init = {
       description = "Claude web workspace bootstrap";
       wantedBy = [ "multi-user.target" ];
-      before = [ "claude-web.service" ];
+      before = [ "cloudcli.service" ];
       after = [
         "sops-nix.service"
         "network-online.target"
@@ -174,15 +174,15 @@ in
       '';
     };
 
-    systemd.services.claude-web = {
+    systemd.services.cloudcli = {
       description = "CloudCLI web interface for Claude Code";
       wantedBy = [ "multi-user.target" ];
       after = [
-        "claude-web-init.service"
+        "cloudcli-init.service"
         "network-online.target"
       ];
       wants = [ "network-online.target" ];
-      requires = [ "claude-web-init.service" ];
+      requires = [ "cloudcli-init.service" ];
       unitConfig.ConditionPathExists = [ "${cfg.stateDir}/dotfiles/.git" ];
       environment = {
         HOST = "127.0.0.1";

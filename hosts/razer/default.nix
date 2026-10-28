@@ -14,7 +14,7 @@
     ./immich.nix
     ./jellyfin.nix
     ./nvidia.nix
-    ./claude-web.nix
+    ./cloudcli.nix
   ];
 
   sops.defaultSopsFile = ./secrets.yaml;

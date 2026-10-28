@@ -6,12 +6,12 @@
   ...
 }:
 let
-  zAiApiKeyHelper = pkgs.writeShellScript "claude-web-z-ai-api-key" ''
+  zAiApiKeyHelper = pkgs.writeShellScript "cloudcli-z-ai-api-key" ''
     exec ${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai/api_token".path}
   '';
 in
 {
-  services.claude-web = {
+  services.cloudcli = {
     enable = true;
 
     package = self.packages.${pkgs.stdenv.hostPlatform.system}.cloudcli;
@@ -38,7 +38,7 @@ in
   };
 
   sops.secrets = {
-    "z_ai/api_token".owner = config.services.claude-web.user;
-    "github/infra_api_token".owner = config.services.claude-web.user;
+    "z_ai/api_token".owner = config.services.cloudcli.user;
+    "github/infra_api_token".owner = config.services.cloudcli.user;
   };
 }
