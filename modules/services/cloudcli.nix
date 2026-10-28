@@ -9,6 +9,10 @@ let
 
   claudeSettings = pkgs.writeText "cloudcli-settings.json" (builtins.toJSON cfg.settings);
 
+  userInstructionsInstall = lib.optionalString (cfg.userInstructions != null) ''
+    install -m 644 ${pkgs.writeText "cloudcli-claude-md" cfg.userInstructions} "$HOME/.claude/CLAUDE.md"
+  '';
+
   vhostName = "${cfg.subdomain}.${config.homelab.domain}";
 
   basePackages = with pkgs; [
@@ -112,6 +116,12 @@ in
       description = "Claude Code settings.json written for the service user";
     };
 
+    userInstructions = lib.mkOption {
+      type = lib.types.nullOr lib.types.lines;
+      default = null;
+      description = "Contents written to the service user's claude memory, loaded by every session";
+    };
+
     extraPackages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
       default = [ ];
@@ -170,6 +180,7 @@ in
         if [ ! -f "$HOME/.claude/settings.json" ]; then
           install -m 600 ${claudeSettings} "$HOME/.claude/settings.json"
         fi
+        ${userInstructionsInstall}
 
         ${pkgs.gh}/bin/gh auth login --with-token < ${cfg.githubTokenFile}
         ${pkgs.gh}/bin/gh auth setup-git
@@ -204,6 +215,7 @@ in
         HOST = "127.0.0.1";
         PORT = toString cfg.port;
         HOME = cfg.stateDir;
+        CLAUDE_CLI_PATH = lib.getExe cfg.claudePackage;
       };
       path = [
         cfg.package

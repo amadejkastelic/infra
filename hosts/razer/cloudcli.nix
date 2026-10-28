@@ -36,6 +36,18 @@ in
         API_TIMEOUT_MS = "3000000";
       };
     };
+
+    userInstructions = ''
+      # Git workflow
+
+      - Never commit to main. Start every task with a fresh branch (c/<short-slug>) off the latest main.
+      - One logical change per commit. Subject format: `area: imperative summary`, where area is the top-level path of the change, e.g. `pkgs/cloudcli: add package`, `modules/services/grafana: fix x`, `hosts/razer: enable y`.
+      - No Co-Authored-By or Generated-with footers in commit messages.
+      - Run treefmt before committing; `nix flake check` must pass before opening a PR.
+      - When the task is done: push the branch and open a PR with `gh pr create`. Do not merge it yourself; the owner reviews and merges.
+      - Deployment is not your job: merged changes reach hosts via the upgrade-host workflow. Never run nixos-rebuild, just, or switch-to-configuration on this machine.
+      - Never read or write any secrets.yaml; sops changes belong to the owner.
+    '';
   };
 
   sops.secrets = {
