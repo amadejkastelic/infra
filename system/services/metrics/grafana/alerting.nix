@@ -37,6 +37,5 @@ in
         repeat_interval = "4h";
       }
     ];
-    resetPolicies = [ 1 ];
   };
 }
