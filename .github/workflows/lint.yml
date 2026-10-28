@@ -204,3 +204,41 @@ jobs:
             --target-host amadejk@${{ matrix.host }} \
             --sudo \
             --use-substitutes
+
+  notify:
+    name: notify discord
+    needs: upgrade
+    if: ${{ !cancelled() && needs.upgrade.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    steps:
+      - name: Notify Discord
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          [ -n "$WEBHOOK" ] || exit 0
+          repo="${{ github.repository }}"
+          sha="${GITHUB_SHA:0:7}"
+          actor="${{ github.actor }}"
+          gh api "repos/$repo/actions/runs/${{ github.run_id }}/jobs?per_page=100" \
+            --jq '.jobs[] | select(.name | startswith("upgrade ")) | [.id, .name, .conclusion] | @tsv' |
+            while IFS=$'\t' read -r job_id job_name conclusion; do
+              host="${job_name#upgrade }"
+              url="${{ github.server_url }}/$repo/actions/runs/${{ github.run_id }}/job/$job_id"
+              if [ "$conclusion" = "success" ]; then
+                jq -n --arg title "$job_name" --arg url "$url" --arg desc "✅ deployed $sha by $actor" \
+                  '{embeds:[{title:$title, url:$url, description:$desc, color:5763719}]}' > payload.json
+                curl -fsS --retry 3 -X POST "$WEBHOOK" -H 'Content-Type: application/json' -d @payload.json
+              elif [ "$conclusion" = "failure" ]; then
+                gh api "repos/$repo/actions/jobs/$job_id/logs" | tail -n 100 > "$host.log"
+                jq -n --arg title "$job_name" --arg url "$url" --arg desc "❌ failed on $sha by $actor" \
+                  '{embeds:[{title:$title, url:$url, description:$desc, color:15158332}]}' > payload.json
+                curl -fsS --retry 3 -X POST "$WEBHOOK" \
+                  -F "payload_json=<payload.json" \
+                  -F "files[0]=@$host.log;type=text/plain"
+              fi
+              sleep 1
+            done
