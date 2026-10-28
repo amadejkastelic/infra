@@ -215,6 +215,7 @@ in
         HOST = "127.0.0.1";
         PORT = toString cfg.port;
         HOME = cfg.stateDir;
+        SHELL = lib.getExe pkgs.bashInteractive;
         CLAUDE_CLI_PATH = lib.getExe cfg.claudePackage;
       };
       path = [
