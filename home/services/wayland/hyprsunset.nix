@@ -11,7 +11,7 @@
           identity = true;
         }
         {
-          time = "20:30";
+          time = "17:00";
           temperature = 3000;
         }
       ];
