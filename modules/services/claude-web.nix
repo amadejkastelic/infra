@@ -104,7 +104,12 @@ in
       description = "Claude web workspace bootstrap";
       wantedBy = [ "multi-user.target" ];
       before = [ "claude-web.service" ];
-      after = [ "sops-nix.service" ];
+      after = [
+        "sops-nix.service"
+        "network-online.target"
+        "blocky.service"
+      ];
+      wants = [ "network-online.target" ];
       unitConfig.ConditionPathExists = [ cfg.githubTokenFile ];
       serviceConfig = {
         Type = "oneshot";
@@ -112,6 +117,8 @@ in
         Group = cfg.group;
         StateDirectory = builtins.baseNameOf cfg.stateDir;
         RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "5s";
       };
       path = [
         pkgs.git
