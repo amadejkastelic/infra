@@ -168,7 +168,7 @@ nix build .#bbport
 - **Lanzaboote:** Secure boot for NixOS
 - **Tailscale:** VPN, mesh networking, and remote deployments
 - **Determinate:** Nix installer/updater
-- **GitHub Actions:** CI for lint (`nix flake check`), auto flake updates, scheduled host upgrades
+- **GitHub Actions:** CI for lint (`nix flake check`), auto flake updates, host upgrades on push (razer/oblak, only when their toplevel build changes)
 
 ## Common Tasks
 
