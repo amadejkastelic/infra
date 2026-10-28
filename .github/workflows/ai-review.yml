@@ -69,12 +69,13 @@ jobs:
           4. Conventions: the repo formats with nixfmt-rfc-style and keeps code
              self-documenting without comments.
 
-          Reply in Markdown:
-          - Findings ordered by severity, most severe first. Each finding: one-line summary,
-            a path/to/file.nix:123 reference, and a short suggested fix.
-          - Do not restate the diff or comment on routine changes. If nothing significant
-            remains, reply with exactly: No significant findings.
-          - Be strict about real bugs and conservative about style. When unsure, say so briefly.
+          Reply in Markdown with two sections:
+          - Summary: a brief neutral description of what the change does, derived from the
+            diff. Synthesize the intent; do not restate hunks line by line.
+          - Findings: ordered by severity, most severe first. Each finding: one-line summary,
+            a path/to/file.nix:123 reference, and a short suggested fix. If nothing
+            significant, write exactly: No significant findings.
+          Be strict about real bugs and conservative about style. When unsure, say so briefly.
           EOF
           )
 
