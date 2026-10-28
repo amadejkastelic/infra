@@ -29,12 +29,6 @@ let
       ./ryzen
     ];
 
-    "amadejk@aspire" = [
-      ../.
-      ./linux
-      ./aspire
-    ];
-
     "amadejk@m3pro" = [
       ../.
       ./m3pro

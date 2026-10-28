@@ -42,7 +42,7 @@ Hosts are assembled from reusable **profiles** defined in `system/default.nix`:
 `desktop`, `laptop`, `server`, `nas`. `hosts/default.nix` composes the right
 profile into each host's `nixosSystem` (or `darwinSystem`) call.
 
-NixOS hosts: `ryzen` (desktop), `aspire` (laptop), `razer` (server), `oblak` (nas).
+NixOS hosts: `ryzen` (desktop), `razer` (server), `oblak` (nas).
 macOS host: `m3pro` (darwin).
 
 ```bash
@@ -125,7 +125,6 @@ nix build .#bbport
 │   ├── theme/             # Theming (catppuccin, stylix)
 │   └── secrets.yaml       # ENCRYPTED - do not read or write (see Secrets)
 ├── hosts/                 # Host-specific configurations
-│   ├── aspire/            # Laptop (Hyprland, power management)
 │   ├── common/            # Shared host config + secrets (secrets.nix module, secrets.yaml blob)
 │   ├── m3pro/             # macOS (nix-darwin)
 │   ├── oblak/             # NAS (NFS shares, storage, monitoring)

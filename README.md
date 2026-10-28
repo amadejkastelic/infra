@@ -19,7 +19,6 @@ Personal NixOS and Home Manager configuration using flake-parts for a modular, r
 ## Hosts
 
 - **ryzen**: Main desktop configuration with Hyprland, gaming, and development tools
-- **aspire**: Laptop configuration with Hyprland and power management
 - **razer**: Server setup with media services (Immich, Jellyfin), and *arr stack
 - **oblak**: NAS configuration with NFS shares and storage management
 
@@ -35,7 +34,6 @@ Personal NixOS and Home Manager configuration using flake-parts for a modular, r
 │   ├── terminal/          # Terminal apps, shell, and AI agents
 │   └── theme/             # Theming and appearance
 ├── hosts/                 # Host-specific configurations
-│   ├── aspire/            # Laptop configuration
 │   ├── common/            # Shared host configuration and secrets
 │   ├── oblak/             # NAS configuration
 │   ├── razer/             # Server configuration
