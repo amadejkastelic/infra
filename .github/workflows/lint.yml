@@ -233,7 +233,9 @@ jobs:
                   '{embeds:[{title:$title, url:$url, description:$desc, color:5763719}]}' > payload.json
                 curl -fsS --retry 3 -X POST "$WEBHOOK" -H 'Content-Type: application/json' -d @payload.json
               elif [ "$conclusion" = "failure" ]; then
-                gh api "repos/$repo/actions/jobs/$job_id/logs" | tail -n 100 > "$host.log"
+                gh api --allow-escape-sequences "repos/$repo/actions/jobs/$job_id/logs" |
+                  sed 's/\x1b\[[0-9;?]*[[:alpha:]~@]//g; s/\x1b\][^\x07\x1b]*\x07//g; s/\x1b\][^\x07\x1b]*\x1b\\//g; s/\x1b//g; s/\r//g' |
+                  tail -n 100 > "$host.log"
                 jq -n --arg title "$job_name" --arg url "$url" --arg desc "❌ failed on $sha by $actor" \
                   '{embeds:[{title:$title, url:$url, description:$desc, color:15158332}]}' > payload.json
                 curl -fsS --retry 3 -X POST "$WEBHOOK" \
