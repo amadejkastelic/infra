@@ -32,7 +32,6 @@ jobs:
           install_url: https://nixos.org/nix/install
           nix_path: nixpkgs=channel:nixpkgs-unstable
           extra_nix_config: |
-            auto-optimise-store = true
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
             experimental-features = nix-command flakes
             substituters = ${{ steps.caches.outputs.substituters }}
