@@ -12,7 +12,10 @@
 
   imports = [ inputs.noctalia.homeModules.default ];
 
-  home.packages = [ pkgs.fastfetch ];
+  home.packages = [
+    pkgs.fastfetch
+    pkgs.glib
+  ];
 
   programs.noctalia = {
     enable = true;
@@ -169,6 +172,7 @@
           "media"
           "cpu"
           "network"
+          "tailnet"
           "tray"
           "bluetooth"
           "clock"
@@ -228,6 +232,11 @@
 
         network.show_label = false;
 
+        tailnet = {
+          type = "rylos/tailnet:bar";
+          show_count = false;
+        };
+
         tray = {
           drawer = true;
           drawer_columns = 3;
@@ -243,6 +252,8 @@
           glyph = "settings";
         };
       };
+
+      plugins.enabled = [ "rylos/tailnet" ];
     };
   };
 
