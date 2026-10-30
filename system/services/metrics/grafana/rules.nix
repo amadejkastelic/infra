@@ -158,12 +158,20 @@ in
             summary = "Disk {{ $labels.device }} on {{ $labels.instance }} reports bad sectors";
           })
           (mkAlert {
-            uid = "smart-high-temperature";
-            title = "SMART High Temperature";
-            expr = ''smartctl_device_temperature{temperature_type="current"}'';
-            threshold = 45;
+            uid = "smart-nvme-high-temperature";
+            title = "SMART NVMe High Temperature";
+            expr = ''smartctl_device_temperature{temperature_type="current",device=~"nvme.*"}'';
+            threshold = 70;
             severity = "warning";
-            summary = "Disk {{ $labels.device }} on {{ $labels.instance }} is above 45°C";
+            summary = "NVMe {{ $labels.device }} on {{ $labels.instance }} is above 70°C";
+          })
+          (mkAlert {
+            uid = "smart-hdd-high-temperature";
+            title = "SMART HDD High Temperature";
+            expr = ''smartctl_device_temperature{temperature_type="current",device=~"sd.*"}'';
+            threshold = 50;
+            severity = "warning";
+            summary = "Disk {{ $labels.device }} on {{ $labels.instance }} is above 50°C";
           })
           (mkAlert {
             uid = "gpu-collect-failed";
