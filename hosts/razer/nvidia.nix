@@ -1,12 +1,13 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
 let
   fenceHighTemp = 87;
   fenceLowTemp = 75;
-  nvidia-smi = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi";
+  nvidia-smi = lib.getExe' config.hardware.nvidia.package "nvidia-smi";
 in
 {
   services.xserver.videoDrivers = [ "nvidia" ];
