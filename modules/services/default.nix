@@ -6,6 +6,7 @@
     ./dashboard.nix
     ./firefox-syncserver.nix
     ./forgejo.nix
+    ./glance-agent.nix
     ./grafana.nix
     ./immich.nix
     ./jellyfin
