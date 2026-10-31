@@ -28,6 +28,7 @@
           devShells.default = pkgs.mkShell {
             packages = with pkgs; [
               just
+              just-lsp
               nixd
               nixfmt
               nixfmt-tree
