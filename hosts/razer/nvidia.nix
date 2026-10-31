@@ -6,6 +6,7 @@
 let
   fenceHighTemp = 87;
   fenceLowTemp = 75;
+  nvidia-smi = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi";
 in
 {
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -39,7 +40,7 @@ in
       state=/run/nvidia-thermal-fence
       mkdir -p "$state"
       while true; do
-        temp="$(${config.hardware.nvidia.package}/bin/nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null)"
+        temp="$(${nvidia-smi} --query-gpu=temperature.gpu --format=csv,noheader,nounits 2>/dev/null || true)"
         if [ -n "$temp" ]; then
           if [ "$temp" -ge ${toString fenceHighTemp} ]; then
             if [ ! -f "$state/pids" ]; then
