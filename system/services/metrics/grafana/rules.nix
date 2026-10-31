@@ -185,6 +185,14 @@ in
             severity = "critical";
             summary = "nvidia-smi collection failing on {{ $labels.instance }} — GPU may have fallen off the bus (Xid 79)";
           })
+          (mkAlert {
+            uid = "gpu-high-temperature";
+            title = "GPU High Temperature";
+            expr = ''nvidia_smi_temperature_gpu{job="nvidia-gpu"}'';
+            threshold = 85;
+            severity = "warning";
+            summary = "GPU on {{ $labels.instance }} is above 85°C — cooling degraded, thermal fence may engage";
+          })
         ];
       }
     ];
