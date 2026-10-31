@@ -1,11 +1,11 @@
 {
   "uid": "rapl-energy",
   "title": "Power & Energy (CPU + GPU)",
-  "description": "Host power & energy: Intel CPU (RAPL, joule counter) + NVIDIA dGPU (nvidia_smi_power_draw_watts via prometheus-nvidia-gpu-exporter). Focus on instantaneous power draw (W) and derived energy.",
-  "tags": ["energy", "rapl", "nvidia"],
+  "description": "Host power & energy: Intel CPU (RAPL, joule counter) + NVIDIA dGPU (nvidia_smi_power_draw_watts via prometheus-nvidia-gpu-exporter). Focus on instantaneous power draw (W) and derived energy. Also CPU/GPU/NVMe temperatures.",
+  "tags": ["energy", "rapl", "nvidia", "temperature"],
   "timezone": "browser",
   "schemaVersion": 39,
-  "version": 6,
+  "version": 7,
   "time": {
     "from": "now-24h",
     "to": "now"
@@ -622,6 +622,298 @@
           "displayMode": "table",
           "placement": "right",
           "calcs": ["sum"]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": "stat",
+      "title": "CPU Package Temperature",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 8,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (hostname) (node_hwmon_temp_celsius{hostname=~\"$host\", chip=~\"platform_coretemp.*\"})",
+          "legendFormat": "{{hostname}}"
+        }
+      ],
+      "description": "Hottest coretemp sensor (package + cores).",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 85
+              },
+              {
+                "color": "red",
+                "value": 95
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 14,
+      "type": "stat",
+      "title": "GPU Temperature",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 32,
+        "w": 8,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "nvidia_smi_temperature_gpu{hostname=~\"$host\"}",
+          "legendFormat": "{{hostname}}"
+        }
+      ],
+      "description": "razer GTX 1070 Max-Q: slowdown 94C, shutdown 99C, nvidia-thermal-fence engages at 87C.",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 85
+              },
+              {
+                "color": "red",
+                "value": 94
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 15,
+      "type": "stat",
+      "title": "GPU Thermal Slowdown",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 32,
+        "w": 8,
+        "h": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (hostname) ({__name__=~\"nvidia_smi_clocks_(throttle|event)_reasons_(hw|sw)_thermal_slowdown\", hostname=~\"$host\"})",
+          "legendFormat": "{{hostname}}"
+        }
+      ],
+      "description": "1 = GPU is thermally throttling (hw or sw thermal slowdown active).",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "OK",
+                  "color": "green"
+                },
+                "1": {
+                  "text": "THERMAL SLOWDOWN",
+                  "color": "red"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      }
+    },
+    {
+      "id": 16,
+      "type": "timeseries",
+      "title": "Temperatures: CPU + GPU + NVMe",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 37,
+        "w": 24,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (hostname) (node_hwmon_temp_celsius{hostname=~\"$host\", chip=~\"platform_coretemp.*\"})",
+          "legendFormat": "{{hostname}} CPU"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "nvidia_smi_temperature_gpu{hostname=~\"$host\"}",
+          "legendFormat": "{{hostname}} GPU"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "smartctl_device_temperature{hostname=~\"$host\", temperature_type=\"current\", device=~\"nvme.*\"}",
+          "legendFormat": "{{hostname}} {{device}}"
+        }
+      ],
+      "description": "Threshold lines at 85C (orange) and 94C (red, GPU slowdown).",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "decimals": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "spanNulls": false,
+            "showPoints": "never",
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 85
+              },
+              {
+                "color": "red",
+                "value": 94
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": ["mean", "max"]
         },
         "tooltip": {
           "mode": "multi",
