@@ -64,6 +64,7 @@ jobs:
           # Each updated package becomes its own commit.
           PKGS="${{ inputs.packages }}"
           if [ -z "$PKGS" ]; then
+            # shellcheck disable=SC2016
             PKGS="$(nix eval --raw .#packages.x86_64-linux \
               --apply 'p: builtins.concatStringsSep " " (builtins.filter (n: p.${n} ? updateScript) (builtins.attrNames p))')"
           fi
