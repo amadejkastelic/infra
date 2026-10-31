@@ -93,6 +93,7 @@
       nixfmt
       nil
       package-version-server
+      ruff
     ];
   };
 
