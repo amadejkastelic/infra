@@ -13,6 +13,8 @@
       window-decoration = pkgs.stdenv.hostPlatform.isDarwin;
       gtk-titlebar = false;
       cursor-style = "bar";
+      background-blur = true;
+      background-opacity = 0.8;
     };
   };
 }
