@@ -9,6 +9,7 @@ let
       threshold,
       evaluator ? "gt",
       duration ? "5m",
+      keepFiringFor ? "10m",
       severity,
       summary,
     }:
@@ -16,6 +17,7 @@ let
       inherit uid title;
       condition = "B";
       for = duration;
+      keep_firing_for = keepFiringFor;
       noDataState = "NoData";
       execErrState = "Alerting";
       annotations.summary = summary;
@@ -128,10 +130,10 @@ in
           (mkAlert {
             uid = "high-memory";
             title = "High Memory Usage";
-            expr = "100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)";
+            expr = "100 * (1 - (node_memory_MemAvailable_bytes + (node_zfs_arc_size or on(instance) (node_memory_MemAvailable_bytes * 0))) / node_memory_MemTotal_bytes)";
             threshold = 90;
             severity = "warning";
-            summary = "Memory usage on {{ $labels.instance }} is above 90%";
+            summary = "Memory usage (excl. ZFS ARC) on {{ $labels.instance }} is above 90%";
           })
           (mkAlert {
             uid = "systemd-failed";
@@ -184,6 +186,12 @@ in
             summary = "nvidia-smi collection failing on {{ $labels.instance }} — GPU may have fallen off the bus (Xid 79)";
           })
         ];
+      }
+    ];
+    deleteRules = [
+      {
+        orgId = 1;
+        uid = "smart-high-temperature";
       }
     ];
   };
