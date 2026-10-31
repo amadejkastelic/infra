@@ -64,6 +64,11 @@ in
                       type = "local";
                       name = "razer";
                     }
+                    {
+                      type = "remote";
+                      name = "oblak";
+                      url = "http://${config.homelab.hosts.oblak.ip}:${toString config.services.glance-agent.port}";
+                    }
                   ];
                 }
                 {
