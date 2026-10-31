@@ -1399,16 +1399,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1784594344,
-        "narHash": "sha256-K0H7YbSTgdnwkhDMUp7v08R6ZsGI1f0eYkZ/z/GrEig=",
+        "lastModified": 1787094043,
+        "narHash": "sha256-dK0SzQJQ+R++39SzsAcWUvYffaK+msdtyVO3uURIl94=",
         "owner": "devcexx",
         "repo": "hyprvibr",
-        "rev": "f7b99e3f1dbfd8291a4acafb3209e4cee983f447",
+        "rev": "38b61993f991e33ea300d92bb808d2497c8d415c",
         "type": "github"
       },
       "original": {
         "owner": "devcexx",
-        "ref": "f7b99e3f1dbfd8291a4acafb3209e4cee983f447",
         "repo": "hyprvibr",
         "type": "github"
       }

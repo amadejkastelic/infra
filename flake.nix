@@ -95,7 +95,7 @@
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
     hyprvibr = {
-      url = "github:devcexx/hyprvibr?ref=f7b99e3f1dbfd8291a4acafb3209e4cee983f447";
+      url = "github:devcexx/hyprvibr";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
