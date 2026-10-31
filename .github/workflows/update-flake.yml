@@ -8,6 +8,10 @@ on:
         description: "Flake inputs to update (space-separated, empty = all)"
         required: false
         type: string
+      sha:
+        description: "Commit hash of the updated input (added to PR title/body)"
+        required: false
+        type: string
 
 jobs:
   update-flake:
@@ -56,23 +60,41 @@ jobs:
             nix flake update
           fi
 
+      - name: Set PR metadata
+        id: pr
+        run: |
+          sha='${{ inputs.sha }}'
+          name='${{ inputs.inputs }}'
+          title='flake.lock: update'
+          if [ -n "$sha" ]; then
+            title="flake.lock: bump ${name:-inputs} to ${sha:0:7}"
+          fi
+          echo "title=$title" >> "$GITHUB_OUTPUT"
+          {
+            echo 'body<<EOF'
+            echo "Automated daily update of \`flake.lock\`."
+            echo
+            echo "**Triggered by:** ${{ github.actor }}"
+            echo "**Event type:** ${{ github.event_name }}"
+            if [ -n "$sha" ]; then
+              echo "**Commit:** ${{ inputs.sha }}"
+            fi
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create Pull Request
         id: create-pr
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT_FOR_CI }}
-          commit-message: "flake.lock: update"
+          commit-message: ${{ steps.pr.outputs.title }}
           committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           sign-commits: true
           branch: update-flake
           delete-branch: true
-          title: "flake.lock: update"
-          body: |
-            Automated daily update of `flake.lock`.
-
-            **Triggered by:** ${{ github.actor }}
-            **Event type:** ${{ github.event_name }}
+          title: ${{ steps.pr.outputs.title }}
+          body: ${{ steps.pr.outputs.body }}
           labels: |
             flake
             update
