@@ -2,7 +2,6 @@
   self,
   inputs,
   pkgs,
-  lib,
   config,
   ...
 }:
@@ -58,11 +57,7 @@
   determinateNix = {
     enable = true;
 
-    registry =
-      let
-        flakeInputs = lib.filterAttrs (_: v: lib.isType "flake" v) inputs;
-      in
-      lib.mapAttrs (_: v: { flake = v; }) flakeInputs;
+    registry.nixpkgs.flake = inputs.nixpkgs;
 
     customSettings = {
       auto-optimise-store = true;
