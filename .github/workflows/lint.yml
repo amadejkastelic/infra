@@ -196,12 +196,18 @@ jobs:
         env:
           TMPDIR: /tmp
         run: |
+          old=$(ssh -o ConnectTimeout=30 amadejk@${{ matrix.host }} readlink /run/current-system || true)
           rev=$(jq -r '.nodes.nixpkgs.locked.rev' flake.lock)
           nix run "github:nixos/nixpkgs/$rev#nixos-rebuild" -- switch \
             --flake .#${{ inputs.flake || matrix.host }} \
             --target-host amadejk@${{ matrix.host }} \
             --sudo \
             --use-substitutes
+          new=$(ssh -o ConnectTimeout=30 amadejk@${{ matrix.host }} readlink /run/current-system || true)
+          if [ -n "$old" ] && [ "$old" != "$new" ]; then
+            echo "=== closure diff ==="
+            ssh -o ConnectTimeout=30 amadejk@${{ matrix.host }} nix store diff-closures "$old" "$new" || true
+          fi
 
   notify:
     name: notify discord
