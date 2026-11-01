@@ -206,7 +206,7 @@ jobs:
           new=$(ssh -o ConnectTimeout=30 amadejk@${{ matrix.host }} readlink /run/current-system || true)
           if [ -n "$old" ] && [ "$old" != "$new" ]; then
             echo "=== closure diff ==="
-            ssh -o ConnectTimeout=30 amadejk@${{ matrix.host }} nix store diff-closures "$old" "$new" || true
+            ssh -o ConnectTimeout=30 amadejk@${{ matrix.host }} nix run nixpkgs#nvd -- diff "$old" "$new" || true
           fi
 
   notify:
