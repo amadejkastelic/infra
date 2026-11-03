@@ -5,7 +5,10 @@
 }:
 {
   nixpkgs = {
-    config.allowUnfree = true;
+    config = {
+      allowUnfree = true;
+      problems.handlers."gtk+".broken = "warn";
+    };
 
     overlays = [
       (final: prev: {
