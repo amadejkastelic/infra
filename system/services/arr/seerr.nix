@@ -21,6 +21,20 @@ in
       enableAllLibraries = true;
     };
 
+    router = {
+      enable = true;
+      rules = [
+        {
+          keywordId = 210024;
+          target = "Sonarr Anime";
+        }
+        {
+          language = "ko";
+          target = "Sonarr K-Drama";
+        }
+      ];
+    };
+
     radarr = [
       {
         name = "Radarr";

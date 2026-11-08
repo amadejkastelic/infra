@@ -14,6 +14,7 @@ in
     ./setup.nix
     ./radarr.nix
     ./sonarr.nix
+    ./router.nix
   ];
 
   options.services.seerr = {
@@ -68,6 +69,37 @@ in
         type = lib.types.bool;
         default = true;
         description = "Enable all Jellyfin libraries";
+      };
+    };
+
+    router = {
+      enable = lib.mkEnableOption "automatic routing of pending requests to Sonarr instances";
+
+      rules = lib.mkOption {
+        type = lib.types.listOf (
+          lib.types.submodule {
+            options = {
+              language = lib.mkOption {
+                type = lib.types.nullOr lib.types.str;
+                default = null;
+                description = "Pipe-separated TMDB original languages (e.g. ko|mn)";
+              };
+
+              keywordId = lib.mkOption {
+                type = lib.types.nullOr lib.types.int;
+                default = null;
+                description = "TMDB keyword id the media must carry";
+              };
+
+              target = lib.mkOption {
+                type = lib.types.str;
+                description = "Name of the Sonarr instance in services.seerr.sonarr to route matching requests to";
+              };
+            };
+          }
+        );
+        default = [ ];
+        description = "Ordered rules; first match wins";
       };
     };
 
@@ -278,6 +310,22 @@ in
 
   config = lib.mkIf cfg.enable {
     assertions = [
+      {
+        assertion = !cfg.router.enable || cfg.router.rules != [ ];
+        message = "services.seerr.router.rules must not be empty when the router is enabled";
+      }
+      {
+        assertion = lib.all (rule: (rule.language == null) != (rule.keywordId == null)) cfg.router.rules;
+        message = "Each services.seerr.router.rules entry needs exactly one of language or keywordId";
+      }
+      {
+        assertion =
+          let
+            names = map (s: s.name) (cfg.sonarr ++ cfg.radarr);
+          in
+          lib.all (rule: builtins.elem rule.target names) cfg.router.rules;
+        message = "services.seerr.router.rules target must match a configured instance name";
+      }
       {
         assertion = lib.length (lib.filter (r: r.isDefault) cfg.radarr) <= 1;
         message = "Cannot have more than 1 default Radarr instance in seerr.radarr";
