@@ -21,6 +21,19 @@ in
       enableAllLibraries = true;
     };
 
+    discover.sliders = [
+      {
+        title = "K-Dramas";
+        type = "tmdb-tv-network";
+        data = "866";
+      }
+      {
+        title = "Anime";
+        type = "tmdb-tv-keyword";
+        data = "210024";
+      }
+    ];
+
     router = {
       enable = true;
       rules = [

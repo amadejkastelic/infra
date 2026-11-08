@@ -14,6 +14,7 @@ in
     ./setup.nix
     ./radarr.nix
     ./sonarr.nix
+    ./discover.nix
     ./router.nix
   ];
 
@@ -69,6 +70,47 @@ in
         type = lib.types.bool;
         default = true;
         description = "Enable all Jellyfin libraries";
+      };
+    };
+
+    discover = {
+      sliders = lib.mkOption {
+        type = lib.types.listOf (
+          lib.types.submodule {
+            options = {
+              title = lib.mkOption {
+                type = lib.types.str;
+                description = "Slider title shown on the Discover page";
+              };
+
+              type = lib.mkOption {
+                type = lib.types.enum [
+                  "tmdb-movie-keyword"
+                  "tmdb-movie-genre"
+                  "tmdb-tv-keyword"
+                  "tmdb-tv-genre"
+                  "tmdb-search"
+                  "tmdb-movie-studio"
+                  "tmdb-tv-network"
+                ];
+                description = "Slider content source";
+              };
+
+              data = lib.mkOption {
+                type = lib.types.str;
+                description = "Comma-separated TMDB keyword/genre ids, search query, studio or network id";
+              };
+
+              enabled = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = "Whether the slider is enabled";
+              };
+            };
+          }
+        );
+        default = [ ];
+        description = "Custom Discover sliders to manage";
       };
     };
 
