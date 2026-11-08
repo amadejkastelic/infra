@@ -37,6 +37,7 @@
         targetResolution = "original";
         targetVideoCodec = "hevc";
       };
+      integrityChecks.checksumFiles.enabled = false;
       machineLearning.urls = [ "http://localhost:3003" ];
       newVersionCheck.enabled = false;
       notifications.smtp = {
