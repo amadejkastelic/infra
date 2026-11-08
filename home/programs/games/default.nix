@@ -19,5 +19,13 @@
       ryubing
       dolphin-emu
     ]
-    ++ [ self.packages.${pkgs.stdenv.hostPlatform.system}.lichii ];
+    ++ (
+      let
+        p = self.packages.${pkgs.stdenv.hostPlatform.system};
+      in
+      [
+        p.lichii
+        p.lichii-shader-sync
+      ]
+    );
 }
