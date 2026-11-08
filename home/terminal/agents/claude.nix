@@ -75,6 +75,4 @@ in
       };
     };
   };
-
-  sops.secrets.z-ai-api-token = { };
 }
