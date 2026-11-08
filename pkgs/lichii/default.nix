@@ -35,6 +35,12 @@ appimageTools.wrapType2 {
       zlib
     ];
 
+  extraBwrapArgs = [
+    "--setenv"
+    "EDEN_NX2_PRELOAD_ALL_PIPELINES"
+    "1"
+  ];
+
   extraInstallCommands = ''
     install -Dm644 ${appdir}/io.github.zortos293.lichii.desktop $out/share/applications/io.github.zortos293.lichii.desktop
     cp -r ${appdir}/usr/share/icons $out/share/icons
