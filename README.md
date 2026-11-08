@@ -12,7 +12,7 @@ Personal NixOS and Home Manager configuration using flake-parts for a modular, r
 - **Catppuccin Theme**: Consistent theming across all applications
 - **Gaming Setup**: Steam, GameMode, Gamescope, and various gaming tools
 - **Development Envgironment**: Pre-configured editors (Neovim, VSCode), terminal tools (Nushell, Ghostty), and AI agents
-- **AI Integration**: Opencode with MCPs
+- **AI Integration**: Claude Code with MCPs
 - **Secret Management**: Encrypted secrets using sops-nix
 - **Pre-commit Hooks**: Automated code formatting and linting
 
@@ -82,6 +82,7 @@ nix build .#bibata-cursors-svg
 ## Development Tools
 
 The development shell includes:
+
 - **nixd**: Nix language server
 - **nixfmt**: Code formatter
 - **git**: Version control
@@ -91,6 +92,7 @@ The development shell includes:
 ## Theming
 
 Consistent Catppuccin theming across:
+
 - Window manager (Hyprland)
 - Terminal applications
 - GTK/Qt applications
@@ -100,10 +102,12 @@ Consistent Catppuccin theming across:
 ## Secret Management
 
 Secrets are encrypted using sops-nix:
+
 - `home/secrets.yaml` - Home Manager secrets
 - `hosts/common/secrets.yaml` - Common host secrets
 
 Update secret keys:
+
 ```bash
 nix-shell -p sops --run "sops updatekeys path/to/secrets.yaml"
 ```
@@ -111,20 +115,23 @@ nix-shell -p sops --run "sops updatekeys path/to/secrets.yaml"
 ## Key Applications
 
 ### Desktop Environment
+
 - **Hyprland**: Wayland compositor with plugins (hyprvibr)
 - **Noctalia**: Shell and notification daemon
 - **Vicinae**: Application launcher and AI assistant interface
 - **hypridle/hyprlock**: Idle management and screen lock
 
 ### Development
+
 - **Neovim**: Text editor with LSP support
 - **VSCode**: IDE with extensions (also VSCode server support)
 - **Git**: Version control with custom configuration
 - **Ghostty**: Terminal emulator
 - **Nushell**: Modern shell with structured data
-- **AI Agents**: Claude, opencode, and MCP integration
+- **AI Agents**: Claude, and MCP integration
 
 ### Media & Gaming
+
 - **Steam**: Gaming platform with Proton
 - **MPV**: Media player
 - **Cider**: Music streaming
@@ -132,11 +139,11 @@ nix-shell -p sops --run "sops updatekeys path/to/secrets.yaml"
 - **GameMode**: Performance optimization
 
 ### Productivity
+
 - **Zen Browser**: Firefox-based browser
 - **Thunderbird**: Email client
 - **Zathura**: PDF viewer
 - **Nautilus/Thunar**: File managers
-
 
 ## License
 
@@ -145,6 +152,7 @@ This configuration is available under the terms specified in the LICENSE file.
 ## Contributing
 
 This is a personal dotfiles repository, but feel free to:
+
 - Use any parts of this configuration for your own setup
 - Report issues or suggest improvements
 - Submit pull requests for bug fixes

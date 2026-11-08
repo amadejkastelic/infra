@@ -17,7 +17,6 @@
     };
 
     targets = {
-      opencode.enable = false;
       neovim.enable = false;
       nvf.enable = false;
       nixcord.enable = false;
