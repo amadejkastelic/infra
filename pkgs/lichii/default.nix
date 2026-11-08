@@ -4,11 +4,11 @@
   fetchurl,
 }:
 let
-  version = "build-94";
+  version = "build-117";
 
   src = fetchurl {
-    url = "https://github.com/zortos293/Lichii/releases/download/${version}/lichii-linux-x86_64.AppImage";
-    hash = "sha256-kL59d8lB8AndgFkxvVYq5k4NeZFx0O/P5jrBoo13h/o=";
+    url = "https://github.com/zortos293/Lichii/releases/download/${version}/lichii-linux-x86_64-pgo.AppImage";
+    hash = "sha256-ou2nSRBTlaxpEMkF8PPFZFKLe/0TLrr3YWlj/ijG3Zg=";
   };
 
   appdir = appimageTools.extract {
