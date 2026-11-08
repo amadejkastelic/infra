@@ -22,6 +22,8 @@ buildHomeAssistantComponent rec {
     extraArgs = [
       "--flake"
       "--version=branch"
+      "--override-filename"
+      "pkgs/homeassistant-mojelektro-stats/default.nix"
     ];
   };
 

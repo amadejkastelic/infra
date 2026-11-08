@@ -72,7 +72,12 @@ jobs:
           for p in $PKGS; do
             echo "::group::Updating $p"
             old="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
-            if nix run nixpkgs#nix-update -- --flake --use-update-script "$p"; then
+            # Packages assembled by builders outside this flake (e.g.
+            # buildHomeAssistantComponent) have their version attribute
+            # position inside nixpkgs, which nix-update refuses to sanitize;
+            # --override-filename disables that check and points the edit at
+            # the package file directly.
+            if nix run nixpkgs#nix-update -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
               if [ -n "$(git status --porcelain -- "pkgs/$p")" ]; then
                 new="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
                 if [ -n "$old" ] && [ -n "$new" ]; then
