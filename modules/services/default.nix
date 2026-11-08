@@ -10,7 +10,7 @@
     ./grafana.nix
     ./immich.nix
     ./jellyfin
-    ./jellyseerr
+    ./seerr
     ./journald-loki.nix
     ./llama-cpp.nix
     ./nixos-info-collector.nix

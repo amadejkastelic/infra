@@ -3,7 +3,7 @@
     ./bazarr.nix
     ./bazarr-kdrama.nix
     ./flaresolverr.nix
-    ./jellyseerr.nix
+    ./seerr.nix
     ./prowlarr.nix
     ./qbittorrent.nix
     ./radarr.nix

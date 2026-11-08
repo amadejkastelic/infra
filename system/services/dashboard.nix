@@ -132,7 +132,7 @@ in
                   title = "Multimedia";
                   style = "compact";
                   sites = [
-                    (site "Jellyseerr" "jellyseerr" "di:jellyseerr" [ 302 ])
+                    (site "Seerr" "seerr" "di:seerr" [ 302 ])
                     (site "Jellyfin" "jellyfin" "di:jellyfin" [ 302 ])
                     (site "Sonarr TV" "sonarr" "di:sonarr" [ 302 ])
                     (site "Sonarr KDrama" "sonarr-kdrama" "di:sonarr" [ 302 ])

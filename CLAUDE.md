@@ -134,7 +134,7 @@ nix build .#bbport
 ├── lib/                   # Custom library (colors, vfio, virtualisation, repl)
 ├── modules/               # Custom NixOS modules (config, services/*)
 │   ├── services/          # Custom service modules (arr, forgejo, grafana, immich,
-│   │                      #   jellyfin, jellyseerr, tailscale-tls, tailscale-funnel,
+│   │                      #   jellyfin, seerr, tailscale-tls, tailscale-funnel,
 │   │                      #   vaultwarden, blocky, dashboard, llama-cpp, pipewire, ...)
 │   ├── config.nix
 │   └── default.nix

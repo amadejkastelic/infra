@@ -10,34 +10,30 @@ let
   jellyfinCfg = config.services.jellyfin;
   baseUrl = "http://127.0.0.1:${toString cfg.port}";
 
-  # Use admin as the admin user for Jellyseerr setup
   firstAdminName = "admin";
   firstAdminUser = jellyfinCfg.apiConfig.users.${firstAdminName} or { };
 
-  # Cookie file for authentication
-  cookieFile = "/run/jellyseerr/cookies.txt";
+  cookieFile = "/run/seerr/cookies.txt";
 in
 
 {
   config = lib.mkIf (cfg.enable && jellyfinCfg.enable or false) {
-    systemd.services.jellyseerr-setup = {
-      description = "Complete Jellyseerr initial setup with Jellyfin";
+    systemd.services.seerr-setup = {
+      description = "Complete Seerr initial setup with Jellyfin";
       after = [
-        "jellyseerr.service"
+        "seerr.service"
         "jellyfin.service"
         "jellyfin-setup-wizard.service"
         "jellyfin-users.service"
       ];
-      requires = [ "jellyseerr.service" ];
+      requires = [ "seerr.service" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        RuntimeDirectory = "jellyseerr";
+        RuntimeDirectory = "seerr";
         RuntimeDirectoryMode = "0755";
-        User = "jellyseerr";
-        Group = "jellyseerr";
       }
       // lib.optionalAttrs (firstAdminUser.password != null) {
         LoadCredential = "jellyfin-password:${
@@ -53,8 +49,7 @@ in
 
         BASE_URL="${baseUrl}"
 
-        # Wait for Jellyseerr
-        echo "Waiting for Jellyseerr..."
+        echo "Waiting for Seerr..."
         for i in {1..60}; do
           if ${pkgs.curl}/bin/curl -sf "$BASE_URL/api/v1/status" >/dev/null 2>&1; then
             break
@@ -62,11 +57,9 @@ in
           sleep 1
         done
 
-        # Check if already initialized
         STATUS_RESPONSE=$(${pkgs.curl}/bin/curl -s "$BASE_URL/api/v1/settings/public")
         IS_INITIALIZED=$(echo "$STATUS_RESPONSE" | ${pkgs.jq}/bin/jq -r '.initialized // false')
 
-        # Prepare credentials
         ${
           if firstAdminUser.password != null then
             ''JELLYFIN_PASSWORD=$(cat "$CREDENTIALS_DIRECTORY/jellyfin-password")''
@@ -75,7 +68,7 @@ in
         }
 
         if [ "$IS_INITIALIZED" = "true" ]; then
-          echo "Jellyseerr already initialized, logging in via Jellyfin..."
+          echo "Seerr already initialized, logging in via Jellyfin..."
           LOGIN_PAYLOAD=$(${pkgs.jq}/bin/jq -n \
             --arg username "${firstAdminName}" \
             --arg password "$JELLYFIN_PASSWORD" \
@@ -102,7 +95,6 @@ in
 
         echo "Running initial setup..."
 
-        # Initial setup - connect to Jellyfin
         SETUP_PAYLOAD=$(${pkgs.jq}/bin/jq -n \
           --arg username "${firstAdminName}" \
           --arg password "$JELLYFIN_PASSWORD" \
@@ -136,46 +128,52 @@ in
         if [ "$SETUP_HTTP_CODE" != "200" ] && [ "$SETUP_HTTP_CODE" != "201" ]; then
           echo "Failed to connect to Jellyfin (HTTP $SETUP_HTTP_CODE)" >&2
           echo "$SETUP_RESPONSE" | head -n-1 >&2
-          echo "Jellyseerr initial setup failed. You can manually configure Jellyseerr through the web UI." >&2
+          echo "Seerr initial setup failed. You can manually configure Seerr through the web UI." >&2
           exit 0
         fi
 
         echo "Successfully connected to Jellyfin"
 
-        # Step 2: Fetch and enable libraries
-        echo "Fetching library list from Jellyfin..."
+        echo "Syncing Jellyfin libraries..."
+        ${pkgs.curl}/bin/curl -sf -X POST \
+          -b "${cookieFile}" \
+          --max-time 120 \
+          "$BASE_URL/api/v1/settings/jellyfin/library/sync" >/dev/null
+
         LIBRARIES_RESPONSE=$(${pkgs.curl}/bin/curl -sf \
           -b "${cookieFile}" \
-          "$BASE_URL/api/v1/settings/jellyfin/library?sync=true")
+          "$BASE_URL/api/v1/settings/jellyfin/library")
 
         echo "Available libraries:"
         echo "$LIBRARIES_RESPONSE" | ${pkgs.jq}/bin/jq -r '.[] | "\(.id) - \(.name) (\(.type))"'
 
-        # Enable all libraries or filter by type
-        ${
-          if cfg.jellyfin.enableAllLibraries then
-            ''
-              LIBRARY_IDS=$(echo "$LIBRARIES_RESPONSE" | ${pkgs.jq}/bin/jq -r '.[].id' | paste -sd,)
-            ''
-          else
-            ''
-              LIBRARY_IDS=$(echo "$LIBRARIES_RESPONSE" | ${pkgs.jq}/bin/jq -r '.[] | select(.type == "movies" or .type == "tvshows") | .id' | paste -sd,)
-            ''
-        }
+        LIBRARY_IDS=$(
+          echo "$LIBRARIES_RESPONSE" | ${pkgs.jq}/bin/jq -r \
+            "${
+              if cfg.jellyfin.enableAllLibraries then
+                ".[].id"
+              else
+                ''.[] | select(.type == "movie" or .type == "show") | .id''
+            }"
+        )
 
         if [ -n "$LIBRARY_IDS" ]; then
           echo "Enabling libraries: $LIBRARY_IDS"
-          ${pkgs.curl}/bin/curl -sf \
-            -b "${cookieFile}" \
-            "$BASE_URL/api/v1/settings/jellyfin/library?enable=$LIBRARY_IDS" >/dev/null
+          for library_id in $LIBRARY_IDS; do
+            ${pkgs.curl}/bin/curl -sf -X PUT \
+              -b "${cookieFile}" \
+              -H "Content-Type: application/json" \
+              -d '{"enabled": true}' \
+              "$BASE_URL/api/v1/settings/jellyfin/library/$library_id" >/dev/null
+          done
           echo "Libraries enabled"
         fi
 
-        # Step 3: Complete initialization
         echo "Syncing with Jellyfin..."
         SYNC_RESPONSE=$(${pkgs.curl}/bin/curl -s -X POST \
           -b "${cookieFile}" \
           -H "Content-Type: application/json" \
+          --max-time 300 \
           -w "\n%{http_code}" \
           "$BASE_URL/api/v1/settings/jellyfin/sync")
 
@@ -218,7 +216,7 @@ in
           exit 1
         fi
 
-        echo "Jellyseerr setup completed successfully"
+        echo "Seerr setup completed successfully"
       '';
     };
   };

@@ -8,7 +8,7 @@
 let
   cfg = config.services.seerr;
   baseUrl = "http://127.0.0.1:${toString cfg.port}";
-  cookieFile = "/run/jellyseerr/cookies.txt";
+  cookieFile = "/run/seerr/cookies.txt";
 
   mkSonarrConfigScript = idx: sonarrCfg: ''
     echo "Configuring Sonarr instance: ${sonarrCfg.name}"
@@ -189,16 +189,15 @@ in
 
 {
   config = lib.mkIf (cfg.enable && cfg.sonarr != [ ]) {
-    systemd.services.jellyseerr-sonarr = {
-      description = "Configure Jellyseerr Sonarr integration";
-      after = [ "jellyseerr-setup.service" ];
-      requires = [ "jellyseerr-setup.service" ];
+    systemd.services.seerr-sonarr = {
+      description = "Configure Seerr Sonarr integration";
+      after = [ "seerr-setup.service" ];
+      requires = [ "seerr-setup.service" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        Group = "jellyseerr";
         LoadCredential = lib.imap0 (idx: s: "sonarr-${toString idx}-apikey:${s.apiKeyPath}") cfg.sonarr;
       };
 

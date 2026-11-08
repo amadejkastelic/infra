@@ -3,13 +3,15 @@ let
   mediaDir = config.nas.mediaDir;
 in
 {
-  homelab.subdomains = [ "jellyseerr" ];
+  homelab.subdomains = [ "seerr" ];
+
   services.seerr = {
     enable = true;
+    stateRevision = 0;
 
     nginx = {
       enable = true;
-      hostName = "jellyseerr.${config.homelab.domain}";
+      hostName = "seerr.${config.homelab.domain}";
     };
 
     jellyfin = {
@@ -51,7 +53,7 @@ in
         baseUrl = config.services.sonarr-anime.settings.server.urlbase;
         isDefault = false;
         is4k = false;
-        activeDirectory = "${mediaDir}/tv";
+        activeDirectory = "${mediaDir}/anime";
         seriesType = "anime";
       }
       {
@@ -62,7 +64,7 @@ in
         baseUrl = config.services.sonarr-kdrama.settings.server.urlbase;
         isDefault = false;
         is4k = false;
-        activeDirectory = "${mediaDir}/tv";
+        activeDirectory = "${mediaDir}/kdrama";
       }
     ];
   };

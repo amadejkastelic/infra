@@ -18,18 +18,18 @@ in
 
   options.services.seerr = {
     nginx = {
-      enable = lib.mkEnableOption "nginx reverse proxy for Jellyseerr";
+      enable = lib.mkEnableOption "nginx reverse proxy for Seerr";
 
       hostName = lib.mkOption {
         type = lib.types.str;
         default = config.networking.hostName;
-        description = "Host name to expose Jellyseerr webui through nginx";
+        description = "Host name to expose Seerr webui through nginx";
       };
 
       location = lib.mkOption {
         type = lib.types.str;
         default = "";
-        description = "Location path to expose Jellyseerr webui through nginx";
+        description = "Location path to expose Seerr webui through nginx";
       };
     };
 
@@ -280,11 +280,11 @@ in
     assertions = [
       {
         assertion = lib.length (lib.filter (r: r.isDefault) cfg.radarr) <= 1;
-        message = "Cannot have more than 1 default Radarr instance in jellyseerr.radarr";
+        message = "Cannot have more than 1 default Radarr instance in seerr.radarr";
       }
       {
         assertion = lib.length (lib.filter (s: s.isDefault) cfg.sonarr) <= 1;
-        message = "Cannot have more than 1 default Sonarr instance in jellyseerr.sonarr";
+        message = "Cannot have more than 1 default Sonarr instance in seerr.sonarr";
       }
     ];
   };

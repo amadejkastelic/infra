@@ -8,7 +8,7 @@
 let
   cfg = config.services.seerr;
   baseUrl = "http://127.0.0.1:${toString cfg.port}";
-  cookieFile = "/run/jellyseerr/cookies.txt";
+  cookieFile = "/run/seerr/cookies.txt";
 
   mkRadarrConfigScript = idx: radarrCfg: ''
     echo "Configuring Radarr instance: ${radarrCfg.name}"
@@ -162,19 +162,18 @@ in
 
 {
   config = lib.mkIf (cfg.enable && cfg.radarr != [ ]) {
-    systemd.services.jellyseerr-radarr = {
-      description = "Configure Jellyseerr Radarr integration";
+    systemd.services.seerr-radarr = {
+      description = "Configure Seerr Radarr integration";
       after = [
-        "jellyseerr-setup.service"
-        "jellyseerr-sonarr.service"
+        "seerr-setup.service"
+        "seerr-sonarr.service"
       ];
-      requires = [ "jellyseerr-setup.service" ];
+      requires = [ "seerr-setup.service" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        Group = "jellyseerr";
         LoadCredential = lib.imap0 (idx: r: "radarr-${toString idx}-apikey:${r.apiKeyPath}") cfg.radarr;
       };
 
