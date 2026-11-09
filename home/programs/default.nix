@@ -19,7 +19,6 @@
     [
       gnumake
       hoppscotch
-      iloader
       signal-desktop
     ]
     ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
