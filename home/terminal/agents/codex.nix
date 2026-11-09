@@ -1,5 +1,0 @@
-{
-  programs.codex = {
-    enable = true;
-  };
-}
