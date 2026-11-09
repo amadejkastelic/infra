@@ -95,11 +95,6 @@
 
     apple-fonts.url = "github:Lyndeno/apple-fonts.nix";
 
-    hyprvibr = {
-      url = "github:devcexx/hyprvibr";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     lanzaboote.url = "github:nix-community/lanzaboote";
 
     nix-index-db = {

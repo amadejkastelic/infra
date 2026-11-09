@@ -85,7 +85,7 @@ in
     systemd.enable = false;
 
     plugins = [
-      inputs.hyprvibr.packages.${pkgs.stdenv.hostPlatform.system}.hyprvibr
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.hyprvibr
     ];
 
     settings = {
