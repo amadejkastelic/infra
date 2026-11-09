@@ -10,10 +10,10 @@
     ./workstation.nix
   ];
 
-  services.scx = {
+  services.scx-loader = {
     enable = false;
-    package = pkgs.scx.full;
-    scheduler = "scx_bpfland";
+    schedsPackages = [ pkgs.scx.full ];
+    config.default_sched = "scx_bpfland";
   };
 
   environment.systemPackages = with pkgs; [
