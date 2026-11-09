@@ -8,13 +8,13 @@
 }:
 buildGoModule (finalAttrs: {
   pname = "lichii-shader-sync";
-  version = "1.1.1";
+  version = "1.1.2";
 
   src = fetchFromGitHub {
     owner = "oceanpacificpeace";
     repo = "lichii-shader-sync";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-x3Z1W0EGZ7BVDEDSyigtflF7TAxHAbNJRI5n324zwVg=";
+    hash = "sha256-W1PfMhrrhMdubRrS3VLxgQJcXbP2YabpsuIWcSo34BY=";
   };
 
   vendorHash = "sha256-tw6CETra9FkaZpJ1oqjQQzO7gvfNv5ZYnGHakbr0G3I=";
