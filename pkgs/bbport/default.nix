@@ -28,7 +28,10 @@ stdenv.mkDerivation (finalAttrs: {
   '';
 
   passthru.updateScript = nix-update-script {
-    extraArgs = [ "--flake" ];
+    extraArgs = [
+      "--flake"
+      "--version-regex=^(?!0\\.51$)([0-9][0-9.]*)$"
+    ];
   };
 
   meta = {
