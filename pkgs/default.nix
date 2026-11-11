@@ -52,6 +52,8 @@
         lichii-shader-sync = pkgs.callPackage ./lichii-shader-sync { };
 
         hyprvibr = pkgs.callPackage ./hyprvibr { };
+
+        hookshot = pkgs.callPackage ./hookshot { };
       };
     };
 }
