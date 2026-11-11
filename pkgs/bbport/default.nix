@@ -8,11 +8,11 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "bbport";
-  version = "0.51";
+  version = "0.7";
 
   src = fetchurl {
-    url = "https://github.com/deadinside28/bloodborne_pc/releases/download/${finalAttrs.version}/Bloodborne-bbport-x86_64.AppImage";
-    hash = "sha256-Pbvsgorr1UJiLPJfDqEKFvULE/i1M4+2WWoaaaY1/M4=";
+    url = "https://github.com/deadinside28/bloodborne_pc/releases/download/${finalAttrs.version}/Bloodborne-bbport-${finalAttrs.version}-x86_64.AppImage";
+    hash = "sha256-iD9VQ+SP8u37B38EeO6hQh21cUjxvbXg32gOiK1xFGw=";
   };
 
   dontUnpack = true;
