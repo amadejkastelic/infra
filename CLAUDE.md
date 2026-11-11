@@ -86,7 +86,6 @@ nix build .#magewell-usb-capture
 nix build .#ib-edavki
 nix build .#jellyfin-plugin-intro-skipper
 nix build .#jellyfin-plugin-file-transformation
-nix build .#hyprvoice
 nix build .#bbport
 ```
 
