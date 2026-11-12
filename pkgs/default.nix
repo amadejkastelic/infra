@@ -55,13 +55,7 @@
 
         hookshot = pkgs.callPackage ./hookshot { };
 
-        playdb-cnt =
-          (import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          }).callPackage
-            ./playdb-cnt
-            { };
+        playdb-cnt = pkgs.callPackage ./playdb-cnt { };
       };
     };
 }

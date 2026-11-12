@@ -84,7 +84,6 @@ stdenv.mkDerivation (finalAttrs: {
     '';
     homepage = "https://github.com/sikoGD/playDB-CNT";
     changelog = "https://github.com/sikoGD/playDB-CNT/releases/tag/v${finalAttrs.version}";
-    license = lib.licenses.unfree;
     platforms = [ "x86_64-linux" ];
     mainProgram = "play-duskbloods";
     maintainers = with lib.maintainers; [ amadejkastelic ];
