@@ -54,6 +54,14 @@
         hyprvibr = pkgs.callPackage ./hyprvibr { };
 
         hookshot = pkgs.callPackage ./hookshot { };
+
+        playdb-cnt =
+          (import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          }).callPackage
+            ./playdb-cnt
+            { };
       };
     };
 }

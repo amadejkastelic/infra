@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# The launcher keeps launcher_settings.json next to its script, so it runs from
+# a writable copy under XDG_DATA_HOME, refreshed from the store on every start.
+set -e
+data="${XDG_DATA_HOME:-$HOME/.local/share}/playdb-cnt"
+mkdir -p "$data"
+cp -rf "@share@/." "$data"
+chmod -R u+w "$data"
+exec "@python@" "$data/play_duskbloods.py" "$@"
