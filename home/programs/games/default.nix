@@ -27,6 +27,7 @@
         p.lichii
         p.lichii-shader-sync
         p.hookshot
+        p.playdb-cnt
       ]
     );
 }
