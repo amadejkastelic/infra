@@ -26,7 +26,7 @@
       [
         p.lichii
         p.lichii-shader-sync
-        p.hookshot
+        p.longshot-launcher
         p.playdb-cnt
       ]
     );

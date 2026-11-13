@@ -53,7 +53,7 @@
 
         hyprvibr = pkgs.callPackage ./hyprvibr { };
 
-        hookshot = pkgs.callPackage ./hookshot { };
+        longshot-launcher = pkgs.callPackage ./longshot-launcher { };
 
         playdb-cnt = pkgs.callPackage ./playdb-cnt { };
       };
