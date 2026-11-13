@@ -29,11 +29,7 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
-          # nix-update (>= 1.15) evaluates flakes through a source store path
-          # taken from `nix flake metadata`, which Nix >= 2.35 no longer
-          # materializes (lazy source copying). Pin Nix until nix-update
-          # runs `nix flake prefetch` itself (Mic92/nix-update#687).
-          install_url: https://releases.nixos.org/nix/nix-2.34.9/install
+          install_url: https://nixos.org/nix/install
           nix_path: nixpkgs=channel:nixpkgs-unstable
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
@@ -81,7 +77,13 @@ jobs:
             # position inside nixpkgs, which nix-update refuses to sanitize;
             # --override-filename disables that check and points the edit at
             # the package file directly.
-            if nix run nixpkgs#nix-update -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
+            #
+            # nix-update >= 1.15 evaluates flakes through a source store path
+            # from `nix flake metadata`, which Nix >= 2.35 no longer
+            # materializes; the update.sh scripts exec nix-update from this
+            # PATH, so pinning here pins them too. Unpin once nix-update
+            # prefetches itself (Mic92/nix-update#687).
+            if nix run github:Mic92/nix-update/v1.14.0 -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
               if [ -n "$(git status --porcelain -- "pkgs/$p")" ]; then
                 new="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
                 if [ -n "$old" ] && [ -n "$new" ]; then
