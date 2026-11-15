@@ -16,6 +16,8 @@ jobs:
       contents: write
       pull-requests: write
       actions: write
+    outputs:
+      failed: ${{ steps.update.outputs.failed }}
     steps:
       - name: Check out source repository
         uses: actions/checkout@v7
@@ -69,6 +71,7 @@ jobs:
               --apply 'p: builtins.concatStringsSep " " (builtins.filter (n: p.${n} ? updateScript) (builtins.attrNames p))')"
           fi
           changed=0
+          failed=""
           for p in $PKGS; do
             echo "::group::Updating $p"
             old="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
@@ -91,6 +94,7 @@ jobs:
               fi
             else
               echo "::warning::$p failed to update"
+              failed="$failed $p"
             fi
             echo "::endgroup::"
           done
@@ -98,6 +102,7 @@ jobs:
           if [ "$changed" = "1" ]; then
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           fi
+          echo "failed=${failed# }" >> "$GITHUB_OUTPUT"
 
       - name: Open or update pull request
         id: pr
@@ -131,3 +136,23 @@ jobs:
         run: gh pr merge --auto --rebase "${{ steps.pr.outputs.url }}"
         env:
           GH_TOKEN: ${{ secrets.PAT_FOR_CI }}
+
+  notify:
+    name: notify discord
+    needs: update-packages
+    if: ${{ !cancelled() && (needs.update-packages.outputs.failed != '' || needs.update-packages.result == 'failure') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          [ -n "$WEBHOOK" ] || exit 0
+          url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          failed="${{ needs.update-packages.outputs.failed }}"
+          [ -n "$failed" ] || failed="run failed before the package loop"
+          jq -n --arg title "update-packages" --arg url "$url" \
+            --arg desc "❌ $failed on ${GITHUB_SHA:0:7} by ${{ github.actor }}" \
+            '{embeds:[{title:$title, url:$url, description:$desc, color:15158332}]}' > payload.json
+          curl -fsS --retry 3 -X POST "$WEBHOOK" -H 'Content-Type: application/json' -d @payload.json
