@@ -72,18 +72,12 @@ jobs:
           for p in $PKGS; do
             echo "::group::Updating $p"
             old="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
-            # Packages assembled by builders outside this flake (e.g.
-            # buildHomeAssistantComponent) have their version attribute
-            # position inside nixpkgs, which nix-update refuses to sanitize;
-            # --override-filename disables that check and points the edit at
-            # the package file directly.
-            #
-            # nix-update >= 1.15 evaluates flakes through a source store path
-            # from `nix flake metadata`, which Nix >= 2.35 no longer
-            # materializes; the update.sh scripts exec nix-update from this
-            # PATH, so pinning here pins them too. Unpin once nix-update
-            # prefetches itself (Mic92/nix-update#687).
-            if nix run github:Mic92/nix-update/v1.14.0 -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
+            # --override-filename: builders like buildHomeAssistantComponent
+            # put the version position inside nixpkgs; edit the package file
+            # directly.
+            # The flake's nix-update is patched for lazy flake sources
+            # (pkgs/default.nix); update.sh scripts exec it from PATH.
+            if nix run .#nix-update -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
               if [ -n "$(git status --porcelain -- "pkgs/$p")" ]; then
                 new="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
                 if [ -n "$old" ] && [ -n "$new" ]; then
