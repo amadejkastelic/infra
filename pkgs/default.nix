@@ -35,7 +35,9 @@
     in
     {
       packages = {
-        nix-update = nix-update-fixed;
+        nix-update = nix-update-fixed.overrideAttrs (old: {
+          passthru = pkgs.lib.removeAttrs (old.passthru or { }) [ "updateScript" ];
+        });
 
         # instant repl with automatic flake loading
         repl = pkgs.callPackage ./repl { };
