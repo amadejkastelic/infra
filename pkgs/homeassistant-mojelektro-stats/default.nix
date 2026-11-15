@@ -4,24 +4,21 @@
   fetchFromGitHub,
   nix-update-script,
 }:
-buildHomeAssistantComponent rec {
+buildHomeAssistantComponent (finalAttrs: {
   owner = "MarZab";
   domain = "mojelektro_stats";
-  version = "0-unstable-2026-06-28";
+  version = "1.1.0";
 
   src = fetchFromGitHub {
-    inherit owner;
+    owner = finalAttrs.owner;
     repo = "mojelektro-stats";
-    rev = "f546fce43ca4e4cd0dbdd6255f33ca4ceaab417b";
-    hash = "sha256-NSi1fyx59uBdQkrqJTaqCDWl6f4H4QRr37RuiQehQ1U=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-xKcWZVewgJJVb0S0brF095pCEY29MWdDD9zxn1kVHso=";
   };
-
-  patches = [ ./statistics-day-attribution.patch ];
 
   passthru.updateScript = nix-update-script {
     extraArgs = [
       "--flake"
-      "--version=branch"
       "--override-filename"
       "pkgs/homeassistant-mojelektro-stats/default.nix"
     ];
@@ -30,6 +27,6 @@ buildHomeAssistantComponent rec {
   meta = {
     description = "Home Assistant integration importing Moj Elektro electricity data into long-term statistics";
     homepage = "https://github.com/MarZab/mojelektro-stats";
-    license = lib.licenses.free;
+    license = lib.licenses.mit;
   };
-}
+})
