@@ -57,8 +57,8 @@
 
         mattpocock-skills = pkgs'.callPackage ./mattpocock-skills { };
 
-        anthropic-plugins-official = pkgs.callPackage ./anthropic-plugins-official { };
-        anthropic-skills = pkgs.callPackage ./anthropic-skills { };
+        anthropic-plugins-official = pkgs'.callPackage ./anthropic-plugins-official { };
+        anthropic-skills = pkgs'.callPackage ./anthropic-skills { };
 
         cloudcli = pkgs.callPackage ./cloudcli { };
 
