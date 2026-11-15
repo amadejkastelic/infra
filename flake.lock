@@ -947,11 +947,11 @@
         "pre-commit-hooks": "pre-commit-hooks_2"
       },
       "locked": {
-        "lastModified": 1794715100,
-        "narHash": "sha256-v9btMvAJRxiUkF+klhcFp1CO9bi7wR+D40kBQUOVsrs=",
+        "lastModified": 1794738159,
+        "narHash": "sha256-oANGGzt3yPkQ+gML9cQJSdKqy07vk5RUh/6gdBDc1OI=",
         "owner": "amadejkastelic",
         "repo": "grabby",
-        "rev": "4f3300c15432261f73b73cba2f5ddf3cf23efd4d",
+        "rev": "f723d0ad78d1b884889fc048302405490fe57f45",
         "type": "github"
       },
       "original": {
