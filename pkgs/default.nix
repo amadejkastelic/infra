@@ -73,7 +73,6 @@
         homeassistant-mojelektro-stats = pkgs.callPackage ./homeassistant-mojelektro-stats { };
 
         lichii = pkgs.callPackage ./lichii { };
-        lichii-shader-sync = pkgs'.callPackage ./lichii-shader-sync { };
 
         hyprvibr = pkgs.callPackage ./hyprvibr { };
 
