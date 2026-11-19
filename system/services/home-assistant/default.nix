@@ -35,6 +35,7 @@ in
     extraComponents = [ "mqtt" ];
     customComponents = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
       homeassistant-mojelektro-stats
+      pkgs.home-assistant-custom-components.tuya_local
     ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       valetudo-map-card
