@@ -17,13 +17,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "playdb-cnt";
-  version = "1.4.0";
+  version = "1.5.0";
 
   src = fetchFromGitHub {
     owner = "sikoGD";
     repo = "playDB-CNT";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-eQfkBNdQH6c5s3fWodR1VnCcH/TUpk/uoS+sfgPoBIw=";
+    hash = "sha256-foRaYPJHCjBTDv69ToGGyREYWz2HpsuzTYElrYFGWxo=";
   };
 
   buildPhase = ''
