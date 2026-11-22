@@ -14,13 +14,13 @@ in
 buildDotnetModule (finalAttrs: {
   pname = "jellyfin-plugin-intro-skipper";
 
-  version = "12.0.6.0";
+  version = "12.0.7.0";
 
   src = fetchFromGitHub {
     owner = "intro-skipper";
     repo = "intro-skipper";
     tag = "${branch}/v${finalAttrs.version}";
-    hash = "sha256-KFUoRtlWDCYvr3528f08hDGtQlecJJjFYdD56gYjz1M=";
+    hash = "sha256-51Om2IO6/0+baepbYOi5NyDvdZzBlo1r1b9RtohZdZs=";
   };
 
   dotnet-sdk = dotnetCorePackages.sdk_10_0;
