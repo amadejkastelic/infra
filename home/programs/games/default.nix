@@ -1,7 +1,6 @@
 { pkgs, self, ... }:
 {
   imports = [
-    ./bloodborne.nix
     ./mangohud.nix
     ./osu.nix
   ];
@@ -24,6 +23,7 @@
         p = self.packages.${pkgs.stdenv.hostPlatform.system};
       in
       [
+        p.bbport
         p.lichii
         p.longshot-launcher
         p.playdb-cnt

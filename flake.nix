@@ -156,8 +156,6 @@
 
     claude-code.url = "github:sadjow/claude-code-nix";
 
-    bb-launcher.url = "github:amadejkastelic/bb-launcher-nix";
-
     nvf = {
       url = "github:NotAShelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
