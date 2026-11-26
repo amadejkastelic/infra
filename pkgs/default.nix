@@ -56,6 +56,7 @@
 
         jellyfin-plugin-intro-skipper = pkgs.callPackage ./jellyfin-plugin-intro-skipper { };
         jellyfin-plugin-file-transformation = pkgs.callPackage ./jellyfin-plugin-file-transformation { };
+        jellyfin-plugin-kodisyncqueue = pkgs.callPackage ./jellyfin-plugin-kodisyncqueue { };
 
         mattpocock-skills = pkgs'.callPackage ./mattpocock-skills { };
 

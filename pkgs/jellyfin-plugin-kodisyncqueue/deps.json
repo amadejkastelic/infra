@@ -1,0 +1,117 @@
+[
+  {
+    "pname": "Diacritics",
+    "version": "4.1.8",
+    "hash": "sha256-LysXZEoee1Ju3HGivfV4TvdFYzTY+f0cu/IU/FpOnzc="
+  },
+  {
+    "pname": "ICU4N",
+    "version": "60.1.0-alpha.356",
+    "hash": "sha256-1QyOgO7pNMeoEgBtl6o8IG4o91wD2hFUgRI0jM0ltxY="
+  },
+  {
+    "pname": "ICU4N.Transliterator",
+    "version": "60.1.0-alpha.356",
+    "hash": "sha256-RLNwQNVqNz8Omfb/mC/rzQWVq8c7uCnNdG2qi4xJmds="
+  },
+  {
+    "pname": "J2N",
+    "version": "2.0.0",
+    "hash": "sha256-YvtIWErlm2O49hg3lIRm5Ha8/owkQkfMudzuldC3EhA="
+  },
+  {
+    "pname": "Jellyfin.Common",
+    "version": "12.4.0",
+    "hash": "sha256-Jz/cv7F906dtK3RNqvoy278zidLMXBu5Sz0bLQrJYbg="
+  },
+  {
+    "pname": "Jellyfin.Controller",
+    "version": "12.4.0",
+    "hash": "sha256-zbSHWlZL7x+1aMCeB3B3oouJBodeY3rwA2qvagI/+74="
+  },
+  {
+    "pname": "Jellyfin.Data",
+    "version": "12.4.0",
+    "hash": "sha256-x0jez7f1+Erqa7/cpxHZilPfb2hIvfxEurkjNEUplbs="
+  },
+  {
+    "pname": "Jellyfin.Database.Implementations",
+    "version": "12.4.0",
+    "hash": "sha256-kwA5vH2Dir21CTHfJVB0y+7HyCrUQJ9buNd87OQnN2U="
+  },
+  {
+    "pname": "Jellyfin.Extensions",
+    "version": "12.4.0",
+    "hash": "sha256-tenRNluhqYApDVvOM96Q0AiS3L3srcxRyHO+WLr+C+g="
+  },
+  {
+    "pname": "Jellyfin.MediaEncoding.Keyframes",
+    "version": "12.4.0",
+    "hash": "sha256-KOz7k2gPZk2MWX5nbUjwntKKaSljCLt6/gXMcbGllao="
+  },
+  {
+    "pname": "Jellyfin.Model",
+    "version": "12.4.0",
+    "hash": "sha256-+OckdRISZI7iYgst0aqa19rZWrYmDDkdkKo903+VCNQ="
+  },
+  {
+    "pname": "Jellyfin.Naming",
+    "version": "12.4.0",
+    "hash": "sha256-vKJVQfUqXA+sVOmgOLFZ6l4iooDxsSa9p0NNo8veK9g="
+  },
+  {
+    "pname": "LiteDB",
+    "version": "5.0.21",
+    "hash": "sha256-k4pPX51qKDg96Mz8vbiJfnhDI5khUjLPONvxR+A+wWc="
+  },
+  {
+    "pname": "Microsoft.EntityFrameworkCore",
+    "version": "10.0.14",
+    "hash": "sha256-ISn7Cc7bF8HUlSniBR5cWsJe3nhS4WvSJlvk0WoVZuU="
+  },
+  {
+    "pname": "Microsoft.EntityFrameworkCore.Abstractions",
+    "version": "10.0.14",
+    "hash": "sha256-MNijMSsCCksBDQPfMFvEVFZbmRJUoZy4l10V+82Ysmo="
+  },
+  {
+    "pname": "Microsoft.EntityFrameworkCore.Analyzers",
+    "version": "10.0.14",
+    "hash": "sha256-hJePLMTRCBELmZgMaiYK1GC8nJzpSDOLHLDrJIhltRk="
+  },
+  {
+    "pname": "Microsoft.EntityFrameworkCore.Relational",
+    "version": "10.0.14",
+    "hash": "sha256-Ra56SY6M7ANJtS07ND72T4rQRWgEEkIJdD9Oow4YY70="
+  },
+  {
+    "pname": "NEbml",
+    "version": "1.1.0.5",
+    "hash": "sha256-MrQLekP6z5y6rfqnCbLefkYv4Fm8di4HqZ/AiYTzBQ4="
+  },
+  {
+    "pname": "Polly",
+    "version": "8.7.0",
+    "hash": "sha256-iMNusWW+4nuIvkNLUaoru23Roe9vpC140TOIHbLvewE="
+  },
+  {
+    "pname": "Polly.Core",
+    "version": "8.7.0",
+    "hash": "sha256-1AT4Xym9hn2Awgul9WErwXk2bBPN58P9XfRExrIPItg="
+  },
+  {
+    "pname": "SerilogAnalyzer",
+    "version": "0.15.0",
+    "hash": "sha256-NG0osFNhuVIHDUOd3ZUpygSd0foH3C2QwECURL9nA00="
+  },
+  {
+    "pname": "SmartAnalyzers.MultithreadingAnalyzer",
+    "version": "1.1.31",
+    "hash": "sha256-UOhn4T8f5cql/ix8IHecvP6sHUkw2PmnmEfV0jPRZeI="
+  },
+  {
+    "pname": "StyleCop.Analyzers",
+    "version": "1.1.118",
+    "hash": "sha256-CjC1f5z0sP15F6FeXqIDOtZLHqgjmQTzpsIrRkxXREI="
+  }
+]

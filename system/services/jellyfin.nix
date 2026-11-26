@@ -12,6 +12,7 @@
     plugins = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
       jellyfin-plugin-intro-skipper
       jellyfin-plugin-file-transformation
+      jellyfin-plugin-kodisyncqueue
     ];
 
     nginx = {
