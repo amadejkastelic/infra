@@ -355,6 +355,7 @@ in
         description = "Install Jellyfin plugins";
         after = [ "jellyfin-auth.service" ];
         requires = [ "jellyfin-auth.service" ];
+        before = [ "jellyfin.service" ];
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = {
@@ -386,24 +387,28 @@ in
       };
     };
 
-    systemd.services.jellyfin.serviceConfig =
-      lib.mkIf (cfg.hardwareAcceleration.enable == true && cfg.hardwareAcceleration.type == "nvenc")
-        {
-          DeviceAllow = [
-            "char-drm rw"
-            "char-nvidia rw"
-            "char-nvidia-uvm rw"
-          ];
-          PrivateDevices = false;
-          RestrictAddressFamilies = [
-            "AF_UNIX"
-            "AF_NETLINK"
-            "AF_INET"
-            "AF_INET6"
-          ];
-          Environment = [
-            "LD_LIBRARY_PATH=${config.hardware.nvidia.package}/lib"
-          ];
-        };
+    systemd.services.jellyfin = {
+      restartTriggers = lib.mkIf (cfg.plugins != [ ]) cfg.plugins;
+
+      serviceConfig =
+        lib.mkIf (cfg.hardwareAcceleration.enable == true && cfg.hardwareAcceleration.type == "nvenc")
+          {
+            DeviceAllow = [
+              "char-drm rw"
+              "char-nvidia rw"
+              "char-nvidia-uvm rw"
+            ];
+            PrivateDevices = false;
+            RestrictAddressFamilies = [
+              "AF_UNIX"
+              "AF_NETLINK"
+              "AF_INET"
+              "AF_INET6"
+            ];
+            Environment = [
+              "LD_LIBRARY_PATH=${config.hardware.nvidia.package}/lib"
+            ];
+          };
+    };
   };
 }
