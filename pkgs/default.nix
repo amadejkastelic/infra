@@ -11,34 +11,8 @@
       system,
       ...
     }:
-    let
-      nix-update-fixed = pkgs.nix-update.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          (pkgs.fetchurl {
-            url = "https://github.com/Mic92/nix-update/pull/692.diff";
-            hash = "sha256-NEss6AVCdrritybB8HDd/lTwzEcCMMGWl9QkJz1NOd8=";
-          })
-        ];
-      });
-      pkgs' = pkgs.extend (
-        _: _: {
-          nix-update-script =
-            {
-              attrPath ? null,
-              extraArgs ? [ ],
-            }:
-            [ (pkgs.lib.getExe nix-update-fixed) ]
-            ++ extraArgs
-            ++ pkgs.lib.optionals (attrPath != null) [ attrPath ];
-        }
-      );
-    in
     {
       packages = {
-        nix-update = nix-update-fixed.overrideAttrs (old: {
-          passthru = pkgs.lib.removeAttrs (old.passthru or { }) [ "updateScript" ];
-        });
-
         # instant repl with automatic flake loading
         repl = pkgs.callPackage ./repl { };
 
@@ -46,7 +20,7 @@
 
         bibata-cursors-svg = pkgs.callPackage ./bibata-cursors-svg { };
 
-        sekiro-fps-unlock = pkgs'.callPackage ./sekiro-fps-unlock { };
+        sekiro-fps-unlock = pkgs.callPackage ./sekiro-fps-unlock { };
 
         z-ai-vision-mcp-server = pkgs.callPackage ./z-ai-vision-mcp-server { };
 
@@ -58,10 +32,10 @@
         jellyfin-plugin-file-transformation = pkgs.callPackage ./jellyfin-plugin-file-transformation { };
         jellyfin-plugin-kodisyncqueue = pkgs.callPackage ./jellyfin-plugin-kodisyncqueue { };
 
-        mattpocock-skills = pkgs'.callPackage ./mattpocock-skills { };
+        mattpocock-skills = pkgs.callPackage ./mattpocock-skills { };
 
-        anthropic-plugins-official = pkgs'.callPackage ./anthropic-plugins-official { };
-        anthropic-skills = pkgs'.callPackage ./anthropic-skills { };
+        anthropic-plugins-official = pkgs.callPackage ./anthropic-plugins-official { };
+        anthropic-skills = pkgs.callPackage ./anthropic-skills { };
 
         cloudcli = pkgs.callPackage ./cloudcli { };
 
@@ -81,7 +55,7 @@
 
         longshot-launcher = pkgs.callPackage ./longshot-launcher { };
 
-        playdb-cnt = pkgs'.callPackage ./playdb-cnt { };
+        playdb-cnt = pkgs.callPackage ./playdb-cnt { };
       };
     };
 }
