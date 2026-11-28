@@ -4,11 +4,11 @@
   fetchurl,
 }:
 let
-  version = "nightly-190-560f789a";
+  version = "nightly-224-6d574b8c";
 
   src = fetchurl {
     url = "https://git.magicbean.dev/MagicBeanDev/LongshotLauncher/releases/download/${version}/LongshotLauncher-${version}-x86_64.AppImage";
-    hash = "sha256-QX+Sj0cDukInlePAz4PfNEthgu3O+iJoydX3wAd4uKY=";
+    hash = "sha256-9KwDtnqRFTcM+ad1EJa/NxyxbBKpM84+zr7Md9+qksU=";
   };
 
   appdir = appimageTools.extract {
