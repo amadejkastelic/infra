@@ -8,16 +8,16 @@
 }:
 buildNpmPackage rec {
   pname = "cloudcli";
-  version = "1.37.10";
+  version = "1.37.11";
 
   src = fetchFromGitHub {
     owner = "siteboon";
     repo = "claudecodeui";
     tag = "v${version}";
-    hash = "sha256-C+eJ76kIuB4xNOEo6ligqhQ1P8kJFQMhQnSOq7ruiho=";
+    hash = "sha256-FlsrM9OQFdSsHS461S73tpkyIX8jPXQrxCLnMDiEFU8=";
   };
 
-  npmDepsHash = "sha256-o1TtRLaRPV/7JLJYNYAnjrs1bLKwZ6MPA9FZ/JbgbrM=";
+  npmDepsHash = "sha256-IYGY9OM2VEA6k8heSCs7vUU2XDKvFaMnaG72S9/lvlg=";
 
   npmFlags = [ "--ignore-scripts" ];
 
