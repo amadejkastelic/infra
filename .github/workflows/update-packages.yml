@@ -78,9 +78,7 @@ jobs:
             # --override-filename: builders like buildHomeAssistantComponent
             # put the version position inside nixpkgs; edit the package file
             # directly.
-            # The flake's nix-update is patched for lazy flake sources
-            # (pkgs/default.nix); update.sh scripts exec it from PATH.
-            if nix run .#nix-update -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
+            if nix run github:NixOS/nixpkgs/nixos-unstable#nix-update -- --flake --use-update-script --override-filename "pkgs/$p/default.nix" "$p"; then
               if [ -n "$(git status --porcelain -- "pkgs/$p")" ]; then
                 new="$(nix eval --raw .#packages.x86_64-linux."$p".version 2>/dev/null || true)"
                 if [ -n "$old" ] && [ -n "$new" ]; then
